@@ -7,7 +7,7 @@ then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 # install vim pluigns
-vim -es -c "PluginInstall" -c "q" -c "q"
+vim -E -c "PluginInstall" -c "q" -c "q"
 # Remove old colors and symlink the theme bundle
 rm -rf ~/.vim/colors
 ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
