@@ -1,7 +1,7 @@
 #! /bin/zsh
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
-.  $CWD/moveSrcs.sh
+. $CWD/moveSrcs.sh
 
 ln -s $CWD/.vimrc ~/
 # install Vundle
@@ -28,7 +28,7 @@ source  ~/.zshrc
 if [[ ! -a ${HOME}/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so ]]
 then
     # Finish YouCompleteMe install
-    python2 ~/.vim/bundle/youcompleteme/install.py --clang-completer
+    python2 ~/.vim/bundle/youcompleteme/install.py --clang-completer || echo "Install cmake to use YouCompleteMe"
 fi
 
 
