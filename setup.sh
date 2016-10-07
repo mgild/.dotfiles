@@ -28,7 +28,7 @@ source  ~/.zshrc
 if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]
 then
     # Finish YouCompleteMe install
-    python2 ~/.vim/bundle/youcompleteme/install.py --clang-completer || echo "Install cmake to use YouCompleteMe"
+    python ~/.vim/bundle/youcompleteme/install.py --clang-completer || echo "Install cmake to use YouCompleteMe"
 fi
 
 
