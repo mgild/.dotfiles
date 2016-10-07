@@ -11,6 +11,6 @@ then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 # install vim pluigns
-vim -es -c "PluginInstall" -c "q" 
+vim -c "PluginInstall" -c "q" -c "q" 
 rm -rf ~/.vim/colors
 ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
