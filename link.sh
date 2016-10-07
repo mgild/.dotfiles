@@ -12,4 +12,5 @@ then
 fi
 # install vim pluigns
 vim -es -c "PluginInstall" -c "q" 
-
+rm -rf ~/.vim/colors
+ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
