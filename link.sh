@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/zsh
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 ln -s $CWD/.vimrc ~/
 # install Vundle
@@ -15,10 +15,17 @@ ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
 if [[ ! -a "${HOME}/.oh-my-zsh" ]]
 then
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sed "s/env zsh//g")"
-    # stop oh-my-zsh from auto zsh overwrite
+    # Remove the newly created zshrc
     rm ~/.zshrc
 fi
-echo "linking $CWD/.zshrc"
+# link zshrc
 ln -s $CWD/.zshrc ~/
+# Do the initial installs in zshrc
+source  ~/.zshrc
+if [[ ! -a ${HOME}/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so ]]
+then
+    # Finish YoucompleteMe install
+    python2 ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
+fi
 
 
