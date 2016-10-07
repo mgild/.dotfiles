@@ -17,11 +17,20 @@ COMPLETION_WAITING_DOTS="true"
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+ZSH_CUSTOM=$ZSH/custom
+if [[ ! -d  $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]]
+then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+fi
+
+if [[ ! -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]
+then 
+    git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git brew heroku osx)
+plugins=(git brew heroku osx z zsh-syntax-highlighting zsh-autosuggestions)
 
 # User configuration
 
@@ -33,11 +42,6 @@ export PATH="/usr/local/sbin:$PATH"
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
-# z incorporation
-if [[ -d /usr/local/Cellar/z ]] 
-then
-    . `brew --prefix`/etc/profile.d/z.sh
-fi
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -56,24 +60,9 @@ fi
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
-# Syntax Highlighting addition
-if [[ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]
-then
-    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-# Auto suggestion addition
-if [[ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]
-then 
-    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-# Add extended git repo info to prompt
-if [[ -f /usr/local/opt/zsh-git-prompt/zshrc.sh ]]
-then
-    source /usr/local/opt/zsh-git-prompt/zshrc.sh
-    PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
-    # PROMPT='%B%m%~%b$(git_super_status) %# '
-fi
+# Add extended git repo info to prompt (git-prompt plugin must be used)
+#PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+# PROMPT='%B%m%~%b$(git_super_status) %# '
 
 function pdfmerge {
     echo gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$@" 
