@@ -4,7 +4,7 @@ export ZSH=~/.oh-my-zsh
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="robbyrussell"
-
+#ZSH_THEME="random"
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
@@ -60,9 +60,17 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
-# Add extended git repo info to prompt (git-prompt plugin must be used)
-#PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
-# PROMPT='%B%m%~%b$(git_super_status) %# '
+if [[ -f /usr/local/Cellar/zsh-git-prompt/0.5/zshrc.sh ]]
+then 
+    source /usr/local/Cellar/zsh-git-prompt/0.5/zshrc.sh
+    # Set left justified prompt
+    #PROMPT='${ret_status} %{$reset_color%}$%{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+    PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+    # PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_super_status)'
+    # Set the right justified prompt
+    #RPROMPT=""
+fi
+
 
 function pdfmerge {
     echo gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$@" 
