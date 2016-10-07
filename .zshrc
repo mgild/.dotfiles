@@ -34,7 +34,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # z incorporation
-. `brew --prefix`/etc/profile.d/z.sh
+if [[ -d /usr/local/Cellar/z ]] 
+then
+    . `brew --prefix`/etc/profile.d/z.sh
+fi
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
