@@ -1,5 +1,8 @@
 #! /bin/zsh
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
+
+exec $CWD/moveSrcs.sh
+
 ln -s $CWD/.vimrc ~/
 # install Vundle
 if [[ ! -a "${HOME}/.vim/bundle/Vundle.vim" ]]
