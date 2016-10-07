@@ -60,8 +60,11 @@ let g:cpp_class_scope_highlight = 1
 " colorscheme solarized
 " set background=dark
 " monokai
-Plugin 'sickill/vim-monokai'
+"Plugin 'sickill/vim-monokai'
 colorscheme monokai
+Plugin 'flazz/vim-colorschemes'
+" colorscheme molokai
+" colorscheme wombat
 " ------------------------------
 
 " All of your Plugins must be added before the following line
