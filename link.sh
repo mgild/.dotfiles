@@ -9,7 +9,7 @@ fi
 # install vim pluigns
 vim -E -c "PluginInstall" -c "q" -c "q"
 # Remove old colors and symlink the theme bundle
-rm -rf ~/.vim/colors
+mv ~/.vim/colors  ~/.vim/colors_old
 ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
 # install oh-my-zsh
 if [[ ! -a "${HOME}/.oh-my-zsh" ]]
@@ -24,7 +24,7 @@ ln -s $CWD/.zshrc ~/
 source  ~/.zshrc
 if [[ ! -a ${HOME}/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so ]]
 then
-    # Finish YoucompleteMe install
+    # Finish YouCompleteMe install
     python2 ~/.vim/bundle/YouCompleteMe/install.py --clang-completer
 fi
 
