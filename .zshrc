@@ -34,10 +34,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # z incorporation
-if [ -f /etc/profile.d/z.sh ]
-then
-    . `brew --prefix`/etc/profile.d/z.sh
-fi
+. `brew --prefix`/etc/profile.d/z.sh
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -57,18 +54,18 @@ fi
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
 # Syntax Highlighting addition
-if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]
+if [[ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]
 then
     source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 # Auto suggestion addition
-if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]
+if [[ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]
 then 
     source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 # Add extended git repo info to prompt
-if [ -f /usr/local/opt/zsh-git-prompt/zshrc.sh ]
+if [[ -f /usr/local/opt/zsh-git-prompt/zshrc.sh ]]
 then
     source /usr/local/opt/zsh-git-prompt/zshrc.sh
     PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
