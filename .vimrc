@@ -54,6 +54,7 @@ let g:cpp_class_scope_highlight = 1
 
 
 " Themes -----------------------
+set t_Co=256 
 " Set Solarized theme
 " Plugin 'altercation/vim-colors-solarized'
 " let g:solarized_termcolors=256
