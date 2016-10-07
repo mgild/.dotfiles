@@ -61,7 +61,7 @@ let g:cpp_class_scope_highlight = 1
 " set background=dark
 " monokai
 "Plugin 'sickill/vim-monokai'
-colorscheme monokai
+colorscheme monokai-chris
 Plugin 'flazz/vim-colorschemes'
 " colorscheme molokai
 " colorscheme wombat
