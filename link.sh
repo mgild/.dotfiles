@@ -1,6 +1,10 @@
 ln -s ~/.dotfiles/.zshrc ~/
 ln -s ~/.dotfiles/.vimrc ~/
-if [ ! -d ~/.oh-my-zsh]; then
+# install oh-my-zsh
+if [ ! -e "/Users/$(whoami)/.oh-my-zsh/" ]
+then
     sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 fi
+# install vim pluigns
+vim -es -c "PluginInstall" -c "q" 
 
