@@ -5,7 +5,7 @@ CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 ln -s $CWD/.vimrc ~/
 # install Vundle
-if [[ ! -a "${HOME}/.vim/bundle/Vundle.vim" ]]
+if [[ ! -a "${HOME}/.vim/bundle/Vundle.vim" ]] 
 then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
