@@ -1,7 +1,7 @@
 #! /bin/zsh
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
-exec $CWD/moveSrcs.sh
+.  $CWD/moveSrcs.sh
 
 ln -s $CWD/.vimrc ~/
 # install Vundle
@@ -12,7 +12,7 @@ fi
 # install vim pluigns
 vim -E -c "PluginInstall" -c "q" -c "q"
 # Remove old colors and symlink the theme bundle
-mv ~/.vim/colors  ~/.vim/colors_old
+mv ~/.vim/colors  ~/.vim/colors.old
 ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
 # install oh-my-zsh
 if [[ ! -a "${HOME}/.oh-my-zsh" ]]
