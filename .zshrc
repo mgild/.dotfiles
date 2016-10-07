@@ -28,15 +28,16 @@ plugins=(git brew heroku osx)
 # Path extensions
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin"
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 # iterm intergration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # z incorporation
-. `brew --prefix`/etc/profile.d/z.sh
-
+if [ -f /etc/profile.d/z.sh ]
+then
+    . `brew --prefix`/etc/profile.d/z.sh
+fi
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
