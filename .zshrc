@@ -56,14 +56,23 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
 # Syntax Highlighting addition
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# Auto suggestion addition
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# Add extended git repo info to prompt
-source /usr/local/opt/zsh-git-prompt/zshrc.sh
-PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
-# PROMPT='%B%m%~%b$(git_super_status) %# '
+if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]
+then
+    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
+# Auto suggestion addition
+if [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]
+then 
+    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+# Add extended git repo info to prompt
+if [ -f /usr/local/opt/zsh-git-prompt/zshrc.sh ]
+then
+    source /usr/local/opt/zsh-git-prompt/zshrc.sh
+    PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+    # PROMPT='%B%m%~%b$(git_super_status) %# '
+fi
 
 function pdfmerge {
     echo gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$@" 
