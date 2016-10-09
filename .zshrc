@@ -68,7 +68,7 @@ then
     PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
     # PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_super_status)'
     # Set the right justified prompt
-    #RPROMPT=""
+    RPROMPT=""
 fi
 
 

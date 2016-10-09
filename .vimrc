@@ -36,9 +36,6 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/
 " Better status bar
 " Plugin 'bling/vim-airline'
 " let g:airline#extensions#tabline#enabled = 1
-" Scrollbar
-Plugin 'gcavallanti/vim-noscrollbar'
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %{noscrollbar#statusline()}
 " NerdTree
 Plugin 'scrooloose/nerdtree'
 autocmd vimenter * NERDTree " Auto open NerdTree
@@ -52,6 +49,9 @@ map <C-n> :NERDTreeToggle<CR>
 Plugin 'octol/vim-cpp-enhanced-highlight'
 let g:cpp_class_scope_highlight = 1
 
+Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
+set laststatus=2
+let g:airline_powerline_fonts = 1
 
 " Themes -----------------------
 set t_Co=256 
@@ -85,16 +85,8 @@ filetype plugin indent on    " required
 
 
 syntax on " syntax based on file type
-set backspace=indent,eol,start " fix backspace
 set mouse=a " allow pint and click
-set tabstop=4
-set softtabstop=0 noexpandtab
 match Todo /\t/
-set expandtab
-set shiftwidth=4
-set smarttab
-set softtabstop=4
-set autoindent 
 set number " turn line numbers on
 set cursorline " Show a line on the line the cursor is on
 set wildmenu 
@@ -102,6 +94,15 @@ filetype indent on
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 set clipboard=unnamed " have vim share clipboard with os
+" Tabs
+set expandtab
+set tabstop=2
+retab
+set shiftwidth=4
+
+" Fix backspace
+set backspace=2 " makes backspace remove previous character instead of where the cursor is 
+
 " normal copy/paste (Control Keys)
 vmap <C-c> y<Esc>i
 vmap <C-x> d<Esc>i
