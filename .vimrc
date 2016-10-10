@@ -42,6 +42,7 @@ autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeWinSize=20 " change nerdtree default size
 " Toggle NerdTree
 map <C-n> :NERDTreeToggle<CR>
 
@@ -52,6 +53,8 @@ let g:cpp_class_scope_highlight = 1
 Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
 let g:airline_powerline_fonts = 1
+
+Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
 " Themes -----------------------
 set t_Co=256 
@@ -95,8 +98,9 @@ set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 set clipboard=unnamed " have vim share clipboard with os
 " Tabs
-set expandtab
-set tabstop=2
+set expandtab " Expand tabs to spaces
+set tabstop=4 " Make tabs 4 spaces
+set softtabstop=4 " Make deleting an expanded tab delete 4 spaces
 retab
 set shiftwidth=4
 
