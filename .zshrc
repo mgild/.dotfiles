@@ -28,6 +28,12 @@ then
     git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 fi
 
+if [[ ! -d $ZSH_CUSTOM/plugins/zsh-git-prompt ]]
+then 
+    git clone https://github.com/olivierverdier/zsh-git-prompt.git $ZSH_CUSTOM/plugins/zsh-git-prompt
+fi
+
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(git brew heroku osx zsh-syntax-highlighting zsh-autosuggestions)
@@ -60,9 +66,9 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
-if [[ -f /usr/local/Cellar/zsh-git-prompt/0.5/zshrc.sh ]]
+if [[ -f $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh ]]
 then 
-    source /usr/local/Cellar/zsh-git-prompt/0.5/zshrc.sh
+    source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
     # Set left justified prompt
     #PROMPT='${ret_status} %{$reset_color%}$%{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
     PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
