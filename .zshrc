@@ -120,6 +120,7 @@ ii() {
 #   -----------------------------------------------------
 alias memHogsTop='top -l 1 -o rsize | head -20'
 alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
+function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'}
 
 #   cpuHogs:  Find CPU hogs
 #   -----------------------------------------------------

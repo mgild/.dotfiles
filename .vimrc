@@ -30,7 +30,7 @@ Plugin 'ascenator/L9', {'name': 'newL9'}
 Plugin 'scrooloose/syntastic'
 " Code completion
 Plugin 'valloric/youcompleteme'
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " Show indet level
 " Plugin 'nathanaelkane/vim-indent-guides'
 " Better status bar
@@ -66,6 +66,7 @@ set t_Co=256
 " monokai
 "Plugin 'sickill/vim-monokai'
 colorscheme monokai-chris
+" colorscheme solarized
 Plugin 'flazz/vim-colorschemes'
 " colorscheme molokai
 " colorscheme wombat
@@ -96,7 +97,7 @@ set wildmenu
 filetype indent on
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
-set clipboard=unnamed " have vim share clipboard with os
+set clipboard^=unnamed,unnamedplus " have vim share clipboard with os
 " Tabs
 set expandtab " Expand tabs to spaces
 set tabstop=4 " Make tabs 4 spaces
