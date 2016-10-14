@@ -11,7 +11,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
-Plugin 'xolox/vim-easytags' " jump to definition, + stuff
+Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
+let g:easytags_async = 1 " async tag loading
 Plugin 'tpope/vim-commentary' " comment multiple lines
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -36,14 +37,14 @@ Plugin 'valloric/youcompleteme'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 " Show indet level
 " Plugin 'nathanaelkane/vim-indent-guides'
-" Better status bar
-" Plugin 'bling/vim-airline'
-" let g:airline#extensions#tabline#enabled = 1
 " NerdTree
 Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'Xuyuanp/nerdtree-git-plugin' " Add git info to nerdtree
+Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
 autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
+" let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
+let g:NERDTreeUseSimpleIndicator = 1
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize=20 " change nerdtree default size
