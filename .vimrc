@@ -10,6 +10,9 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'https://github.com/xolox/vim-misc.git' " misc
+Plugin 'xolox/vim-easytags' " jump to definition, + stuff
+Plugin 'tpope/vim-commentary' " comment multiple lines
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
@@ -38,11 +41,13 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/
 " let g:airline#extensions#tabline#enabled = 1
 " NerdTree
 Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize=20 " change nerdtree default size
+let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
 " Toggle NerdTree
 map <C-n> :NERDTreeToggle<CR>
 
@@ -106,7 +111,7 @@ retab
 set shiftwidth=4
 
 " Fix backspace
-set backspace=2 " makes backspace remove previous character instead of where the cursor is 
+set backspace=2 " makes backspace remove previous character instead of where the cursor is
 
 " normal copy/paste (Control Keys)
 vmap <C-c> y<Esc>i
