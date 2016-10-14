@@ -38,13 +38,7 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(git brew heroku osx zsh-syntax-highlighting zsh-autosuggestions)
 
-# User configuration
-
-# Path extensions
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin"
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH="/usr/local/sbin:$PATH"
-# iterm intergration
+# load iterm intergration (if it exists)
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -62,9 +56,7 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# oh-my-zsh users are encouraged to define aliases within the ZSH_CUSTOM folder.
 
 if [[ -f $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh ]]
 then 
@@ -77,10 +69,11 @@ then
     RPROMPT=""
 fi
 
-
+# first argument is destination file. Rest are the files to merge
 function pdfmerge {
-    echo gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$@" 
-    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$@"
+    echo gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$1 ${@:2} 
+    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$1 ${@:2} 
+
 }
 
 #   my_ps: List processes owned by my user:
@@ -126,7 +119,7 @@ function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pa
 #   -----------------------------------------------------
 alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
-#   Common misspelling
+#   Common misspellings
 #   -----------------------------------------------------
 alias pyhton=python
 
@@ -145,3 +138,6 @@ alias ipython="python -m IPython"
 #  Show symlinks in given directory 
 #   -----------------------------------------------------
 function lsym() {ls -la $1 | grep "\->";}
+
+# Load non-public zshrc
+test -f ~/.zshrc.local && source ~/.zshrc.local
