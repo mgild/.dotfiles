@@ -1,3 +1,4 @@
+#! /bin/zsh
 # Moves file $1 to $2, deletes if file is a symlink
 function mvFile() {
     if [[ -f $1 ]]
