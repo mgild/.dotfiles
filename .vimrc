@@ -10,12 +10,14 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
 let g:easytags_async = 1 " async tag loading
 Plugin 'tpope/vim-commentary' " comment multiple lines
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
+
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
@@ -35,11 +37,8 @@ Plugin 'scrooloose/syntastic'
 " Code completion
 Plugin 'valloric/youcompleteme'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-" Show indet level
-" Plugin 'nathanaelkane/vim-indent-guides'
 " NerdTree
 Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin' " Add git info to nerdtree
 Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
 autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
@@ -64,18 +63,8 @@ Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
 " Themes -----------------------
 set t_Co=256 
-" Set Solarized theme
-" Plugin 'altercation/vim-colors-solarized'
-" let g:solarized_termcolors=256
-" colorscheme solarized
-" set background=dark
-" monokai
-"Plugin 'sickill/vim-monokai'
-colorscheme monokai-chris
-" colorscheme solarized
 Plugin 'flazz/vim-colorschemes'
-" colorscheme molokai
-" colorscheme wombat
+colorscheme monokai-chris
 " ------------------------------
 
 " All of your Plugins must be added before the following line
@@ -95,7 +84,7 @@ filetype plugin indent on    " required
 
 
 syntax on " syntax based on file type
-set mouse=a " allow pint and click
+set mouse=a " allow point and click UI
 match Todo /\t/
 set number " turn line numbers on
 set cursorline " Show a line on the line the cursor is on
@@ -114,7 +103,7 @@ set shiftwidth=4
 " Fix backspace
 set backspace=2 " makes backspace remove previous character instead of where the cursor is
 
-" normal copy/paste (Control Keys)
+" normal cut/copy/paste (Control Keys)
 vmap <C-c> y<Esc>i
 vmap <C-x> d<Esc>i
 imap <C-v> <Esc>pi
