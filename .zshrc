@@ -1,3 +1,8 @@
+# Path extensions
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin"
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export PATH="/usr/local/sbin:$PATH"
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
@@ -18,6 +23,7 @@ COMPLETION_WAITING_DOTS="true"
 
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=$ZSH/custom
+# Ensure custom plugins are downloaded
 if [[ ! -d  $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]]
 then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
@@ -44,19 +50,18 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
+export EDITOR=vim
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='mvim -v'
 # fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
 # ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# oh-my-zsh users are encouraged to define aliases within the ZSH_CUSTOM folder.
+export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 if [[ -f $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh ]]
 then 
@@ -87,9 +92,9 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 alias myip='wget http://ipinfo.io/ip -qO - | head -n 1'         # myip:         Public facing IP Address
 alias netCons='lsof -i'                             # netCons:      Show all open TCP/IP sockets
 alias flushDNS='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
-alias lsock='sudo /usr/sbin/lsof -i -P'             # lsock:        Display open sockets
-alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP'   # lsockU:       Display only open UDP sockets
-alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP'   # lsockT:       Display only open TCP sockets
+alias lsock='sudo lsof -i -P'             # lsock:        Display open sockets
+alias lsockU='sudo lsof -nP | grep UDP'   # lsockU:       Display only open UDP sockets
+alias lsockT='sudo lsof -nP | grep TCP'   # lsockT:       Display only open TCP sockets
 alias ipInfo0='ipconfig getpacket en0'              # ipInfo0:      Get info on connections for en0
 alias ipInfo1='ipconfig getpacket en1'              # ipInfo1:      Get info on connections for en1
 alias openPorts='sudo lsof -i | grep LISTEN'        # openPorts:    All listening connections
@@ -122,6 +127,7 @@ alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 #   Common misspellings
 #   -----------------------------------------------------
 alias pyhton=python
+alias mkae=make
 
 #   Git Smart Log
 #   -----------------------------------------------------
