@@ -24,11 +24,12 @@ fi
 # link zshrc
 ln -s $CWD/.zshrc ~/
 # Do the initial installs in zshrc
-source  ~/.zshrc
+.  ~/.zshrc
 if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]
 then
     # Finish YouCompleteMe install
-    python ~/.vim/bundle/youcompleteme/install.py --clang-completer || echo "Install cmake to use YouCompleteMe"
+    python ~/.vim/bundle/youcompleteme/install.py --clang-completer || echo "Please make sure you have installed the specified prerequisites"
 fi
-
+# Enter zsh shell
+zsh
 
