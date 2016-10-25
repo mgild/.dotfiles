@@ -42,7 +42,7 @@ fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git brew heroku osx zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git brew heroku osx zsh-syntax-highlighting zsh-autosuggestions h)
 
 # load iterm intergration (if it exists)
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
@@ -73,13 +73,6 @@ then
     # Set the right justified prompt
     RPROMPT=""
 fi
-
-# first argument is destination file. Rest are the files to merge
-function pdfmerge {
-    echo gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$1 ${@:2} 
-    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$1 ${@:2} 
-
-}
 
 #   my_ps: List processes owned by my user:
 #   ------------------------------------------------------------
@@ -143,7 +136,24 @@ alias ipython="python -m IPython"
 
 #  Show symlinks in given directory 
 #   -----------------------------------------------------
-function lsym() {ls -la $1 | grep "\->";}
+function lsym() {
+    dir=".";
+    if [[ $1 ]]; then;
+        dir=($1)
+    fi
+    find $dir -maxdepth 1 -type l -ls;
+}
+
+# Quick up n levels
+function up() {
+    # is not an integer
+    if  [[ ! $1 =~ ^[[:digit:]]+$ ]]; then
+        echo "Must pass in a non-negative integer" && return 1
+    fi
+    for (( i = 0; i < $1; i++ )); do
+        cd ..
+    done
+}
 
 # Load non-public zshrc
 test -f ~/.zshrc.local && source ~/.zshrc.local

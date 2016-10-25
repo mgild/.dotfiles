@@ -9,9 +9,13 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+autocmd BufWinEnter * call DisableRelativeNumbers()
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
+
+" Toggle relative line numbers
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
@@ -34,9 +38,14 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'ascenator/L9', {'name': 'newL9'}
 " Syntax checker
 Plugin 'scrooloose/syntastic'
+let g:syntastic_cpp_checkers = ['gcc']
+let g:syntastic_cpp_compiler = 'gcc'
+let g:syntastic_cpp_compiler_options = '-std=c++14'
+
 " Code completion
 Plugin 'valloric/youcompleteme'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_show_diagnostics_ui = 0
 " NerdTree
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
@@ -111,4 +120,7 @@ imap <C-y> <Esc>ddi
 map <C-z> <Esc>
 imap <C-z> <Esc>ui
 
+" Sets 'S' and 'Silent' to silently exec command
+command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
+command! -nargs=1 S execute ':silent !'.<q-args> | execute ':redraw!'
 
