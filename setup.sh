@@ -3,7 +3,9 @@ CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 . $CWD/moveSrcs.sh
 
+# Symlink the vimrc
 ln -s $CWD/.vimrc ~/
+
 # install Vundle
 if [[ ! -a "${HOME}/.vim/bundle/Vundle.vim" ]]
 then
@@ -21,15 +23,12 @@ then
     # Remove the newly created zshrc
     rm ~/.zshrc
 fi
+
 # link zshrc
 ln -s $CWD/.zshrc ~/
+
 # Do the initial installs in zshrc
 .  ~/.zshrc
-if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]
-then
-    # Finish YouCompleteMe install
-    python ~/.vim/bundle/youcompleteme/install.py --clang-completer || echo "Please make sure you have installed the specified prerequisites"
-fi
 
 # install powerline fonts
 if [[ ! -d ${HOME}/.fonts ]]
@@ -39,6 +38,13 @@ then
     fc-cache -vf ~/.fonts
     mkdir -p ~/.config/fontconfig/conf.d/ && mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
 fi
+
+# Download and build YouCompleteMe compiler
+if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]
+then
+    python ~/.vim/bundle/youcompleteme/install.py --clang-completer || echo "Please make sure you have installed the specified prerequisites"
+fi
+
 
 # Enter zsh shell
 zsh
