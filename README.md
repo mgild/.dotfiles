@@ -2,4 +2,4 @@
 
 To install, run setup.sh
 
-Prereqs: zsh, vim, curl, wget, Cmake, libpython2.7-dev, git, ctags
+Prereqs: zsh, vim, curl, wget, cmake, libpython2.7-dev, git, ctags
