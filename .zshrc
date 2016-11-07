@@ -42,7 +42,8 @@ fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git brew heroku osx zsh-syntax-highlighting zsh-autosuggestions h)
+plugins=(z git brew heroku osx vundle npm nmap python sublime zsh-autosuggestions zsh-syntax-highlighting)
+. $ZSH/plugins/z/z.sh
 
 # load iterm intergration (if it exists)
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
@@ -82,16 +83,16 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 
 #   NETWORKING
 #   ---------------------------
-alias myip='wget http://ipinfo.io/ip -qO - | head -n 1'         # myip:         Public facing IP Address
-alias netCons='lsof -i'                             # netCons:      Show all open TCP/IP sockets
-alias flushDNS='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
-alias lsock='sudo lsof -i -P'             # lsock:        Display open sockets
-alias lsockU='sudo lsof -nP | grep UDP'   # lsockU:       Display only open UDP sockets
-alias lsockT='sudo lsof -nP | grep TCP'   # lsockT:       Display only open TCP sockets
-alias ipInfo0='ipconfig getpacket en0'              # ipInfo0:      Get info on connections for en0
-alias ipInfo1='ipconfig getpacket en1'              # ipInfo1:      Get info on connections for en1
-alias openPorts='sudo lsof -i | grep LISTEN'        # openPorts:    All listening connections
-alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rules inc/ blocked IPs
+alias myip='wget http://ipinfo.io/ip -qO - | head -n 1' # myip:         Public facing IP Address
+alias netCons='lsof -i'                                 # netCons:      Show all open TCP/IP sockets
+alias flushDNS='dscacheutil -flushcache'                # flushDNS:     Flush out the DNS Cache
+alias lsock='sudo lsof -i -P'                           # lsock:        Display open sockets
+alias lsockU='sudo lsof -nP | grep UDP'                 # lsockU:       Display only open UDP sockets
+alias lsockT='sudo lsof -nP | grep TCP'                 # lsockT:       Display only open TCP sockets
+alias ipInfo0='ipconfig getpacket en0'                  # ipInfo0:      Get info on connections for en0
+alias ipInfo1='ipconfig getpacket en1'                  # ipInfo1:      Get info on connections for en1
+alias openPorts='sudo lsof -i | grep LISTEN'            # openPorts:    All listening connections
+alias showBlocked='sudo ipfw list'                      # showBlocked:  All ipfw rules inc/ blocked IPs
 
 
 #   ii:  display useful host related informaton

@@ -58,7 +58,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinSize=20 " change nerdtree default size
 let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
 " Toggle NerdTree
-map <C-n> :NERDTreeToggle<CR>
+map <C-f> :NERDTreeToggle<CR>
 
 " Enhanced C++ highlighting
 Plugin 'octol/vim-cpp-enhanced-highlight'
@@ -94,10 +94,10 @@ filetype plugin indent on    " required
 
 syntax on " syntax based on file type
 set mouse=a " allow point and click UI
-match Todo /\t/
+match Todo /\t/ " add warnings over tabs
 set number " turn line numbers on
 set cursorline " Show a line on the line the cursor is on
-set wildmenu 
+set wildmenu  " Enhanced command completion 
 filetype indent on
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
