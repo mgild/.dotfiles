@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/zsh
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
 . $CWD/moveSrcs.sh
