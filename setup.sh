@@ -1,4 +1,20 @@
 #! /bin/zsh
+#
+function assertInstalled() {
+    if ! which $1 &> /dev/null; then
+        echo "Install $1!"
+        exit 1
+    fi
+}
+
+assertInstalled vim
+assertInstalled wget
+assertInstalled python
+assertInstalled pip
+assertInstalled git
+assertInstalled zsh
+
+
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
 . $CWD/moveSrcs.sh
