@@ -1,19 +1,15 @@
 #! /bin/zsh
 #
 function assertInstalled() {
-    if ! which $1 &> /dev/null; then
-        echo "Install $1!"
-        exit 1
-    fi
+    for var in "$@"; do
+        if ! which $var &> /dev/null; then
+            echo "Install $var!"
+            exit 1
+        fi
+    done
 }
 
-assertInstalled vim
-assertInstalled wget
-assertInstalled python
-assertInstalled pip
-assertInstalled git
-assertInstalled zsh
-
+assertInstalled vim wget python pip git zsh
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
