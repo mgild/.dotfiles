@@ -2,7 +2,7 @@
 
 To install, run setup.sh
 
-Prereqs: zsh, vim, wget, cmake, libpython2.7-dev, git, ctags, fontconfig
+Prereqs: zsh, vim, wget, cmake, libpython2.7-dev, git, ctags, fontconfig (contains fc-cache)
 
 Reference this guide if you have trouble with powerline fonts:
 http://askubuntu.com/questions/283908/how-can-i-install-and-use-powerline-plugin

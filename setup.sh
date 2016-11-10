@@ -9,7 +9,7 @@ function assertInstalled() {
     done
 }
 
-assertInstalled zsh vim wget python pip git cmake
+assertInstalled zsh vim wget python pip git cmake fc-cache
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
