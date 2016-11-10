@@ -1,5 +1,5 @@
 #! /bin/zsh
-#
+
 function assertInstalled() {
     for var in "$@"; do
         if ! which $var &> /dev/null; then
@@ -9,7 +9,7 @@ function assertInstalled() {
     done
 }
 
-assertInstalled vim wget python pip git zsh
+assertInstalled zsh vim wget python pip git cmake
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
