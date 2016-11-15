@@ -55,9 +55,6 @@ fi
 # link zshrc
 ln -s $CWD/.zshrc ~/
 
-# Do the initial installs in zshrc
-.  ~/.zshrc
-
 # install powerline fonts
 if [[ ! -d ${HOME}/.fonts ]]
 then
