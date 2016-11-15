@@ -23,21 +23,6 @@ COMPLETION_WAITING_DOTS="true"
 
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=$ZSH/custom
-# Ensure custom plugins are downloaded
-if [[ ! -d  $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]]
-then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-fi
-
-if [[ ! -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]
-then 
-    git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-fi
-
-if [[ ! -d $ZSH_CUSTOM/plugins/zsh-git-prompt ]]
-then 
-    git clone https://github.com/olivierverdier/zsh-git-prompt.git $ZSH_CUSTOM/plugins/zsh-git-prompt
-fi
 
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
@@ -49,14 +34,15 @@ plugins=(z git brew heroku osx vundle npm nmap python sublime zsh-autosuggestion
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
+# set custom git prompt
+source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+# Set left justified prompt
+PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+# Set the right justified prompt
+RPROMPT=""
 
-# Preferred editor for local and remote sessions
+# Preferred editor
 export EDITOR=vim
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim -v'
-# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -64,16 +50,6 @@ export EDITOR=vim
 # ssh
 export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-if [[ -f $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh ]]
-then 
-    source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
-    # Set left justified prompt
-    #PROMPT='${ret_status} %{$reset_color%}$%{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
-    PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
-    # PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_super_status)'
-    # Set the right justified prompt
-    RPROMPT=""
-fi
 
 #   my_ps: List processes owned by my user:
 #   ------------------------------------------------------------
@@ -147,11 +123,15 @@ function lsym() {
 
 # Quick up n levels
 function up() {
+    var=$1
+    if [[ -z $var ]]; then
+        var=(1)
+    fi
     # is not an integer
-    if  [[ ! $1 =~ ^[[:digit:]]+$ ]]; then
+    if  [[ ! $var =~ ^[[:digit:]]+$ ]]; then
         echo "Must pass in a non-negative integer" && return 1
     fi
-    for (( i = 0; i < $1; i++ )); do
+    for (( i = 0; i < $var; i++ )); do
         cd ..
     done
 }
