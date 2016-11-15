@@ -1,4 +1,8 @@
 #! /bin/zsh
+# Path to your oh-my-zsh installation.
+export ZSH=~/.oh-my-zsh
+# Would you like to use another custom folder than $ZSH/custom?
+ZSH_CUSTOM=$ZSH/custom
 
 function assertInstalled() {
     for var in "$@"; do
