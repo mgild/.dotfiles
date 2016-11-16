@@ -1,3 +1,4 @@
+set encoding=utf-8
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -67,6 +68,7 @@ let g:cpp_class_scope_highlight = 1
 Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
 let g:airline_powerline_fonts = 1
+let g:Powerline_symbols='unicode'
 
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
@@ -91,7 +93,7 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
 syntax on " syntax based on file type
 set mouse=a " allow point and click UI
 match Todo /\t/ " add warnings over tabs
