@@ -2,7 +2,6 @@
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin"
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH="/usr/local/sbin:$PATH"
-
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
@@ -59,6 +58,7 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 
 #   NETWORKING
 #   ---------------------------
+alias localip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias myip='wget http://ipinfo.io/ip -qO - | head -n 1' # myip:         Public facing IP Address
 alias netCons='lsof -i'                                 # netCons:      Show all open TCP/IP sockets
 alias flushDNS='dscacheutil -flushcache'                # flushDNS:     Flush out the DNS Cache
