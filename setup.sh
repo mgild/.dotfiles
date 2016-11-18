@@ -13,7 +13,7 @@ function assertInstalled() {
     done
 }
 
-assertInstalled zsh vim wget python pip git cmake ctags fc-cache
+assertInstalled zsh vim wget python git cmake ctags
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)" 
 
@@ -60,12 +60,10 @@ fi
 ln -s $CWD/.zshrc ~/
 
 # install powerline fonts
-if [[ ! -d ${HOME}/.fonts ]]
+if [[ ! -d ${HOME}/.powerline_fonts ]]
 then
-    wget https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
-    mkdir -p ~/.fonts/ && mv PowerlineSymbols.otf ~/.fonts/
-    fc-cache -vf ~/.fonts
-    mkdir -p ~/.config/fontconfig/conf.d/ && mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+    git clone https://github.com/powerline/fonts.git ~/.powerline_fonts
+    sh ${HOME}/.powerline_fonts/install.sh
 fi
 
 # Download and build YouCompleteMe compiler
