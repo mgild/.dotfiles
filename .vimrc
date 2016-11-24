@@ -15,7 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 
 " Toggle relative line numbers
-Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+" Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
@@ -72,7 +72,7 @@ let g:Powerline_symbols='unicode'
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
 " Themes -----------------------
-set t_Co=256 
+set t_Co=256
 Plugin 'flazz/vim-colorschemes'
 colorscheme monokai-chris
 " ------------------------------
@@ -98,7 +98,7 @@ set mouse=a " allow point and click UI
 match Todo /\t/ " add warnings over tabs
 set number " turn line numbers on
 set cursorline " Show a line on the line the cursor is on
-set wildmenu  " Enhanced command completion 
+set wildmenu  " Enhanced command completion
 filetype indent on
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
@@ -109,6 +109,7 @@ set tabstop=4 " Make tabs 4 spaces
 set softtabstop=4 " Make deleting an expanded tab delete 4 spaces
 retab
 set shiftwidth=4
+autocmd BufWritePre * %s/\s\+$//e " auto remove trailing whitespace on save
 
 " Fix backspace
 set backspace=2 " makes backspace remove previous character instead of where the cursor is

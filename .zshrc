@@ -80,7 +80,8 @@ ii() {
     echo -e "\n${RED}Current date :$NC " ; date
     echo -e "\n${RED}Machine stats :$NC " ; uptime
     echo -e "\n${RED}Current network location :$NC " ; scselect
-    echo -e "\n${RED}Public facing IP Address :$NC " ;myip
+    echo -e "\n${RED}Public IP Address :$NC " ;myip
+    echo -e "\n${RED}Local IP Address :$NC " ;localip
     echo
 }
 
@@ -99,6 +100,10 @@ alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 alias pyhton=python
 alias mkae=make
 
+#  Sudo last command
+#   -----------------------------------------------------
+alias please='sudo $(fc -ln -1)'
+
 #   Git Smart Log
 #   -----------------------------------------------------
 alias gsl='git log --all --decorate --oneline --graph'
@@ -106,12 +111,11 @@ alias gsl='git log --all --decorate --oneline --graph'
 #   Never use vi
 #   -----------------------------------------------------
 alias vi=vim
-
 #   Better interactive python
 #   -----------------------------------------------------
 alias ipython="python -m IPython"
 
-#  Show symlinks in given directory 
+#  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
     dir=".";
@@ -120,6 +124,7 @@ function lsym() {
     fi
     find $dir -maxdepth 1 -type l -ls;
 }
+
 
 # Quick up n levels
 function up() {
