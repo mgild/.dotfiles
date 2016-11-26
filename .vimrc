@@ -18,8 +18,8 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
-Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
-let g:easytags_async = 1 " async tag loading
+" Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
+" let g:easytags_async = 1 " async tag loading
 Plugin 'tpope/vim-commentary' " comment multiple lines
 
 " plugin on GitHub repo
