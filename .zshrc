@@ -103,6 +103,7 @@ alias mkae=make
 #  Sudo last command
 #   -----------------------------------------------------
 alias please='sudo $(fc -ln -1)'
+alias 123=please
 
 #   Git Smart Log
 #   -----------------------------------------------------
@@ -143,3 +144,4 @@ function up() {
 
 # Load non-public zshrc
 test -f ~/.zshrc.local && source ~/.zshrc.local
+
