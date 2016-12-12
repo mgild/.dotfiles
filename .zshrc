@@ -59,17 +59,26 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 #   NETWORKING
 #   ---------------------------
 alias localip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
-alias myip='wget http://ipinfo.io/ip -qO - | head -n 1' # myip:         Public facing IP Address
-alias netCons='lsof -i'                                 # netCons:      Show all open TCP/IP sockets
-alias flushDNS='dscacheutil -flushcache'                # flushDNS:     Flush out the DNS Cache
-alias lsock='sudo lsof -i -P'                           # lsock:        Display open sockets
-alias lsockU='sudo lsof -nP | grep UDP'                 # lsockU:       Display only open UDP sockets
-alias lsockT='sudo lsof -nP | grep TCP'                 # lsockT:       Display only open TCP sockets
-alias ipInfo0='ipconfig getpacket en0'                  # ipInfo0:      Get info on connections for en0
-alias ipInfo1='ipconfig getpacket en1'                  # ipInfo1:      Get info on connections for en1
-alias openPorts='sudo lsof -i | grep LISTEN'            # openPorts:    All listening connections
-alias showBlocked='sudo ipfw list'                      # showBlocked:  All ipfw rules inc/ blocked IPs
-
+# myip:         Public facing IP Address
+alias myip="echo $(dig +short myip.opendns.com @resolver1.opendns.com)"
+# netCons:      Show all open TCP/IP sockets
+alias netCons='lsof -i'
+# flushDNS:     Flush out the DNS Cache
+alias flushDNS='dscacheutil -flushcache'
+# lsock:        Display open sockets
+alias lsock='sudo lsof -i -P'
+# lsockU:       Display only open UDP sockets
+alias lsockU='sudo lsof -nP | grep UDP'
+# lsockT:       Display only open TCP sockets
+alias lsockT='sudo lsof -nP | grep TCP'
+ # ipInfo0:      Get info on connections for en0
+alias ipInfo0='ipconfig getpacket en0'
+# ipInfo1:      Get info on connections for en1
+alias ipInfo1='ipconfig getpacket en1'
+# openPorts:    All listening connections
+alias openPorts='sudo lsof -i | grep LISTEN'
+# showBlocked:  All ipfw rules inc/ blocked IPs
+alias showBlocked='sudo ipfw list'
 
 #   ii:  display useful host related informaton
 #   -------------------------------------------------------------------
@@ -105,6 +114,10 @@ alias mkae=make
 alias please='sudo $(fc -ln -1)'
 alias 123=please
 
+#  Go back to the previous directory
+#   -----------------------------------------------------
+alias back='cd ~-'
+
 #   Git Smart Log
 #   -----------------------------------------------------
 alias gsl='git log --all --decorate --oneline --graph'
@@ -112,6 +125,7 @@ alias gsl='git log --all --decorate --oneline --graph'
 #   Never use vi
 #   -----------------------------------------------------
 alias vi=vim
+
 #   Better interactive python
 #   -----------------------------------------------------
 alias ipython="python -m IPython"
@@ -133,13 +147,15 @@ function up() {
     if [[ -z $var ]]; then
         var=(1)
     fi
-    # is not an integer
+    # is not a positive integer
     if  [[ ! $var =~ ^[[:digit:]]+$ ]]; then
         echo "Must pass in a non-negative integer" && return 1
     fi
+    res=""
     for (( i = 0; i < $var; i++ )); do
-        cd ..
+        res=$res"../"
     done
+    cd $res
 }
 
 # Load non-public zshrc
