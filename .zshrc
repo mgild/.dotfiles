@@ -119,11 +119,7 @@ alias ipython="python -m IPython"
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
-    dir=".";
-    if [[ $1 ]]; then;
-        dir=($1)
-    fi
-    find $dir -maxdepth 1 -type l -ls;
+    find ${1:="."} -maxdepth 1 -type l -ls;
 }
 
 
