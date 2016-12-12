@@ -41,6 +41,7 @@ Plugin 'scrooloose/syntastic'
 let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_compiler = 'gcc'
 let g:syntastic_cpp_compiler_options = '-std=c++14'
+let g:syntastic_python_flake8_exec = '/usr/bin/python2'
 
 " Code completion
 Plugin 'valloric/youcompleteme'
