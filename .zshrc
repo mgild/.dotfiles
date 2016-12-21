@@ -35,6 +35,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 source $ZSH/oh-my-zsh.sh
 # set custom git prompt
 source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+
+# source alias file
+source ~/.zshrc.alias
+
 # Set left justified prompt
 PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
 # Set the right justified prompt
@@ -59,6 +63,8 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 #   ii:  display useful host related informaton
 #   -------------------------------------------------------------------
 ii() {
+    RED=$fg[red]
+    NC=$reset_color
     echo -e "\nYou are logged on ${RED}$HOST"
     echo -e "\nAdditionnal information:$NC " ; uname -a
     echo -e "\n${RED}Users logged on:$NC " ; w -h
@@ -105,13 +111,9 @@ function up() {
 
 # Load non-public zshrc
 test -f ~/.zshrc.local && source ~/.zshrc.local
-source ~/.zshrc.alias
-
 
 # Security checks
 alias checkrootkits="sudo rkhunter --update; sudo rkhunter --propupd; sudo rkhunter --check"
-alias checkvirus="clamscan --recursive=yes --infected /home"
-alias updateantivirus="sudo freshclam"
 
 
 email() {
