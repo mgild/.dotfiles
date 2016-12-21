@@ -56,30 +56,6 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 
 
 
-#   NETWORKING
-#   ---------------------------
-alias localip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
-# myip:         Public facing IP Address
-alias myip="echo $(dig +short myip.opendns.com @resolver1.opendns.com)"
-# netCons:      Show all open TCP/IP sockets
-alias netCons='lsof -i'
-# flushDNS:     Flush out the DNS Cache
-alias flushDNS='dscacheutil -flushcache'
-# lsock:        Display open sockets
-alias lsock='sudo lsof -i -P'
-# lsockU:       Display only open UDP sockets
-alias lsockU='sudo lsof -nP | grep UDP'
-# lsockT:       Display only open TCP sockets
-alias lsockT='sudo lsof -nP | grep TCP'
- # ipInfo0:      Get info on connections for en0
-alias ipInfo0='ipconfig getpacket en0'
-# ipInfo1:      Get info on connections for en1
-alias ipInfo1='ipconfig getpacket en1'
-# openPorts:    All listening connections
-alias openPorts='sudo lsof -i | grep LISTEN'
-# showBlocked:  All ipfw rules inc/ blocked IPs
-alias showBlocked='sudo ipfw list'
-
 #   ii:  display useful host related informaton
 #   -------------------------------------------------------------------
 ii() {
@@ -94,66 +70,72 @@ ii() {
     echo
 }
 
-#   memHogsTop, memHogsPs:  Find memory hogs
-#   -----------------------------------------------------
-alias memHogsTop='top -l 1 -o rsize | head -20'
-alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
-function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'}
 
-#   cpuHogs:  Find CPU hogs
-#   -----------------------------------------------------
-alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
-#   Common misspellings
-#   -----------------------------------------------------
-alias pyhton=python
-alias mkae=make
-
-#  Sudo last command
-#   -----------------------------------------------------
-alias please='sudo $(fc -ln -1)'
-alias 123=please
-
-#  Go back to the previous directory
-#   -----------------------------------------------------
-alias back='cd ~-'
-
-#   Git Smart Log
-#   -----------------------------------------------------
-alias gsl='git log --all --decorate --oneline --graph'
-
-#   Never use vi
-#   -----------------------------------------------------
-alias vi=vim
-
-#   Better interactive python
-#   -----------------------------------------------------
-alias ipython="python -m IPython"
+# Colored Man Pages
+# -------------------------------------------------------
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[38;33;246m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
-    find ${1:="."} -maxdepth 1 -type l -ls;
+    find ${1:-"."} -maxdepth 1 -type l -ls;
 }
 
 
 # Quick up n levels
 function up() {
-    var=$1
-    if [[ -z $var ]]; then
-        var=(1)
-    fi
+    var=${1:-1};
     # is not a positive integer
     if  [[ ! $var =~ ^[[:digit:]]+$ ]]; then
-        echo "Must pass in a non-negative integer" && return 1
+        echo "Must pass in a non-negative integer" && return 1;
     fi
-    res=""
+    res="";
     for (( i = 0; i < $var; i++ )); do
-        res=$res"../"
+        res=$res"../";
     done
-    cd $res
+    cd $res;
 }
 
 # Load non-public zshrc
 test -f ~/.zshrc.local && source ~/.zshrc.local
+source ~/.zshrc.alias
 
+
+# Security checks
+alias checkrootkits="sudo rkhunter --update; sudo rkhunter --propupd; sudo rkhunter --check"
+alias checkvirus="clamscan --recursive=yes --infected /home"
+alias updateantivirus="sudo freshclam"
+
+
+email() {
+    echo $3 | mutt -s $2 $1
+}
+# colorized cat
+c() {
+  for file in "$@"
+  do
+    pygmentize -f console256 -g "$file"
+  done
+}
+
+
+# read markdown files like manpages
+md() {
+    pandoc -s -f markdown -t man "$*" | man -l -
+}
+
+# nullpointer url shortener
+short() {
+    if [[ -z $1 ]]; then
+        return 1;
+    fi
+    link=$(curl -s -F"shorten=$*" https://0x0.st | sed 's/https:\/\///g')
+    echo $link "copied to clipboard"  && printf $link | pbcopy
+}

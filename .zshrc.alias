@@ -1,0 +1,73 @@
+
+#  Sudo last command
+#   -----------------------------------------------------
+alias fuck='sudo $(fc -ln -1)'
+alias 123=fuck
+
+#  Go back to the previous directory
+#   -----------------------------------------------------
+alias back='cd ~-'
+
+#   Git Smart Log
+#   -----------------------------------------------------
+alias gsl='git log --all --decorate --oneline --graph'
+
+#   Never use vi
+#   -----------------------------------------------------
+alias vi=vim
+
+#   Better interactive python
+#   -----------------------------------------------------
+alias ipython="python -m IPython"
+
+#   quick link to /dev/null
+#   -----------------------------------------------------
+alias null='/dev/null'
+
+#   To make slacking off faster
+#   -----------------------------------------------------
+alias reddit="open https://reddit.com"
+
+#   cpuHogs:  Find CPU hogs
+#   -----------------------------------------------------
+alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
+
+#   Common misspellings
+#   -----------------------------------------------------
+alias pyhton=python
+alias mkae=make
+
+#   memHogsTop, memHogsPs:  Find memory hogs
+#   -----------------------------------------------------
+alias memHogsTop='top -l 1 -o rsize | head -20'
+alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
+function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'}
+
+
+#   NETWORKING
+#   ---------------------------
+alias localip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+# myip:         Public facing IP Address
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+# netCons:      Show all open TCP/IP sockets
+alias netCons='lsof -i'
+# flushDNS:     Flush out the DNS Cache
+alias flushDNS='dscacheutil -flushcache'
+# lsock:        Display open sockets
+alias lsock='sudo lsof -i -P'
+# lsockU:       Display only open UDP sockets
+alias lsockU='sudo lsof -nP | grep UDP'
+# lsockT:       Display only open TCP sockets
+alias lsockT='sudo lsof -nP | grep TCP'
+ # ipInfo0:      Get info on connections for en0
+alias ipInfo0='ipconfig getpacket en0'
+# ipInfo1:      Get info on connections for en1
+alias ipInfo1='ipconfig getpacket en1'
+# openPorts:    All listening connections
+alias openPorts='sudo lsof -i | grep LISTEN'
+# showBlocked:  All ipfw rules inc/ blocked IPs
+alias showBlocked='sudo ipfw list'
+
+
+
+
