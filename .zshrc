@@ -77,6 +77,10 @@ ii() {
 }
 
 
+# Set less options
+# -------------------------------------------------------
+LESS=-asrRix8
+
 
 # Colored Man Pages
 # -------------------------------------------------------
@@ -87,6 +91,7 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[38;33;246m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;38;5;146m'
+
 
 #  Show symlinks in given directory
 #   -----------------------------------------------------
@@ -121,10 +126,10 @@ email() {
 }
 # colorized cat
 c() {
-  for file in "$@"
-  do
-    pygmentize -f console256 -g "$file"
-  done
+    for file in "$@"
+    do
+        pygmentize -f console256 -g "$file"
+    done
 }
 
 
@@ -140,4 +145,23 @@ short() {
     fi
     link=$(curl -s -F"shorten=$*" https://0x0.st | sed 's/https:\/\///g')
     echo $link "copied to clipboard"  && printf $link | pbcopy
+}
+
+#   To make slacking off faster
+#   -----------------------------------------------------
+function reddit() {
+    sub=""
+    if [[ ! -z $1 ]]; then
+        sub="r/$1"
+    fi
+    open https://reddit.com/$sub
+}
+function iterate() {
+    for key value in $1; do
+        echo "$key -> $value"
+    done
+}
+
+elocate() {
+    locate $1 | grep "/$1$"
 }

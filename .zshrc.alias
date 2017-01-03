@@ -24,10 +24,6 @@ alias ipython="python -m IPython"
 #   -----------------------------------------------------
 alias null='/dev/null'
 
-#   To make slacking off faster
-#   -----------------------------------------------------
-alias reddit="open https://reddit.com"
-
 #   cpuHogs:  Find CPU hogs
 #   -----------------------------------------------------
 alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
