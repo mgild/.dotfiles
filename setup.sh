@@ -58,7 +58,7 @@ ln -s $CWD/.zshrc.alias ~/
 # install powerline fonts
 if [[ ! -d ${HOME}/.powerline_fonts ]]; then
     git clone https://github.com/powerline/fonts.git ~/.powerline_fonts
-    sh ${HOME}/.powerline_fonts/install.sh
+    bash ${HOME}/.powerline_fonts/install.sh
 fi
 
 # Download and build YouCompleteMe compiler

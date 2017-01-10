@@ -96,16 +96,17 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
-    find ${1:-"."} -maxdepth 1 -type l -ls;
+    find ${1:-"."} -maxdepth 1 -type l -ls | awk '{ print $(11), $(12), $(13) }';
 }
 
 
 # Quick up n levels
 function up() {
-    var=${1:-1};
+    # convert to well formatted number
+    var=$(echo ${1:-1} | bc);
     # is not a positive integer
-    if  [[ ! $var =~ ^[[:digit:]]+$ ]]; then
-        echo "Must pass in a non-negative integer" && return 1;
+    if  [[ ! ($var =~ ^[[:digit:]]+$ && $var != "0") ]]; then
+        echo "Must pass in a positive" && return 1;
     fi
     res="";
     for (( i = 0; i < $var; i++ )); do
