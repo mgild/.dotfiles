@@ -43,6 +43,10 @@ let g:syntastic_cpp_compiler = 'gcc'
 let g:syntastic_cpp_compiler_options = '-std=c++14'
 let g:syntastic_python_flake8_exec = '/usr/bin/python2'
 
+" Enhanced Python Highlighting
+Plugin 'git@github.com:hdima/python-syntax.git'
+let python_highlight_all = 1
+
 " Code completion
 Plugin 'valloric/youcompleteme'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
@@ -73,9 +77,9 @@ let g:Powerline_symbols='unicode'
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
 " Themes -----------------------
-set t_Co=256
+" set t_Co=256
 Plugin 'flazz/vim-colorschemes'
-colorscheme monokai-chris
+colorscheme Benokai
 " ------------------------------
 
 " All of your Plugins must be added before the following line
@@ -110,7 +114,6 @@ set tabstop=4 " Make tabs 4 spaces
 set softtabstop=4 " Make deleting an expanded tab delete 4 spaces
 retab
 set shiftwidth=4
-autocmd BufWritePre * %s/\s\+$//e " auto remove trailing whitespace on save
 
 " Fix backspace
 set backspace=2 " makes backspace remove previous character instead of where the cursor is

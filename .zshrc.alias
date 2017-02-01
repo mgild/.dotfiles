@@ -1,8 +1,26 @@
+#  Alias to shell types
+#  -----------------------------------------------------
+#  declare -[aghiklmprtuxzAEFHLRUZ]
+#  These flags may be used in conjuction
+#  map example Colors=([0]="purple" [1]="reddish-orange" [2]="light green")
+#  x is export
+#  h? k? m? t? z? H? L? R? Z?
+alias int='declare -i'
+alias float='delcare -E'
+alias array='declare -a'
+alias map='declare -A'
+alias const='declare -r'
+alias global='declare -g'
+alias unique_set='declare -U'
+# converts to lower/upper case on assignment
+alias lower='declare -l'
+alias upper='declare -u'
 
 #  Sudo last command
 #   -----------------------------------------------------
 alias fuck='sudo $(fc -ln -1)'
 alias 123=fuck
+alias plz=123
 
 #  Go back to the previous directory
 #   -----------------------------------------------------
@@ -42,9 +60,10 @@ function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pa
 
 #   NETWORKING
 #   ---------------------------
-alias localip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+localip(){ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'}
+
 # myip:         Public facing IP Address
-alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+myip(){dig +short myip.opendns.com @resolver1.opendns.com}
 # netCons:      Show all open TCP/IP sockets
 alias netCons='lsof -i'
 # flushDNS:     Flush out the DNS Cache

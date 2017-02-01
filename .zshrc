@@ -1,7 +1,5 @@
 # Path extensions
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin"
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt"
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
@@ -42,7 +40,7 @@ source ~/.zshrc.alias
 # Set left justified prompt
 PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
 # Set the right justified prompt
-RPROMPT=""
+RPROMPT="%{$fg[blue]%}$(localip)%{$reset_color%}"
 
 # Preferred editor
 export EDITOR=vim
@@ -96,17 +94,20 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
-    find ${1:-"."} -maxdepth 1 -type l -ls | awk '{ print $(11), $(12), $(13) }';
+    find ${1:-"."} -maxdepth 1 -type l -ls;
 }
 
-
+min() {
+    ((( $1 < $2 )) && echo $1) || echo $2
+}
 # Quick up n levels
 function up() {
-    # convert to well formatted number
-    var=$(echo ${1:-1} | bc);
+    declare -i depth=$(pwd | awk -F/ '{ print NF - 1 }')
+    # convert to int
+    declare -i var=$(min ${1:-1} $depth);
     # is not a positive integer
-    if  [[ ! ($var =~ ^[[:digit:]]+$ && $var != "0") ]]; then
-        echo "Must pass in a positive" && return 1;
+    if  (( ! $var > 0 )); then
+        echo "Must pass in a positive integer or no argument" && return 1;
     fi
     res="";
     for (( i = 0; i < $var; i++ )); do
@@ -145,7 +146,7 @@ short() {
         return 1;
     fi
     link=$(curl -s -F"shorten=$*" https://0x0.st | sed 's/https:\/\///g')
-    echo $link "copied to clipboard"  && printf $link | pbcopy
+    echo $link "copied to clipboard" && printf $link | pbcopy
 }
 
 #   To make slacking off faster
@@ -157,12 +158,24 @@ function reddit() {
     fi
     open https://reddit.com/$sub
 }
-function iterate() {
-    for key value in $1; do
-        echo "$key -> $value"
-    done
-}
+
+#   weather: pass your city or zip code, and it returns the weather!
+#   USAGE - weather cleveland
+#         OR
+#         weather 44106
+#   WARNING - city and zip code args may yield inaccurate/different results.
+#   ------------------------------------------------------
+weather() { curl wttr.in/"$1"; }
 
 elocate() {
     locate $1 | grep "/$1$"
+}
+
+# Create a data URL from a file
+function dataurl() {
+    local mimeType=$(file -b --mime-type "$1");
+    if [[ $mimeType == text/* ]]; then
+        mimeType="${mimeType};charset=utf-8";
+    fi
+    echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
 }
