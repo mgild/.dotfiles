@@ -180,12 +180,9 @@ function dataurl() {
     echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
 }
 
-# Split string into multiple lines(array). Regex unsupported :(
+# Split string into multiple lines(array). 
 split(){
     # x='(${(s:'"$2"':)1})'
     # eval "y=$x"
-    setopt shwordsplit local_options
-    local IFS="$2"
-    y=($1)
-    for i in $y; do echo $i; done;
+    echo "$1" | awk -F "$2"  '{ for(i=1;i<=NF;++i){ print $i; } } '
 }
