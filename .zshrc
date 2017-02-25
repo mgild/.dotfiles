@@ -94,7 +94,7 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
-    find ${1:-"."} -maxdepth 1 -type l -ls;
+    for link in $(find ${1:-"$(pwd)"} -maxdepth 1 -type l); do echo "$link -> $(readlink $link)"; done;
 }
 
 min() {
@@ -178,4 +178,14 @@ function dataurl() {
         mimeType="${mimeType};charset=utf-8";
     fi
     echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
+}
+
+# Split string into multiple lines(array). Regex unsupported :(
+split(){
+    # x='(${(s:'"$2"':)1})'
+    # eval "y=$x"
+    setopt shwordsplit local_options
+    local IFS="$2"
+    y=($1)
+    for i in $y; do echo $i; done;
 }
