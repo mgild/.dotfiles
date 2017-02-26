@@ -180,9 +180,18 @@ function dataurl() {
     echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
 }
 
-# Split string into multiple lines(array). 
+# split string into multiple lines(array). Supports regex 
 split(){
-    # x='(${(s:'"$2"':)1})'
-    # eval "y=$x"
-    echo "$1" | awk -F "$2"  '{ for(i=1;i<=NF;++i){ print $i; } } '
+    awk -F "$1" '{ for(i=1;i<=NF;++i){ print $i; } } '
+}
+
+# join input lines on pattern
+function join {
+    local isfirst=true
+    while read data; do
+        echo -n $sep$data
+        $isfirst && local sep=$1
+        local isfirst=false
+    done
+    echo
 }
