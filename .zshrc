@@ -171,18 +171,9 @@ elocate() {
     locate $1 | grep "/$1$"
 }
 
-# Create a data URL from a file
-function dataurl() {
-    local mimeType=$(file -b --mime-type "$1");
-    if [[ $mimeType == text/* ]]; then
-        mimeType="${mimeType};charset=utf-8";
-    fi
-    echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
-}
-
 # split string into multiple lines(array). Supports regex 
 split(){
-    awk -F "$1" '{ for(i=1;i<=NF;++i){ print $i; } } '
+    awk -F "$1" '{ for (i=1; i<=NF;++i){print $i;} }'
 }
 
 # join input lines on pattern

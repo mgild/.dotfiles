@@ -6,7 +6,7 @@
 #  x is export
 #  h? k? m? t? z? H? L? R? Z?
 alias int='declare -i'
-alias float='delcare -E'
+#alias float='delcare -E'
 alias array='declare -a'
 alias map='declare -A'
 alias const='declare -r'
