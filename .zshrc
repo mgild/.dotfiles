@@ -110,7 +110,7 @@ function up() {
         echo "Must pass in a positive integer or no argument" && return 1;
     fi
     res="";
-    for (( i = 0; i < $var; i++ )); do
+    for (( i = 0; i < $var; ++i )); do
         res=$res"../";
     done
     cd $res;
@@ -151,7 +151,7 @@ short() {
 
 #   To make slacking off faster
 #   -----------------------------------------------------
-function reddit() {
+reddit() {
     sub=""
     if [[ ! -z $1 ]]; then
         sub="r/$1"
@@ -177,7 +177,7 @@ split(){
 }
 
 # join input lines on pattern
-function join {
+join() {
     local isfirst=true
     while read data; do
         echo -n $sep$data
@@ -185,4 +185,16 @@ function join {
         local isfirst=false
     done
     echo
+}
+
+isset() {
+    VAR=$1
+    VALUE=$(eval "echo \$$VAR")
+    if [ -z "$VALUE" ]; then
+#        log "Var $VAR is not set." INFO
+        return 1
+    else
+#        log "Var $VAR is set to $VALUE." INFO
+        return 0
+    fi
 }
