@@ -13,7 +13,7 @@ function assertInstalled() {
     done
 }
 
-assertInstalled zsh vim wget python git cmake ctags
+assertInstalled zsh vim wget python git cmake ctags rainbarf
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
