@@ -1,6 +1,6 @@
 # Path extensions
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt"
-export PATH="$PATH:$HOME/.local/bin/"
+export PATH="$PATH:${HOME}/.local/bin/"
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
