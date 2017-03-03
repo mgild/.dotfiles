@@ -58,8 +58,11 @@ ln -s $CWD/.zshrc.alias ~/
 # link tmux conf
 ln -s "$CWD/.tmux.conf" "${HOME}"  
 
-# link config dir
-ln -s "$CWD/.config" "${HOME}" 
+# setup powerline
+pip install --user git+git://github.com/Lokaltog/powerline 
+POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Location: //')/powerline"
+powerline_config="$POWERLINE_ROOT/config_files"
+ln -s "$CWD/powerline_config" "$powerline_config"
 
 # install powerline fonts
 if [[ ! -d ${HOME}/.powerline_fonts ]]; then
