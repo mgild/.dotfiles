@@ -56,10 +56,10 @@ ln -s $CWD/.zshrc ~/
 ln -s $CWD/.zshrc.alias ~/
 
 # link tmux conf
-ln -s $CWD/.tmux.conf ~/
+ln -s "$CWD/.tmux.conf" "${HOME}"  
 
 # link config dir
-ln -s "${HOME}/.dotfiles/.config" "${HOME}" 
+ln -s "$CWD/.config" "${HOME}" 
 
 # install powerline fonts
 if [[ ! -d ${HOME}/.powerline_fonts ]]; then
