@@ -193,3 +193,4 @@ isset() {
         return 0
     fi
 }
+

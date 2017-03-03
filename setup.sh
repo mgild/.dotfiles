@@ -13,7 +13,7 @@ function assertInstalled() {
     done
 }
 
-assertInstalled zsh vim wget python git cmake ctags rainbarf
+assertInstalled zsh vim wget python pip git cmake ctags tmux rainbarf
 
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
@@ -64,6 +64,7 @@ POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Locat
 powerline_config="$POWERLINE_ROOT/config_files"
 mv $powerline_config $powerline_config.old
 ln -s "$CWD/powerline_config" "$powerline_config"
+ln -s "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}" 
 
 # install powerline fonts
 if [[ ! -d ${HOME}/.powerline_fonts ]]; then
