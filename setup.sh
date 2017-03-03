@@ -62,6 +62,7 @@ ln -s "$CWD/.tmux.conf" "${HOME}"
 pip install --user git+git://github.com/Lokaltog/powerline 
 POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Location: //')/powerline"
 powerline_config="$POWERLINE_ROOT/config_files"
+mv $powerline_config $powerline_config.old
 ln -s "$CWD/powerline_config" "$powerline_config"
 
 # install powerline fonts
