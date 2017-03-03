@@ -79,7 +79,7 @@ Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 " Themes -----------------------
 " set t_Co=256
 Plugin 'flazz/vim-colorschemes'
-colorscheme Benokai
+colorscheme Monokai
 " ------------------------------
 
 " All of your Plugins must be added before the following line

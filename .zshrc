@@ -40,7 +40,7 @@ source ~/.zshrc.alias
 # Set left justified prompt
 PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
 # Set the right justified prompt
-RPROMPT="%{$fg[blue]%}$(localip)%{$reset_color%}"
+RPROMPT='%{$fg[blue]%}$(localip)%{$reset_color%}'
 
 # Preferred editor
 export EDITOR=vim
@@ -134,11 +134,6 @@ c() {
     done
 }
 
-
-# read markdown files like manpages
-md() {
-    pandoc -s -f markdown -t man "$*" | man -l -
-}
 
 # nullpointer url shortener
 short() {
