@@ -22,6 +22,10 @@ alias fuck='sudo $(fc -ln -1)'
 alias 123=fuck
 alias plz=123
 
+# Refresh tmux config
+# ------------------------------------------------------
+alias tfresh='tmux source-file ~/.tmux.conf'
+
 #  Go back to the previous directory
 #   -----------------------------------------------------
 alias back='cd ~-'
