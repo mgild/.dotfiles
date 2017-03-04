@@ -22,9 +22,13 @@ alias fuck='sudo $(fc -ln -1)'
 alias 123=fuck
 alias plz=123
 
-# Refresh tmux config
-# ------------------------------------------------------
-alias tfresh='tmux source-file ~/.tmux.conf'
+#   Refresh tmux config
+#   ------------------------------------------------------
+alias tsrc='tmux source-file ~/.tmux.conf'
+
+#   Refresh zsh
+#   ------------------------------------------------------
+alias zsrc='. ~/.zshrc'
 
 #  Go back to the previous directory
 #   -----------------------------------------------------
@@ -50,6 +54,10 @@ alias null='/dev/null'
 #   -----------------------------------------------------
 alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
+#   Make tmux auto reattach if it can
+#   -----------------------------------------------------
+alias tmux='tmux a 2&> /dev/null || tmux new'
+
 #   Common misspellings
 #   -----------------------------------------------------
 alias pyhton=python
@@ -65,9 +73,8 @@ function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pa
 #   NETWORKING
 #   ---------------------------
 localip(){ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'}
-
-# myip:         Public facing IP Address
 myip(){dig +short myip.opendns.com @resolver1.opendns.com}
+
 # netCons:      Show all open TCP/IP sockets
 alias netCons='lsof -i'
 # flushDNS:     Flush out the DNS Cache

@@ -25,7 +25,7 @@ ZSH_CUSTOM=$ZSH/custom
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(z git brew heroku osx vundle npm nmap python sublime zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(z git brew heroku osx vundle npm nmap python sublime)
 . $ZSH/plugins/z/z.sh
 
 # load iterm intergration (if it exists)
@@ -34,6 +34,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 source $ZSH/oh-my-zsh.sh
 # set custom git prompt
 source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+if [[ $ZSH_EVAL_CONTEXT == 'file' ]]; then
+  source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
 
 # source alias file
 source ~/.zshrc.alias
