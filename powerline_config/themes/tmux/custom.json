@@ -1,8 +1,19 @@
 {
     "default_module": "powerline.segments.common",
     "segment_data": {
-        "uptime": {
-            "before": "⌚ "
+        "hostname": {
+            "args": {
+                "only_if_ssh": true
+            }
+        },
+        "date": {
+            "before": "⌚  "
+        },
+        "internal_ip": {
+            "before": "ⓛ "
+        },
+        "external_ip": {
+            "before": "ⓦ "
         }
     },
     "segments": {
@@ -16,22 +27,30 @@
             },
             {
                 "function": "powerline.segments.common.net.network_load"
-            },
+            }, 
             {
-                "function": "powerline.segments.common.net.external_ip"
+                "function": "powerline.segments.common.net.internal_ip",
+                "args": {
+                    "interface": "en0"
+                } 
             },
             {
                 "function": "powerline.segments.common.net.internal_ip",
-                "name": "internal_ip",
                 "args": {
-                    "interface": "auto"
+                    "interface": "en1"
                 }
             },
+            {
+                "function": "powerline.segments.common.net.external_ip"
+            }, 
             {
                 "function": "powerline.segments.common.bat.battery",
                 "args": {
                     "gamify": "true"
                 }
+            },
+            {
+                "function": "powerline.segments.common.net.hostname"
             }
         ]
     }
