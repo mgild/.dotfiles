@@ -15,9 +15,6 @@ Plugin 'VundleVim/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 
-" Toggle relative line numbers
-" Plugin 'jeffkreeftmeijer/vim-numbertoggle'
-
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 " Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
 " let g:easytags_async = 1 " async tag loading
@@ -77,11 +74,7 @@ let g:Powerline_symbols='unicode'
 
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
-" Themes -----------------------
-set t_Co=256
 Plugin 'flazz/vim-colorschemes'
-colorscheme monokai-chris
-" ------------------------------
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -98,34 +91,40 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
+" General ----------------------  
 syntax on " syntax based on file type
+set number " turn line numbers on
+set cursorline " Show a line on the line the cursor is on
+set wildmenu  " Enhanced command completion
+filetype indent on
+set clipboard^=unnamed,unnamedplus " have vim share clipboard with os
+match Todo /\t/ " add warnings over tabs
 set mouse=a " allow point and click UI
 " Mouse fix for tmux
 if &term =~ '^screen'
     " tmux knows the extended mouse mode
     set ttymouse=xterm2
 endif
-
-match Todo /\t/ " add warnings over tabs
-set number " turn line numbers on
-set cursorline " Show a line on the line the cursor is on
-set wildmenu  " Enhanced command completion
-filetype indent on
+" ------------------------------
+" Themes -----------------------
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
+set t_Co=256
+colorscheme monokai-chris
+" ------------------------------
+" Search -----------------------
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
-set clipboard^=unnamed,unnamedplus " have vim share clipboard with os
-" Tabs
+" ------------------------------
+" Tabs ------------------------- 
 set expandtab " Expand tabs to spaces
 set tabstop=4 " Make tabs 4 spaces
 set softtabstop=4 " Make deleting an expanded tab delete 4 spaces
 retab
 set shiftwidth=4
-
-" Fix backspace
 set backspace=2 " makes backspace remove previous character instead of where the cursor is
-
+" ------------------------------
+" Commands --------------------- 
 " Sets 'S' and 'Silent' to silently exec command
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
 command! -nargs=1 S execute ':silent !'.<q-args> | execute ':redraw!'
-
+" -----------------------------
