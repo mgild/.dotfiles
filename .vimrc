@@ -2,6 +2,7 @@ set encoding=utf-8
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -60,7 +61,7 @@ autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 let g:NERDTreeUseSimpleIndicator = 1
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeWinSize=20 " change nerdtree default size
+let g:NERDTreeWinSize=15 " change nerdtree default size
 let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
 " Toggle NerdTree
 map <C-f> :NERDTreeToggle<CR>
@@ -100,6 +101,12 @@ filetype plugin indent on    " required
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
 syntax on " syntax based on file type
 set mouse=a " allow point and click UI
+" Mouse fix for tmux
+if &term =~ '^screen'
+    " tmux knows the extended mouse mode
+    set ttymouse=xterm2
+endif
+
 match Todo /\t/ " add warnings over tabs
 set number " turn line numbers on
 set cursorline " Show a line on the line the cursor is on
@@ -117,14 +124,6 @@ set shiftwidth=4
 
 " Fix backspace
 set backspace=2 " makes backspace remove previous character instead of where the cursor is
-
-" normal cut/copy/paste (Control Keys)
-vmap <C-c> y<Esc>i
-vmap <C-x> d<Esc>i
-imap <C-v> <Esc>pi
-imap <C-y> <Esc>ddi
-map <C-z> <Esc>
-imap <C-z> <Esc>ui
 
 " Sets 'S' and 'Silent' to silently exec command
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'

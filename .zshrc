@@ -1,6 +1,23 @@
 # Path extensions
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt"
-export PATH="$PATH:${HOME}/.local/bin/"
+path=(
+    # default bin paths
+    "/usr/local/bin"
+    "/usr/bin"
+    "/bin"
+    # default sbin paths
+    "/usr/local/sbin"
+    "/usr/sbin"
+    "/sbin"
+    # X11
+    "/opt/X11/bin"
+    # Homebrew
+    "/usr/local/opt"
+    # Powerline
+    "${HOME}/.local/bin"
+)
+# Join path and export
+export PATH=${(j/:/)path}
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
