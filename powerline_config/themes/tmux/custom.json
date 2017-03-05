@@ -31,14 +31,8 @@
             {
                 "function": "powerline.segments.common.net.internal_ip",
                 "args": {
-                    "interface": "en0"
+                    "interface": "auto"
                 } 
-            },
-            {
-                "function": "powerline.segments.common.net.internal_ip",
-                "args": {
-                    "interface": "en1"
-                }
             },
             {
                 "function": "powerline.segments.common.net.external_ip"

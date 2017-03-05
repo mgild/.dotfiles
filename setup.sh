@@ -59,7 +59,8 @@ ln -s $CWD/.zshrc.alias ~/
 ln -s "$CWD/.tmux.conf" "${HOME}"  
 
 # setup powerline
-pip install --user git+git://github.com/Lokaltog/powerline 
+pip install --user git+git://github.com/Lokaltog/powerline
+pip install netifaces --user
 POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Location: //')/powerline"
 powerline_config="$POWERLINE_ROOT/config_files"
 if [ ! -L $powerline_config ]; then

@@ -10,6 +10,5 @@ http://askubuntu.com/questions/283908/how-can-i-install-and-use-powerline-plugin
 Change your non-ASCII character font for your preferred terminal to one of the provided powerline fonts
 
 For tmux powerline:
-- If Powerline is blank, try 'powerline-daemon --replace' while in tmux
+- If Powerline is blank, try 'powerline-daemon --replace --foreground' while in tmux
 - Run 'tmux source-file ~/.tmux.conf' to refresh settings
-- For internal ip, install the netifaces pip package
