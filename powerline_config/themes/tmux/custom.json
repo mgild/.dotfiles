@@ -46,7 +46,8 @@
             {
                 "function": "powerline.segments.common.bat.battery",
                 "args": {
-                    "gamify": "true"
+                    "gamify": "true",
+                    "steps": 10
                 }
             },
             {
