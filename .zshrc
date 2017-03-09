@@ -2,6 +2,7 @@
 path=(
     # src builds
     "${HOME}/.local/bin"
+    "${HOME}/local/bin"
     # Homebrew
     "/usr/local/opt"
     # default bin paths
