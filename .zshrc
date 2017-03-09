@@ -1,66 +1,34 @@
 # Path extensions
 path=(
-    # default bin paths
-    "/usr/local/bin"
-    "/usr/bin"
-    "/bin"
-    # default sbin paths
-    "/usr/local/sbin"
-    "/usr/sbin"
-    "/sbin"
-    # X11
-    "/opt/X11/bin"
+    # src builds
+    "${HOME}/.local/bin"
     # Homebrew
     "/usr/local/opt"
-    # Powerline
-    "${HOME}/.local/bin"
+    # default bin paths
+    "/bin"
+    "/sbin"
+    "/usr/bin"
+    "/usr/sbin"
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    # X11
+    "/opt/X11/bin"
 )
 # Join path and export
 export PATH=${(j/:/)path}
 
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="robbyrussell"
-#ZSH_THEME="random"
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=$ZSH/custom
-
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(z git brew heroku osx vundle npm nmap python sublime)
-. $ZSH/plugins/z/z.sh
-
 # load iterm intergration (if it exists)
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-# load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-# set custom git prompt
-source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
-if [[ $ZSH_EVAL_CONTEXT == 'file' ]]; then
-  source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 # source alias file
 source ~/.zshrc.alias
 
 # Set left justified prompt
-PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+#PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
 # Set the right justified prompt
 # RPROMPT='%{$fg[blue]%}$(localip)%{$reset_color%}'
 
@@ -188,7 +156,7 @@ elocate() {
     locate $1 | grep "/$1$"
 }
 
-# split string into multiple lines(array). Supports regex 
+# split string into multiple lines(array). Supports regex
 split(){
     awk -F "$1" '{ for (i=1; i<=NF;++i){print $i;} }'
 }

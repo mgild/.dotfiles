@@ -21,6 +21,13 @@ CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 # Symlink the vimrc
 ln -s $CWD/.vimrc ~/
+# link zshrc
+ln -s $CWD/.zshrc ~/
+ln -s $CWD/.zshrc.alias ~/
+ln -s $CWD/.zpreztorc ~/
+
+# link tmux conf
+ln -s "$CWD/.tmux.conf" "${HOME}"  
 
 # install Vundle
 if [[ ! -a "${HOME}/.vim/bundle/Vundle.vim" ]]; then
@@ -32,31 +39,13 @@ vim -E -c "PluginInstall" -c "q" -c "q"
 mv ~/.vim/colors  ~/.vim/colors.old
 ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
 # install oh-my-zsh
-if [[ ! -a "${HOME}/.oh-my-zsh" ]]; then
-    sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - | sed 's/env zsh//g')"
-    # Remove the newly created zshrc
-    rm ~/.zshrc
+if [[ ! -a "${HOME}/.zprezto" ]]; then
+    git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+    setopt EXTENDED_GLOB
+    for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+        ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+    done 
 fi
-
-# Ensure custom plugins are downloaded
-if [[ ! -d  $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-fi
-
-if [[ ! -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then
-    git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-fi
-
-if [[ ! -d $ZSH_CUSTOM/plugins/zsh-git-prompt ]]; then
-    git clone https://github.com/olivierverdier/zsh-git-prompt.git $ZSH_CUSTOM/plugins/zsh-git-prompt
-fi
-
-# link zshrc
-ln -s $CWD/.zshrc ~/
-ln -s $CWD/.zshrc.alias ~/
-
-# link tmux conf
-ln -s "$CWD/.tmux.conf" "${HOME}"  
 
 # setup powerline
 pip install --user git+git://github.com/Lokaltog/powerline

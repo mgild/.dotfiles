@@ -99,6 +99,7 @@ set wildmenu  " Enhanced command completion
 filetype indent on
 set clipboard^=unnamed,unnamedplus " have vim share clipboard with os
 match Todo /\t/ " add warnings over tabs
+match Todo /\s\+$/ " warn on trailing whitespace
 set colorcolumn=80
 set mouse=a " allow point and click UI
 " Mouse fix for tmux
