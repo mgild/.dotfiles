@@ -36,7 +36,7 @@ alias back='cd ~-'
 
 #   Git Smart Log
 #   -----------------------------------------------------
-alias gsl='git log --all --decorate --oneline --graph'
+alias gsl='git log --all --decorate --oneline --graph  --color=always'
 
 #   Never use vi
 #   -----------------------------------------------------
