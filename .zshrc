@@ -14,6 +14,8 @@ path=(
     "/usr/local/opt"
     # Powerline
     "${HOME}/.local/bin"
+    # Latex tools
+    "/Library/TeX/texbin"
 )
 # Join path and export
 export PATH=${(j/:/)path}
@@ -42,7 +44,7 @@ ZSH_CUSTOM=$ZSH/custom
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(z git brew heroku osx vundle npm nmap python sublime)
+plugins=(git sublime)
 . $ZSH/plugins/z/z.sh
 
 # load iterm intergration (if it exists)
@@ -52,8 +54,8 @@ source $ZSH/oh-my-zsh.sh
 # set custom git prompt
 source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
 if [[ $ZSH_EVAL_CONTEXT == 'file' ]]; then
-  source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+   source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+   source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 # source alias file
@@ -116,7 +118,9 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
-    for link in $(find ${1:-"$(pwd)"} -maxdepth 1 -type l); do echo "$link -> $(readlink $link)"; done;
+    for link in $(find ${1:-"$(pwd)"} -maxdepth 1 -type l); do 
+        echo "$link -> $(readlink $link)";
+    done;
 }
 
 min() {
