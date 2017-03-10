@@ -92,19 +92,16 @@ min() {
     ((( $1 < $2 )) && echo $1) || echo $2
 }
 # Quick up n levels
+# Requires: n >= 0
 function up() {
-    declare -i depth=$(pwd | awk -F/ '{ print NF - 1 }')
-    # convert to int
-    declare -i var=$(min ${1:-1} $depth);
-    # is not a positive integer
-    if  (( ! $var > 0 )); then
-        echo "Must pass in a positive integer or no argument" && return 1;
+    declare -i d="$@";
+    if (( $d < 0 )); then
+        echo "up: Error: must specifiy a positive value";
+        return 1;
     fi
-    res="";
-    for (( i = 0; i < $var; ++i )); do
-        res=$res"../";
-    done
-    cd $res;
+    # ignore sed errors (such as repition count too large)
+    dest=$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;' &> /dev/null);
+    cd ${dest:-"/"};
 }
 
 # Security checks
