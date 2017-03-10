@@ -1,63 +1,23 @@
+
 # Path extensions
 path=(
-    # default bin paths
-    "/usr/local/bin"
-    "/usr/bin"
-    "/bin"
-    # default sbin paths
-    "/usr/local/sbin"
-    "/usr/sbin"
-    "/sbin"
+    # default paths
+    /{,usr/}{,local/}{,s}bin
     # X11
     "/opt/X11/bin"
     # Homebrew
     "/usr/local/opt"
-    # Powerline
-    "${HOME}/.local/bin"
+    # user builds
+    ${HOME}/{.,}local/bin
     # Latex tools
     "/Library/TeX/texbin"
 )
 # Join path and export
 export PATH=${(j/:/)path}
 
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="robbyrussell"
-#ZSH_THEME="random"
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=$ZSH/custom
-
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git sublime)
-. $ZSH/plugins/z/z.sh
-
-# load iterm intergration (if it exists)
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-# load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-# set custom git prompt
-source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
-if [[ $ZSH_EVAL_CONTEXT == 'file' ]]; then
-   source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-   source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-fi
-
+source ${HOME}/.ohmyzshrc
+# Load non-public zshrc
+test -f ~/.zshrc.local && source ~/.zshrc.local
 # source alias file
 source ~/.zshrc.alias
 
@@ -118,7 +78,7 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
-    for link in $(find ${1:-"$(pwd)"} -maxdepth 1 -type l); do 
+    for link in $(find ${1:-"$(pwd)"} -maxdepth 1 -type l); do
         echo "$link -> $(readlink $link)";
     done;
 }
@@ -142,24 +102,8 @@ function up() {
     cd $res;
 }
 
-# Load non-public zshrc
-test -f ~/.zshrc.local && source ~/.zshrc.local
-
 # Security checks
 alias checkrootkits="sudo rkhunter --update; sudo rkhunter --propupd; sudo rkhunter --check"
-
-
-email() {
-    echo $3 | mutt -s $2 $1
-}
-# colorized cat
-c() {
-    for file in "$@"
-    do
-        pygmentize -f console256 -g "$file"
-    done
-}
-
 
 # nullpointer url shortener
 short() {
@@ -188,11 +132,7 @@ reddit() {
 #   ------------------------------------------------------
 weather() { curl wttr.in/"$1"; }
 
-elocate() {
-    locate $1 | grep "/$1$"
-}
-
-# split string into multiple lines(array). Supports regex 
+# split string into multiple lines(array). Supports regex
 split(){
     awk -F "$1" '{ for (i=1; i<=NF;++i){print $i;} }'
 }

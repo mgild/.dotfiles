@@ -54,9 +54,9 @@ fi
 # link zshrc
 ln -s $CWD/.zshrc ~/
 ln -s $CWD/.zshrc.alias ~/
-
+ln -s $CWD/.ohmyzshrc ~/
 # link tmux conf
-ln -s "$CWD/.tmux.conf" "${HOME}"  
+ln -s "$CWD/.tmux.conf" "${HOME}"
 
 # setup powerline
 pip install --user git+git://github.com/Lokaltog/powerline
