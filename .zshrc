@@ -16,6 +16,10 @@ path=(
 export PATH=${(j/:/)path}
 
 source ${HOME}/.ohmyzshrc
+
+# load iterm intergration (if it exists)
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # Load non-public zshrc
 test -f ~/.zshrc.local && source ~/.zshrc.local
 # source alias file

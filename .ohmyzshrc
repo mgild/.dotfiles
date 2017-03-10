@@ -25,15 +25,14 @@ ZSH_CUSTOM=$ZSH/custom
 plugins=(git sublime)
 . $ZSH/plugins/z/z.sh
 
-# load iterm intergration (if it exists)
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # set custom git prompt
 source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
-if [[ $ZSH_EVAL_CONTEXT == 'file' ]]; then
-   source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-   source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+if ! (( ${+functions[_zsh_highlight]} )); then
+    source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 
