@@ -7,6 +7,7 @@ path=(
     ${HOME}/{.,}local/bin
     # Latex tools
     "/Library/TeX/texbin"
+    # Homebrew packages
     /usr/local/opt{/coreutils/libexec/gnubin,}
     # default paths
     /{usr/,}{local/,}{s,}bin
@@ -114,18 +115,8 @@ short() {
     if [[ -z $1 ]]; then
         return 1;
     fi
-    link=$(curl -s -F"shorten=$*" https://0x0.st | sed 's/https:\/\///g')
+    link=$(curl -s -F"shorten=$*" https://0x0.st | sed 's;https://;;g')
     echo $link "copied to clipboard" && printf $link | pbcopy
-}
-
-#   To make slacking off faster
-#   -----------------------------------------------------
-reddit() {
-    sub=""
-    if [[ ! -z $1 ]]; then
-        sub="r/$1"
-    fi
-    open https://reddit.com/$sub
 }
 
 #   weather: pass your city or zip code, and it returns the weather!
@@ -143,24 +134,14 @@ split(){
 
 # join input lines on pattern
 join() {
-    local isfirst=true
     while read data; do
-        echo -n $sep$data
-        $isfirst && local sep=$1
-        local isfirst=false
-    done
-    echo
+        echo -n $sep$data;
+        sep=$1;
+    done;
+    echo;
 }
 
 isset() {
-    VAR=$1
-    VALUE=$(eval "echo \$$VAR")
-    if [ -z "$VALUE" ]; then
-#        log "Var $VAR is not set." INFO
-        return 1
-    else
-#        log "Var $VAR is set to $VALUE." INFO
-        return 0
-    fi
+    which "$@" &> /dev/null
 }
 

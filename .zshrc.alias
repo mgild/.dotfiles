@@ -19,8 +19,7 @@ alias upper='declare -u'
 #  Sudo last command
 #   -----------------------------------------------------
 alias fuck='sudo $(fc -ln -1)'
-alias 123=fuck
-alias plz=123
+alias plz=fuck
 
 #   Refresh tmux config
 #   ------------------------------------------------------
@@ -36,7 +35,7 @@ alias back='cd ~-'
 
 #   Git Smart Log
 #   -----------------------------------------------------
-alias gsl='git log --all --decorate --oneline --graph  --color=always'
+alias gsl='git log --all --decorate --oneline --graph --color=always'
 
 #   Never use vi
 #   -----------------------------------------------------
@@ -91,9 +90,4 @@ alias ipInfo0='ipconfig getpacket en0'
 alias ipInfo1='ipconfig getpacket en1'
 # openPorts:    All listening connections
 alias openPorts='sudo lsof -i | grep LISTEN'
-# showBlocked:  All ipfw rules inc/ blocked IPs
-alias showBlocked='sudo ipfw list'
-
-
-
 
