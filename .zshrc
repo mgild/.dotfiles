@@ -1,19 +1,19 @@
 
 # Path extensions
 path=(
-    # default paths
-    /{,usr/}{,local/}{,s}bin
     # X11
     "/opt/X11/bin"
-    # Homebrew
-    "/usr/local/opt"
     # user builds
     ${HOME}/{.,}local/bin
     # Latex tools
     "/Library/TeX/texbin"
+    /usr/local/opt{/coreutils/libexec/gnubin,}
+    # default paths
+    /{usr/,}{local/,}{s,}bin
 )
 # Join path and export
 export PATH=${(j/:/)path}
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 source ${HOME}/.ohmyzshrc
 
