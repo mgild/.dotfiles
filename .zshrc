@@ -94,13 +94,12 @@ min() {
 # Quick up n levels
 # Requires: n >= 0
 function up() {
-    declare -i d="$@";
+    declare -i d=${@:-1}
     if (( $d < 0 )); then
-        echo "up: Error: must specifiy a positive value";
+        echo "up: Error: must specifiy a non-negative value";
         return 1;
     fi
-    # ignore sed errors (such as repition count too large)
-    dest=$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;' &> /dev/null);
+    dest=$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;');
     cd ${dest:-"/"};
 }
 
