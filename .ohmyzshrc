@@ -27,12 +27,12 @@ plugins=(git sublime)
 
 
 # load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+. $ZSH/oh-my-zsh.sh
 # set custom git prompt
-source $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+. $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
 if ! (( ${+functions[_zsh_highlight]} )); then
-    source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    . "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    . "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 

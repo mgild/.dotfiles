@@ -93,9 +93,12 @@ min() {
 }
 # Quick up n levels
 # Requires: n >= 0
-function up() {
-    declare -i d=${@:-1}
+up() {
+    # default to 1
+    declare -i d=${@:-1};
+    # ensure non-negative
     (( $d < 0 )) && (>&2 echo "up: Error: negative value provided") && return 1;
+    # remove last d directories from pwd, append "/" in case result is empty
     cd $(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')"/";
 }
 
