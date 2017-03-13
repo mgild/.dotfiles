@@ -95,12 +95,8 @@ min() {
 # Requires: n >= 0
 function up() {
     declare -i d=${@:-1}
-    if (( $d < 0 )); then
-        echo "up: Error: must specifiy a non-negative value";
-        return 1;
-    fi
-    dest=$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;');
-    cd ${dest:-"/"};
+    (( $d < 0 )) && (>&2 echo "up: Error: negative value provided") && return 1;
+    cd $(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')"/";
 }
 
 # Security checks
