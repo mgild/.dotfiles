@@ -33,6 +33,7 @@ PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
 
 # Preferred editor
 export EDITOR=vim
+export VISUAL=$EDITOR
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
