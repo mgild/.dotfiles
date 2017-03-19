@@ -19,7 +19,7 @@ export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 source ${HOME}/.ohmyzshrc
 
 # load iterm intergration (if it exists)
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+test -e "${HOME}/.iterm2_shell_integration.zsh" && . "${HOME}/.iterm2_shell_integration.zsh"
 
 # Load non-public zshrc
 test -f ~/.zshrc.local && source ~/.zshrc.local
@@ -100,6 +100,17 @@ up() {
     (( $d < 0 )) && (>&2 echo "up: Error: negative value provided") && return 1;
     # remove last d directories from pwd, append "/" in case result is empty
     cd $(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')"/";
+}
+
+# Better man
+# Find man page for builtin commands easily
+# If not a builtin, works like normal man
+man() {
+    if [[ "$@ is a shell builtin" == $(type "$@") ]]; then
+        command man zshbuiltins | less -p "^       $@ ";
+    else
+        command man "$@";
+    fi;
 }
 
 # Security checks

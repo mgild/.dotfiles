@@ -16,7 +16,7 @@ alias unique_set='declare -U'
 alias lower='declare -l'
 alias upper='declare -u'
 
-#  Sudo last command
+#  sudo last command
 #   -----------------------------------------------------
 alias fuck='sudo $(fc -ln -1)'
 alias plz=fuck
@@ -37,9 +37,9 @@ alias back='cd ~-'
 #   -----------------------------------------------------
 alias gsl='git log --all --decorate --oneline --graph --color=always'
 
-#   Never use vi
+#   Quick clear
 #   -----------------------------------------------------
-alias vi=vim
+alias c=clear
 
 #   Better interactive python
 #   -----------------------------------------------------
@@ -61,6 +61,10 @@ alias t='tmux a &> /dev/null || tmux new'
 #   -----------------------------------------------------
 alias pyhton=python
 alias mkae=make
+
+#   Colorize ls
+#   -----------------------------------------------------
+alias ls='ls --color=auto'
 
 #   memHogsTop, memHogsPs:  Find memory hogs
 #   -----------------------------------------------------
