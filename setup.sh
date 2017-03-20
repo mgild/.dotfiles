@@ -66,9 +66,9 @@ POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Locat
 powerline_config="$POWERLINE_ROOT/config_files"
 if [ ! -L $powerline_config ]; then
     mv $powerline_config $powerline_config.old
-    ln -s "$CWD/powerline_config" "$powerline_config"
-    ln -s "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}" 
+    ln -s "$CWD/powerline_config" "$powerline_config" 
 fi
+ln -s "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}" 
 
 # install powerline fonts
 if [[ ! -d ${HOME}/.powerline_fonts ]]; then
