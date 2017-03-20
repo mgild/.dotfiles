@@ -152,3 +152,8 @@ isset() {
     which "$@" &> /dev/null
 }
 
+# run a chain of commands in the background
+background() {
+    nohup bash -c "$@" &
+}
+

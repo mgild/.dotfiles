@@ -38,7 +38,7 @@ if [[ ! -a "${HOME}/.oh-my-zsh" ]]; then
     rm ~/.zshrc
 fi
 
-# Ensure custom plugins are downloaded
+# Ensure custom zsh plugins are downloaded
 if [[ ! -d  $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 fi
@@ -73,8 +73,9 @@ POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Locat
 powerline_config="$POWERLINE_ROOT/config_files"
 if [ ! -L $powerline_config ]; then
     mv $powerline_config $powerline_config.old
-    ln -s "$CWD/powerline_config" "$powerline_config" 
 fi
+ln -s "$CWD/powerline_config" "$powerline_config"
+ln -s "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}"
 
 # install powerline fonts
 if [[ ! -d ${HOME}/.powerline_fonts ]]; then
