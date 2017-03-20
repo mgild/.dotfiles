@@ -59,15 +59,22 @@ ln -s $CWD/.ohmyzshrc ~/
 ln -s "$CWD/.tmux.conf" "${HOME}"
 
 # setup powerline
-pip install --user git+git://github.com/Lokaltog/powerline
-pip install --user powerline-mem-segment
-pip install --user netifaces
+is_pipped(){pip freeze | awk -F= '{print $1}' | grep "^$1$" &> /dev/null;}
+if ! is_pipped powerline-status; then
+    pip install --user git+git://github.com/Lokaltog/powerline
+fi
+if ! is_pipped powerline-mem-segment; then
+    pip install --user powerline-mem-segment
+fi
+if ! is_pipped netifaces; then
+    pip install --user netifaces
+fi
 POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Location: //')/powerline"
 powerline_config="$POWERLINE_ROOT/config_files"
 if [ ! -L $powerline_config ]; then
     mv $powerline_config $powerline_config.old
     ln -s "$CWD/powerline_config" "$powerline_config"
-    ln -s "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}" 
+    ln -s "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}"
 fi
 
 # install powerline fonts
@@ -78,7 +85,7 @@ fi
 
 # Download and build YouCompleteMe compiler
 if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]; then
-    python ~/.vim/bundle/youcompleteme/install.py --clang-completer
+    python ~/.vim/bundle/youcompleteme/install.py --all
 fi
 
 
