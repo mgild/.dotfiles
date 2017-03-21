@@ -100,14 +100,15 @@ up() {
     # ensure non-negative
     (( $d < 0 )) && (>&2 echo "up: Error: negative value provided") && return 1;
     # remove last d directories from pwd, append "/" in case result is empty
-    cd $(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')"/";
+    echo "$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')/";
 }
 
 # Better man
 # Find man page for builtin commands easily
 # If not a builtin, works like normal man
 man() {
-    if [[ "$@ is a shell builtin" == $(type "$@") ]]; then
+    vartype=$(type "$@");
+    if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
         command man zshbuiltins | less -p "^       $@ ";
     else
         command man "$@";

@@ -49,7 +49,7 @@ let g:syntastic_cpp_compiler_options = '-std=c++14'
 let g:syntastic_python_flake8_exec = '/usr/bin/python2'
 
 " Enhanced Python Highlighting
-Plugin 'git@github.com:hdima/python-syntax.git'
+Plugin 'hdima/python-syntax'
 let python_highlight_all = 1
 
 " Code completion
@@ -59,20 +59,25 @@ let g:ycm_show_diagnostics_ui = 0
 " NerdTree
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
-autocmd vimenter * NERDTree " Auto open NerdTree
+" autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
 let g:NERDTreeUseSimpleIndicator = 1
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize=15 " change nerdtree default size
-let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
+" let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
 " Toggle NerdTree
-map <C-f> :NERDTreeToggle<CR>
+" map <C-f> :NERDTreeToggle<CR>
 
+" General enhanced syntax highlighting
+Plugin 'sheerun/vim-polyglot'
 " Enhanced C++ highlighting
 Plugin 'octol/vim-cpp-enhanced-highlight'
 let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_concepts_highlight = 1
 
 Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
@@ -119,7 +124,8 @@ endif
 " Themes -----------------------
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
 set t_Co=256
-colorscheme monokai-chris
+colorscheme Monokai
+"colorscheme molokai
 " ------------------------------
 " Search -----------------------
 set incsearch           " search as characters are entered

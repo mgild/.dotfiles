@@ -47,7 +47,7 @@ alias ipython="python -m IPython"
 
 #   quick link to /dev/null
 #   -----------------------------------------------------
-alias null='/dev/null'
+export null='/dev/null'
 
 #   cpuHogs:  Find CPU hogs
 #   -----------------------------------------------------
