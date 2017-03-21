@@ -100,7 +100,7 @@ up() {
     # ensure non-negative
     (( $d < 0 )) && (>&2 echo "up: Error: negative value provided") && return 1;
     # remove last d directories from pwd, append "/" in case result is empty
-    echo "$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')/";
+    cd "$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')/";
 }
 
 # Better man
