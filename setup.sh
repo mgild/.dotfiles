@@ -5,16 +5,17 @@ export ZSH=~/.oh-my-zsh
 ZSH_CUSTOM=$ZSH/custom
 
 function assertInstalled() {
+    local success=true
     for var in "$@"; do
         if ! which $var &> /dev/null; then
             echo "Install $var!"
-            exit 1
+            success=false
         fi
     done
+    $success || exit 1
 }
 
 assertInstalled zsh vim wget python pip git cmake ctags tmux
-
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 . $CWD/moveSrcs.sh
