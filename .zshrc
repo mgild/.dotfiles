@@ -30,7 +30,7 @@ test -f ~/.zshrc.local && source ~/.zshrc.local
 source ~/.zshrc.alias
 
 # Set left justified prompt
-#PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
 # Set the right justified prompt
 # RPROMPT='%{$fg[blue]%}$(localip)%{$reset_color%}'
 
@@ -143,3 +143,6 @@ background() {
     nohup bash -c "$@" &
 }
 
+grep_dir() {
+    grep -RnisI "$@" * --color=always
+}
