@@ -42,21 +42,22 @@
 
             },
             {
-                "function": "powerline.segments.common.net.external_ip",
-                "priority": 2
-
-            },
-            {
                 "function": "powerline.segments.common.net.hostname",
                 "priority": 1
             }
         ]
     },
     "null_segments":{
-        "function": "powerline.segments.common.bat.battery",
-        "args": {
-            "gamify": "true",
-            "steps": 5
+        "battery": {
+            "function": "powerline.segments.common.bat.battery",
+            "args": {
+                "gamify": "true",
+                "steps": 5
+            }
+        },
+        "external_ip": {
+            "function": "powerline.segments.common.net.external_ip",
+            "priority": 2
         }
     }
 

@@ -16,8 +16,8 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
-" Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
-" let g:easytags_async = 1 " async tag loading
+Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
+let g:easytags_async = 1 " async tag loading
 "
 Plugin 'scrooloose/nerdcommenter'
 " Add spaces after comment delimiters by default
@@ -29,8 +29,6 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
 " Git plugin not hosted on GitHub
 Plugin 'git://git.wincent.com/command-t.git'
 " git repos on your local machine (i.e. when working on your own plugin)
@@ -47,10 +45,6 @@ let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_compiler = 'gcc'
 let g:syntastic_cpp_compiler_options = '-std=c++14'
 let g:syntastic_python_flake8_exec = '/usr/bin/python2'
-
-" Enhanced Python Highlighting
-Plugin 'hdima/python-syntax'
-let python_highlight_all = 1
 
 " Code completion
 Plugin 'valloric/youcompleteme'
@@ -72,8 +66,7 @@ let g:NERDTreeWinSize=15 " change nerdtree default size
 
 " General enhanced syntax highlighting
 Plugin 'sheerun/vim-polyglot'
-" Enhanced C++ highlighting
-Plugin 'octol/vim-cpp-enhanced-highlight'
+let python_highlight_all = 1
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_experimental_simple_template_highlight = 1
@@ -87,6 +80,9 @@ let g:Powerline_symbols='unicode'
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
 Plugin 'flazz/vim-colorschemes'
+
+Plugin 'christoomey/vim-tmux-navigator'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

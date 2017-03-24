@@ -22,14 +22,14 @@ ZSH_CUSTOM=$ZSH/custom
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git sublime)
+plugins=(git sublime git-prompt)
 . $ZSH/plugins/z/z.sh
 
 
 # load oh-my-zsh
 . $ZSH/oh-my-zsh.sh
 # set custom git prompt
-. $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+#. $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
 if ! (( ${+functions[_zsh_highlight]} )); then
     . "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
     . "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

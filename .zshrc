@@ -1,4 +1,7 @@
 
+export TERM=xterm-256color
+[ -n "$TMUX" ] && export TERM=screen-256color
+#alias tmux='tmux -2'
 # Path extensions
 path=(
     # X11
@@ -27,7 +30,7 @@ test -f ~/.zshrc.local && source ~/.zshrc.local
 source ~/.zshrc.alias
 
 # Set left justified prompt
-PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+#PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
 # Set the right justified prompt
 # RPROMPT='%{$fg[blue]%}$(localip)%{$reset_color%}'
 
@@ -45,25 +48,6 @@ export SSH_KEY_PATH="~/.ssh/dsa_id"
 #   my_ps: List processes owned by my user:
 #   ------------------------------------------------------------
 my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
-
-
-
-#   ii:  display useful host related informaton
-#   -------------------------------------------------------------------
-ii() {
-    RED=$fg[red]
-    NC=$reset_color
-    echo -e "\nYou are logged on ${RED}$HOST"
-    echo -e "\nAdditionnal information:$NC " ; uname -a
-    echo -e "\n${RED}Users logged on:$NC " ; w -h
-    echo -e "\n${RED}Current date :$NC " ; date
-    echo -e "\n${RED}Machine stats :$NC " ; uptime
-    echo -e "\n${RED}Current network location :$NC " ; scselect
-    echo -e "\n${RED}Public IP Address :$NC " ;myip
-    echo -e "\n${RED}Local IP Address :$NC " ;localip
-    echo
-}
-
 
 # Set less options
 # -------------------------------------------------------
@@ -107,12 +91,12 @@ up() {
 # Find man page for builtin commands easily
 # If not a builtin, works like normal man
 man() {
-    vartype=$(type "$@");
-    if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
-        command man zshbuiltins | less -p "^       $@ ";
-    else
-        command man "$@";
-    fi;
+   vartype=$(type "$@");
+   if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
+       command man zshbuiltins | less -p "^       $@ ";
+   else
+       command man "$@";
+   fi;
 }
 
 # Security checks
@@ -142,6 +126,7 @@ split(){
 
 # join input lines on pattern
 join() {
+    sep=''
     while read data; do
         echo -n $sep$data;
         sep=$1;
@@ -153,7 +138,7 @@ isset() {
     which "$@" &> /dev/null
 }
 
-# run a chain of commands in the background
+# run commands in the background
 background() {
     nohup bash -c "$@" &
 }
