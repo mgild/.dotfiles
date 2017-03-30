@@ -51,18 +51,7 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 
 # Set less options
 # -------------------------------------------------------
-LESS=-asrRix8
-
-
-# Colored Man Pages
-# -------------------------------------------------------
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;38;5;74m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[38;33;246m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[04;38;5;146m'
+#export LESS=-asrRix8
 
 
 #  Show symlinks in given directory
@@ -74,7 +63,7 @@ function lsym() {
 }
 
 min() {
-    ((( $1 < $2 )) && echo $1) || echo $2
+    ((($1 < $2)) && echo $1) || echo $2
 }
 # Quick up n levels
 # Requires: n >= 0
@@ -82,7 +71,7 @@ up() {
     # default to 1
     declare -i d=${@:-1};
     # ensure non-negative
-    (( $d < 0 )) && (>&2 echo "up: Error: negative value provided") && return 1;
+    (($d < 0)) && (>&2 echo "up: Error: negative value provided") && return 1;
     # remove last d directories from pwd, append "/" in case result is empty
     cd "$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')/";
 }
@@ -90,13 +79,21 @@ up() {
 # Better man
 # Find man page for builtin commands easily
 # If not a builtin, works like normal man
+# Sets man colors
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[38;33;246m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 man() {
-   vartype=$(type "$@");
-   if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
-       command man zshbuiltins | less -p "^       $@ ";
-   else
-       command man "$@";
-   fi;
+    vartype=$(type "$@");
+    if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
+        command man zshbuiltins | less -p "^       $@ ";
+    else
+        command man "$@";
+    fi;
 }
 
 # Security checks
