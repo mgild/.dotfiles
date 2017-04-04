@@ -103,7 +103,8 @@ filetype plugin indent on    " required
 syntax on " syntax based on file type
 set number " turn line numbers on
 set cursorline " Show a line on the line the cursor is on
-set wildmenu  " Enhanced command completion
+set wildmode=longest,list,full " add tab completion to menu
+set wildmenu "enable extended menus
 filetype indent on
 set clipboard^=unnamed,unnamedplus " have vim share clipboard with os
 match Todo /\t/ " add warnings over tabs

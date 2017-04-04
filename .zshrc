@@ -51,7 +51,7 @@ my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 
 # Set less options
 # -------------------------------------------------------
-#export LESS=-asrRix8
+export LESS=-asrRix8
 
 
 #  Show symlinks in given directory
@@ -137,9 +137,15 @@ isset() {
 
 # run commands in the background
 background() {
-    nohup bash -c "$@" &
+    nohup zsh -c "$@" &
 }
 
 grep_dir() {
     grep -RnisI "$@" * --color=always
+}
+
+qaz() {
+    echo 'q w e rt | yu i o p'
+    echo 'a s d fg | hj k l ;'
+    echo 'z x c vb | nm , . /'
 }
