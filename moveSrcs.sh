@@ -13,4 +13,5 @@ function mvFile() {
 }
 
 mvFile ~/.zshrc ~/.zshrc.local
-mvFile  ~/.vimrc ~/.vimrc.local
+mvFile ~/.vimrc ~/.vimrc.local
+mvFile ~/.tmux.conf ~/.tmux.conf.local
