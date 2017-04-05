@@ -19,7 +19,7 @@ assertInstalled zsh vim wget python pip git cmake ctags tmux
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
-    . osxsetup.sh
+    . $CWD/osxsetup.sh
 fi
 
 

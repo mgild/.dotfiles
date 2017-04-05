@@ -18,10 +18,12 @@ Plugin 'VundleVim/Vundle.vim'
 " Add tagbar
 Plugin 'majutsushi/tagbar'
 map <F8> :TagbarToggle<CR>
+" autocmd vimenter * TagbarToggle " auto open tagbar
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
 let g:easytags_async = 1 " async tag loading
+nnoremap <C-]> <C-w><C-]><C-w>T
 "
 Plugin 'scrooloose/nerdcommenter'
 " Add spaces after comment delimiters by default
@@ -57,7 +59,7 @@ let g:ycm_show_diagnostics_ui = 0
 " NerdTree
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
-" autocmd vimenter * NERDTree " Auto open NerdTree
+autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
 " Fast file switching
@@ -89,6 +91,8 @@ Plugin 'flazz/vim-colorschemes'
 
 Plugin 'christoomey/vim-tmux-navigator'
 
+Plugin 'breuckelen/vim-resize' " Better pane resizing
+let g:vim_resize_disable_auto_mappings = 1
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -145,4 +149,16 @@ set shiftwidth=4 " Make indentaion 4 spaces
 " Sets 'S' and 'Silent' to silently exec command
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
 command! -nargs=1 S execute ':silent !'.<q-args> | execute ':redraw!'
+" -----------------------------
+" Pane Resizing --------------
+nnoremap <silent> <S-h> :CmdResizeLeft<cr>
+nnoremap <silent> <S-j> :CmdResizeDown<cr>
+nnoremap <silent> <S-k> :CmdResizeUp<cr>
+nnoremap <silent> <S-l> :CmdResizeRight<cr>
+" -----------------------------
+" Tab Mapping -----------------
+noremap <silent> <S-Tab> :tabnew<CR>
+noremap <silent> <C-Tab> :tabnew<CR>
+noremap <silent> <A-Tab> :tabnew<CR>
+noremap <silent> <M-Tab> :tabnew<CR>
 " -----------------------------

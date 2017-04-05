@@ -29,6 +29,10 @@ alias tsrc='tmux source-file ~/.tmux.conf'
 #   ------------------------------------------------------
 alias zsrc='. ~/.zshrc'
 
+#   Loads tags for vim
+#   ------------------------------------------------------
+alias load_tags='ctags --extra=+f -R .'
+
 #  Go back to the previous directory
 #   -----------------------------------------------------
 alias back='cd ~-'

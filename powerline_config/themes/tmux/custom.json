@@ -41,6 +41,14 @@
                 "priority": 2
 
             },
+			{
+				"function": "powerline.segments.common.net.external_ip",
+                "priority": 2,
+				"args": {
+					"query_url":"http://icanhazip.com/",
+					"interval":10000
+				}
+			},
             {
                 "function": "powerline.segments.common.net.hostname",
                 "priority": 1
