@@ -14,6 +14,10 @@ Plugin 'VundleVim/Vundle.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
+"
+" Add tagbar
+Plugin 'majutsushi/tagbar'
+map <F8> :TagbarToggle<CR>
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
@@ -56,13 +60,15 @@ Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
 " autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
+" Fast file switching
+Plugin 'kien/ctrlp.vim'
 let g:NERDTreeUseSimpleIndicator = 1
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize=15 " change nerdtree default size
 " let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
 " Toggle NerdTree
-" map <C-f> :NERDTreeToggle<CR>
+map <F4> :NERDTreeToggle<CR>
 
 " General enhanced syntax highlighting
 Plugin 'sheerun/vim-polyglot'
