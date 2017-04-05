@@ -4,6 +4,8 @@ export TERM=xterm-256color
 #alias tmux='tmux -2'
 # Path extensions
 path=(
+    # User pip packages
+    "${HOME}/Library/Python/2.7/bin"
     # X11
     "/opt/X11/bin"
     # user builds
