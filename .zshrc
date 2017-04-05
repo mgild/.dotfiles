@@ -4,14 +4,14 @@ export TERM=xterm-256color
 #alias tmux='tmux -2'
 # Path extensions
 path=(
-    # User pip packages
-    "${HOME}/Library/Python/2.7/bin"
+    # User Python bin (osx)
+    ${HOME}/Library/Python/*/bin
+    # Latex tools (osx)
+    /Library/TeX/texbin
     # X11
-    "/opt/X11/bin"
+    /opt/X11/bin
     # user builds
     ${HOME}/{.,}local/bin
-    # Latex tools
-    "/Library/TeX/texbin"
     # Homebrew packages
     /usr/local/opt{/coreutils/libexec/gnubin,}
     # default paths
