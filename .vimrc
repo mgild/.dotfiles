@@ -17,7 +17,7 @@ Plugin 'VundleVim/Vundle.vim'
 "
 " Add tagbar
 Plugin 'majutsushi/tagbar'
-map <F8> :TagbarToggle<CR>
+let g:tagbar_autoclose = 0 "keep tagbar open after selection
 " autocmd vimenter * TagbarToggle " auto open tagbar
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
@@ -62,15 +62,16 @@ Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
 autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
-" Fast file switching
-Plugin 'kien/ctrlp.vim'
-let g:NERDTreeUseSimpleIndicator = 1
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize=15 " change nerdtree default size
+let NERDTreeMapOpenInTab='<ENTER>' " press enter on nerdtree item for new tab
 " let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
 " Toggle NerdTree
-map <F4> :NERDTreeToggle<CR>
+
+" Fast file switching
+Plugin 'kien/ctrlp.vim'
+let g:NERDTreeUseSimpleIndicator = 1
 
 " General enhanced syntax highlighting
 Plugin 'sheerun/vim-polyglot'
@@ -91,8 +92,8 @@ Plugin 'flazz/vim-colorschemes'
 
 Plugin 'christoomey/vim-tmux-navigator'
 
-Plugin 'breuckelen/vim-resize' " Better pane resizing
-let g:vim_resize_disable_auto_mappings = 1
+" Plugin 'breuckelen/vim-resize' " Better pane resizing
+" let g:vim_resize_disable_auto_mappings = 1
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -151,14 +152,21 @@ command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
 command! -nargs=1 S execute ':silent !'.<q-args> | execute ':redraw!'
 " -----------------------------
 " Pane Resizing --------------
-nnoremap <silent> <S-h> :CmdResizeLeft<cr>
-nnoremap <silent> <S-j> :CmdResizeDown<cr>
-nnoremap <silent> <S-k> :CmdResizeUp<cr>
-nnoremap <silent> <S-l> :CmdResizeRight<cr>
+" nmap <silent> <S-h> :CmdResizeLeft<cr>
+" nmap <silent> <C-S-j> :CmdResizeDown<cr>
+" nmap <silent> <C-S-k> :CmdResizeUp<cr>
+" nmap <silent> <C-S-l> :CmdResizeRight<cr>
 " -----------------------------
-" Tab Mapping -----------------
+" Key Mappings -----------------
+nnoremap <F8> :TagbarToggle<CR>
+nnoremap <F4> :NERDTreeToggle<CR>
 noremap <silent> <S-Tab> :tabnew<CR>
-noremap <silent> <C-Tab> :tabnew<CR>
-noremap <silent> <A-Tab> :tabnew<CR>
-noremap <silent> <M-Tab> :tabnew<CR>
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+nnoremap <c-Down> <c-w>j
+nnoremap <c-Up> <c-w>k
+nnoremap <c-Left> <c-w>h
+nnoremap <c-Right> <c-w>l
 " -----------------------------
