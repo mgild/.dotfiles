@@ -4,6 +4,8 @@ export TERM=xterm-256color
 #alias tmux='tmux -2'
 # Path extensions
 path=(
+    # python 2.7 user bin on osx
+    ${HOME}/Library/Python/2.7/bin
     # Latex tools (osx)
     /Library/TeX/texbin
     # X11
