@@ -90,6 +90,7 @@ Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
 Plugin 'flazz/vim-colorschemes'
 
+
 Plugin 'christoomey/vim-tmux-navigator'
 
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
@@ -114,7 +115,6 @@ filetype plugin indent on    " required
 syntax on " syntax based on file type
 set number " turn line numbers on
 set cursorline " Show a line on the line the cursor is on
-set wildmode=longest,list,full " add tab completion to menu
 set wildmenu "enable extended menus
 filetype indent on
 set clipboard^=unnamed,unnamedplus " have vim share clipboard with os
@@ -134,6 +134,8 @@ set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
 set t_Co=256
 colorscheme Monokai
 "colorscheme molokai
+" Set tabline background to color if not set by theme (white is too much)
+hi TabLineFill ctermfg=DarkGray
 " ------------------------------
 " Search -----------------------
 set incsearch           " search as characters are entered
@@ -161,6 +163,8 @@ command! -nargs=1 S execute ':silent !'.<q-args> | execute ':redraw!'
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap <F4> :NERDTreeToggle<CR>
 noremap <silent> <S-Tab> :tabnew<CR>
+nnoremap <C-Tab> :tabn<CR>
+nnoremap <C-S-Tab> :tabp<CR>
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
@@ -170,3 +174,4 @@ nnoremap <c-Up> <c-w>k
 nnoremap <c-Left> <c-w>h
 nnoremap <c-Right> <c-w>l
 " -----------------------------
+

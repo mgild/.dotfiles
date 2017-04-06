@@ -67,7 +67,7 @@ ln -s "$CWD/.tmux.conf" "${HOME}"
 # setup powerline
 is_pipped(){pip freeze | awk -F= '{print $1}' | grep "^$1$" &> /dev/null;}
 if ! is_pipped powerline-status; then
-    pip install --user git+git://github.com/Lokaltog/powerline
+    pip install --user --install-option="--prefix=${HOME}/local/" powerline-status
 fi
 if ! is_pipped powerline-mem-segment; then
     pip install --user powerline-mem-segment

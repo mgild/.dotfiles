@@ -4,8 +4,6 @@ export TERM=xterm-256color
 #alias tmux='tmux -2'
 # Path extensions
 path=(
-    # User Python bin (osx)
-    ${HOME}/Library/Python/*/bin
     # Latex tools (osx)
     /Library/TeX/texbin
     # X11
@@ -151,3 +149,4 @@ qaz() {
     echo 'a s d fg | hj k l ;'
     echo 'z x c vb | nm , . /'
 }
+
