@@ -49,10 +49,6 @@ alias c=clear
 #   -----------------------------------------------------
 alias ipython="python -m IPython"
 
-#   quick link to /dev/null
-#   -----------------------------------------------------
-export null='/dev/null'
-
 #   cpuHogs:  Find CPU hogs
 #   -----------------------------------------------------
 alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'

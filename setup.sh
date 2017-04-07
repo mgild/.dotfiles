@@ -60,6 +60,8 @@ fi
 # link zshrc
 ln -s $CWD/.zshrc ~/
 ln -s $CWD/.zshrc.alias ~/
+ln -s $CWD/.zshrc.exports ~/
+ln -s $CWD/.zshrc.functions ~/
 ln -s $CWD/.ohmyzshrc ~/
 # link tmux conf
 ln -s "$CWD/.tmux.conf" "${HOME}"
