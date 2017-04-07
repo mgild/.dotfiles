@@ -98,6 +98,18 @@ man() {
     fi;
 }
 
+#   A good way to be annoying
+#   ------------------------------------------------------------
+export BLINK_START='\033[5m'
+export BLINK_END='\033[0m'
+blink() {
+    echo -en $BLINK_START
+    while IFS= read -r line; do
+        echo -e $line | sed 's/'$(echo "\[0m")/$(echo "\[0m$BLINK_START")'/g';
+    done
+}
+
+
 # Security checks
 alias checkrootkits="sudo rkhunter --update; sudo rkhunter --propupd; sudo rkhunter --check"
 
