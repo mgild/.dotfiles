@@ -18,18 +18,18 @@ path=(
 export PATH=${(j/:/)path}
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
-# load exports
-. ~/.zshrc.exports
-# load functions
-. ~/.zshrc.functions
-# source alias file
-. ~/.zshrc.alias
 # load ohmyzsh
 . ~/.ohmyzshrc
 # Load non-public zshrc
 test -f ~/.zshrc.local && . ~/.zshrc.local
 # load iterm intergration (if it exists)
 test -e ~/.iterm2_shell_integration.zsh && . ~/.iterm2_shell_integration.zsh
+# load exports
+. ~/.zshrc.exports
+# load functions
+. ~/.zshrc.functions
+# source alias file
+. ~/.zshrc.alias
 
 # Set left justified prompt
 PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
