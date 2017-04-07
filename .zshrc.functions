@@ -103,3 +103,7 @@ qaz() {
     echo 'z x c vb | nm , . /'
 }
 
+color_test() {
+    range=($(echo {1..7} {30..36} {40..47} {90..97} {100..107} | split ' '))
+    for i in $range; echo -e "\e[0;${i}m Code: $i -- [0;${i}m"
+}
