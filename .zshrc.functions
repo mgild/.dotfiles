@@ -105,5 +105,6 @@ qaz() {
 
 color_test() {
     range=($(echo {1..7} {30..36} {40..47} {90..97} {100..107} | split ' '))
-    for i in $range; echo -e "\e[0;${i}m Code: $i -- [0;${i}m"
+    echo "Code 0 (color reset): [0m"
+    for i in $range; echo -e "\e[${i}m Code: $i -- [${i}m\e[0m"
 }
