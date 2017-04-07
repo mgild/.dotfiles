@@ -64,7 +64,7 @@ ln -s $CWD/.zshrc.exports ~/
 ln -s $CWD/.zshrc.functions ~/
 ln -s $CWD/.ohmyzshrc ~/
 # link tmux conf
-ln -s "$CWD/.tmux.conf" "${HOME}"
+ln -s $CWD/.tmux.conf ~/
 
 # setup powerline
 is_pipped(){pip freeze | awk -F= '{print $1}' | grep "^$1$" &> /dev/null;}
