@@ -85,6 +85,7 @@ Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
 let g:airline_powerline_fonts = 1
 let g:Powerline_symbols='unicode'
+let g:airline#extensions#tabline#enabled = 1
 
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 
