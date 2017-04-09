@@ -25,17 +25,21 @@ up() {
     cd "$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')/";
 }
 
+zman() {
+    PAGER="less -g -s '+/^       "$1"'" command man zshall
+}
+
 # Better man
 # Find man page for builtin commands easily
 # If not a builtin, works like normal man
-man() {
-    vartype=$(type "$@");
-    if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
-        command man zshbuiltins | less -p "^       $@ ";
-    else
-        command man "$@";
-    fi;
-}
+# man() {
+    # vartype=$(type "$@");
+    # if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
+        # command man zshbuiltins | less -p "^       $@ ";
+    # else
+        # command man "$@";
+    # fi;
+# }
 
 #   A good way to be annoying
 #   ------------------------------------------------------------

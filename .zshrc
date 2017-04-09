@@ -9,14 +9,18 @@ path=(
     /opt/X11/bin
     # user builds
     ${HOME}/{.,}local/bin
-    # Homebrew packages
-    /usr/local/opt{/coreutils/libexec/gnubin,}
+    # Homebrew packages, go executables, gnu bin
+    /usr/local/opt{/go/libexec/bin,/coreutils/libexec/gnubin,}
     # default paths
     /{usr/,}{local/,}{s,}bin
 )
 # Join path and export
 export PATH=${(j/:/)path}
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+man_path=(
+   /usr/local/opt/coreutils/libexec/gnuman
+)
+export MANPATH=$MANPATH:${(j/:/)man_path}
 
 # load ohmyzsh
 . ~/.ohmyzshrc
