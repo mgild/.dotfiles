@@ -1,6 +1,8 @@
 
 # Path extensions
 path=(
+    # Linuxbrew
+    ${HOME}/.linuxbrew/bin
     # python 2.7 user bin on osx
     ${HOME}/Library/Python/2.7/bin
     # Latex tools (osx)
@@ -18,9 +20,15 @@ path=(
 export PATH=${(j/:/)path}
 
 man_path=(
-   /usr/local/opt/coreutils/libexec/gnuman
+    ${HOME}/.linuxbrew/bin
+    /usr/local/opt/coreutils/libexec/gnuman
 )
-export MANPATH=$MANPATH:${(j/:/)man_path}
+export MANPATH=${(j/:/)man_path}
+
+info_path=(
+    ${HOME}/.linuxbrew/share/info
+)
+export INFOPATH=${(j/:/)info_path}
 
 # load ohmyzsh
 . ~/.ohmyzshrc
