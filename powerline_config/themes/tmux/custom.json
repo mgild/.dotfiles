@@ -41,14 +41,6 @@
                 "priority": 2
 
             },
-			{
-				"function": "powerline.segments.common.net.external_ip",
-                "priority": 2,
-				"args": {
-					"query_url":"http://icanhazip.com/",
-					"interval":10000
-				}
-			},
             {
                 "function": "powerline.segments.common.net.hostname",
                 "priority": 1
@@ -56,16 +48,20 @@
         ]
     },
     "null_segments":{
+        "external_ip": {
+            "function": "powerline.segments.common.net.external_ip",
+            "priority": 2,
+            "args": {
+                "query_url":"http://icanhazip.com/",
+                "interval":10000
+            }
+		},
         "battery": {
             "function": "powerline.segments.common.bat.battery",
             "args": {
                 "gamify": "true",
                 "steps": 5
             }
-        },
-        "external_ip": {
-            "function": "powerline.segments.common.net.external_ip",
-            "priority": 2
         }
     }
 
