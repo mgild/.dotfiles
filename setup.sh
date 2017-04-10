@@ -57,6 +57,9 @@ if [[ ! -d $ZSH_CUSTOM/plugins/zsh-git-prompt ]]; then
     git clone https://github.com/olivierverdier/zsh-git-prompt.git $ZSH_CUSTOM/plugins/zsh-git-prompt
 fi
 
+# Link tab completion (custom plugin taken from prezto)
+ln -sfn $CWD/tab-completion $ZSH_CUSTOM/plugins/tab-completion
+
 # link zshrc
 ln -s $CWD/.zshrc ~/
 ln -s $CWD/.zshrc.alias ~/
@@ -82,7 +85,7 @@ powerline_config="$POWERLINE_ROOT/config_files"
 if [ ! -L $powerline_config ]; then
     mv $powerline_config $powerline_config.old
 fi
-ln -s "$CWD/powerline_config" "$powerline_config"
+ln -sfn "$CWD/powerline_config" "$powerline_config"
 ln -s "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}"
 
 # install powerline fonts
