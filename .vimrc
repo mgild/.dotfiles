@@ -102,15 +102,6 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 " General ----------------------
 syntax on " syntax based on file type
@@ -134,9 +125,6 @@ endif
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
 set t_Co=256
 colorscheme Monokai
-"colorscheme molokai
-" Set tabline background to color if not set by theme (white is too much)
-hi TabLineFill ctermfg=DarkGray
 " ------------------------------
 " Search -----------------------
 set incsearch           " search as characters are entered
@@ -163,16 +151,13 @@ command! -nargs=1 S execute ':silent !'.<q-args> | execute ':redraw!'
 " Key Mappings -----------------
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap <F4> :NERDTreeToggle<CR>
-noremap <silent> <S-Tab> :tabnew<CR>
-nnoremap <C-Tab> :tabn<CR>
-nnoremap <C-S-Tab> :tabp<CR>
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-nnoremap <c-Down> <c-w>j
-nnoremap <c-Up> <c-w>k
-nnoremap <c-Left> <c-w>h
-nnoremap <c-Right> <c-w>l
+"To create a new tab
+nnoremap <C-t> :tabnew<Space>
+inoremap <C-t> <Esc>:tabnew<Space>
+"Tab Navigation
+nnoremap <S-h> gT
+nnoremap <S-l> gt
+"Press enter to accept YCM option
+imap <expr> <CR> pumvisible() ? "\<c-y>" : "<CR>"
 " -----------------------------
 
