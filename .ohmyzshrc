@@ -22,7 +22,7 @@ ZSH_CUSTOM=$ZSH/custom
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(git sublime brew colorize z)
+plugins=(git sublime brew colorize z zsh-autosuggestions)
 # load oh-my-zsh
 . $ZSH/oh-my-zsh.sh
 # . $ZSH/plugins/z/z.sh
@@ -31,8 +31,8 @@ plugins=(git sublime brew colorize z)
 # These plugins must be loaded manually
 . $ZSH_CUSTOM/plugins/tab-completion/tab-completion.sh
 . $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+
 if ! (( ${+functions[_zsh_highlight]} )); then
-    . $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
     . $ZSH_CUSTOM/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 fi
 

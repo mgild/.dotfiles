@@ -12,9 +12,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-"
 " Add tagbar
 Plugin 'majutsushi/tagbar'
 let g:tagbar_autoclose = 0 "keep tagbar open after selection
@@ -92,10 +89,7 @@ let g:Powerline_symbols='unicode'
 let g:airline#extensions#tabline#enabled = 1
 
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
-
 Plugin 'flazz/vim-colorschemes'
-
-
 Plugin 'christoomey/vim-tmux-navigator'
 
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
@@ -129,6 +123,7 @@ endif
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
 set t_Co=256
 colorscheme Monokai
+" colorscheme Benokai
 " ------------------------------
 " Search -----------------------
 set incsearch           " search as characters are entered

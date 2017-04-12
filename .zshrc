@@ -22,13 +22,14 @@ export PATH=${(j/:/)path}
 man_path=(
     ${HOME}/.linuxbrew/bin
     /usr/local/opt/coreutils/libexec/gnuman
+    /usr/{local/,}share/man
 )
 export MANPATH=${(j/:/)man_path}
 
 info_path=(
     ${HOME}/.linuxbrew/share/info
 )
-export INFOPATH=${(j/:/)info_path}
+# export INFOPATH=${(j/:/)info_path}
 
 # load ohmyzsh
 . ~/.ohmyzshrc
