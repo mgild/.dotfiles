@@ -53,8 +53,11 @@ let g:syntastic_python_flake8_exec = '/usr/bin/python2'
 Plugin 'valloric/youcompleteme'
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_show_diagnostics_ui = 0
-let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_add_preview_to_completeopt = 0
+set completeopt-=preview
 let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " NerdTree
@@ -157,6 +160,4 @@ inoremap <C-t> <Esc>:tabnew<Space>
 nnoremap <S-h> gT
 nnoremap <S-l> gt
 "Press enter to accept YCM option
-inoremap <expr> <CR> pumvisible() ? "\<c-y>" : "<CR>"
 " -----------------------------
-

@@ -164,3 +164,13 @@ function termcolors () {
         print -P "%K{$c}  %k"
     done
 }
+
+
+map_hops(){
+    iponmap $(traceroute $1 2>/dev/null |\
+        split ' ' |\
+        grep '^(.*)$' |\
+        sed -E 's/(\(|\))//g' |\
+        join ' ');
+}
+
