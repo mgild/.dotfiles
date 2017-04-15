@@ -43,13 +43,18 @@ srcs=(
 for f in $srcs; test -e $f && . $f
 
 
-
 load_TR_prompt () {
     s=$(TRPROMPT)
-    tput sc && tput cup 0 $(($(tput cols)-$(num_visible "$s"))) && echo $s && tput rc
+    tput sc;
+    tput cup 0 $PREVTRLEN;
+    tput ed;
+    tput cup 0 $(($(tput cols)-$(num_visible "$s")));
+    PREVTRLEN=$(num_visible "$s");
+    echo $s;
+    tput rc;
 }
 TRPROMPT () {
-    echo -e "\e[1;94m`date +%r`\e[0m"
+    echo -e "\e[1;94m$(print -rD $PWD) | $(date +%r)\e[0m"
 }
 
 # zsh builitn defining what to do before prompt load
