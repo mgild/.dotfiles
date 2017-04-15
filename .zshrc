@@ -46,10 +46,10 @@ for f in $srcs; test -e $f && . $f
 load_TR_prompt () {
     s=$(TRPROMPT)
     tput sc;
-    tput cup 0 $PREVTRLEN;
-    tput ed;
-    tput cup 0 $(($(tput cols)-$(num_visible "$s")));
-    PREVTRLEN=$(num_visible "$s");
+    tput cup 0 $TRPROMPTPOS;
+    tput el;
+    export TRPROMPTPOS=$(($(tput cols)-$(num_visible "$s")));
+    tput cup 0 $TRPROMPTPOS;
     echo $s;
     tput rc;
 }
