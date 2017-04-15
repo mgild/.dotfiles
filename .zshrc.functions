@@ -167,10 +167,15 @@ function termcolors () {
 
 
 map_hops(){
-    iponmap $(traceroute $1 2>/dev/null |\
-        split ' ' |\
-        grep '^(.*)$' |\
-        sed -E 's/(\(|\))//g' |\
-        join ' ');
+    iponmap -t $(sudo mtr -r -b -l $1  2> /dev/null |\
+        grep '^h' |\
+        sed 's/.* //g' |\
+        join ' '
+    );
 }
 
+# Get number of visible characters in a string
+num_visible(){
+    t=$(echo "$1" | perl -pe 's/\x1b\[[^m]+m//g')
+    echo ${#t}
+}

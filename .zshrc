@@ -29,25 +29,35 @@ export MANPATH=${(j/:/)man_path}
 info_path=(
     ${HOME}/.linuxbrew/share/info
 )
-# export INFOPATH=${(j/:/)info_path}
+export INFOPATH=${(j/:/)info_path}
 
-# load ohmyzsh
-. ~/.ohmyzshrc
-# Load non-public zshrc
-test -f ~/.zshrc.local && . ~/.zshrc.local
-# load iterm intergration (if it exists)
-test -e ~/.iterm2_shell_integration.zsh && . ~/.iterm2_shell_integration.zsh
-# load exports
-. ~/.zshrc.exports
-# load functions
-. ~/.zshrc.functions
-# source alias file
-. ~/.zshrc.alias
+srcs=(
+    ~/.ohmyzshrc
+    ~/.zshrc.local
+    ~/.iterm2_shell_integration.zsh
+    ~/.zshrc.exports
+    ~/.zshrc.functions
+    ~/.zshrc.alias
+)
 
+for f in $srcs; test -e $f && . $f
+
+
+
+load_TR_prompt () {
+    s=$(TRPROMPT)
+    tput sc && tput cup 0 $(($(tput cols)-$(num_visible "$s"))) && echo $s && tput rc
+}
+TRPROMPT () {
+    echo -e "\e[1;94m`date +%r`\e[0m"
+}
+
+# zsh builitn defining what to do before prompt load
+precmd() { load_TR_prompt; }
 # Set left justified prompt
 PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
-# Set the right justified prompt
-# RPROMPT='%{$fg[blue]%}$(localip)%{$reset_color%}'
+
+
 
 
 

@@ -94,7 +94,12 @@ let g:airline#extensions#tabline#enabled = 1
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 Plugin 'flazz/vim-colorschemes'
 Plugin 'christoomey/vim-tmux-navigator'
-
+Plugin 'spf13/vim-autoclose'
+Plugin 'DoxygenToolkit.vim'
+let g:DoxygenToolkit_briefTag_pre="@Brief"
+let g:DoxygenToolkit_paramTag_pre="@Param "
+let g:DoxygenToolkit_returnTag="@Returns"
+let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
 " let g:vim_resize_disable_auto_mappings = 1
 
@@ -142,7 +147,7 @@ set shiftwidth=4 " Make indentaion 4 spaces
 " Commands ---------------------
 " Sets 'S' and 'Silent' to silently exec command
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
-command! -nargs=1 S execute ':silent !'.<q-args> | execute ':redraw!'
+command! -nargs=1 Vsrc execute 'source ~/.vimrc'
 " -----------------------------
 " Pane Resizing --------------
 " nmap <silent> <S-h> :CmdResizeLeft<cr>
