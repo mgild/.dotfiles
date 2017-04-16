@@ -49,21 +49,13 @@ load_TR_prompt () {
     tput sc;
     tput cup 0 $TRPROMPTPOS;
     tput el;
-    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$s")));
+    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")));
     tput cup 0 $TRPROMPTPOS;
     print -P $s;
     tput rc;
     tput cnorm;
 }
-clear_TR_prompt () {
-    tput civis;
-    tput sc;
-    tput cup 0 $TRPROMPTPOS;
-    tput cuu1
-    tput el;
-    tput rc;
-    tput cnorm;
-}
+
 
 TRPROMPT='%B%F{39}$(print -rD $PWD) | $(date +%r)%f%b'
 
@@ -71,7 +63,7 @@ TRPROMPT='%B%F{39}$(print -rD $PWD) | $(date +%r)%f%b'
 precmd() { load_TR_prompt "$TRPROMPT"; }
 # Set left justified prompt
 export C;
-PROMPT='${ret_status}%F{39}%c%b%F{7}$(git_super_status)%F{$C}$%f '
+PROMPT='${ret_status}%F{39}%c%b%F{7}$(git_super_status)%F{$C} $%f '
 #export PS1='$(junk sss) '
 #Allow prompt substitution
 setopt PROMPT_SUBST
