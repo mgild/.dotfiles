@@ -51,7 +51,7 @@ load_TR_prompt () {
     tput el;
     TRPROMPTPOS=$(($(tput cols)-$(num_visible "$s")));
     tput cup 0 $TRPROMPTPOS;
-    echo $s;
+    print -P $s;
     tput rc;
     tput cnorm;
 }
@@ -65,12 +65,10 @@ clear_TR_prompt () {
     tput cnorm;
 }
 
-TRPROMPT () {
-    echo -e "\e[1;94m$(print -rD $PWD) | $(date +%r)\e[0m"
-}
+TRPROMPT='%B%F{39}$(print -rD $PWD) | $(date +%r)%f%b'
 
 # zsh builitn defining what to do before prompt load
-precmd() { load_TR_prompt "$(TRPROMPT)"; }
+precmd() { load_TR_prompt "$TRPROMPT"; }
 # Set left justified prompt
 export C;
 PROMPT='${ret_status}%F{39}%c%b%F{7}$(git_super_status)%F{$C}$%f '
