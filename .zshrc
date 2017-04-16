@@ -42,13 +42,13 @@ srcs=(
 
 for f in $srcs; test -e $f && . $f
 
-
+export TRPROMPTPOS=$(tput cols)
 load_TR_prompt () {
     s=$(TRPROMPT)
     tput sc;
     tput cup 0 $TRPROMPTPOS;
     tput el;
-    export TRPROMPTPOS=$(($(tput cols)-$(num_visible "$s")));
+    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$s")));
     tput cup 0 $TRPROMPTPOS;
     echo $s;
     tput rc;
