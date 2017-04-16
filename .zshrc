@@ -44,7 +44,8 @@ for f in $srcs; test -e $f && . $f
 
 export TRPROMPTPOS=$(tput cols)
 load_TR_prompt () {
-    s=$(TRPROMPT)
+    s="$@"
+    tput civis;
     tput sc;
     tput cup 0 $TRPROMPTPOS;
     tput el;
@@ -52,17 +53,36 @@ load_TR_prompt () {
     tput cup 0 $TRPROMPTPOS;
     echo $s;
     tput rc;
+    tput cnorm;
 }
+clear_TR_prompt () {
+    tput civis;
+    tput sc;
+    tput cup 0 $TRPROMPTPOS;
+    tput cuu1
+    tput el;
+    tput rc;
+    tput cnorm;
+}
+
 TRPROMPT () {
     echo -e "\e[1;94m$(print -rD $PWD) | $(date +%r)\e[0m"
 }
 
 # zsh builitn defining what to do before prompt load
-precmd() { load_TR_prompt; }
+precmd() { load_TR_prompt "$(TRPROMPT)"; }
 # Set left justified prompt
-PROMPT='${ret_status} %{$fg[cyan]%}%c%{$reset_color%}$(git_super_status) '
+export C;
+PROMPT='${ret_status}%F{39}%c%b%F{7}$(git_super_status)%F{$C}$%f '
+#export PS1='$(junk sss) '
+#Allow prompt substitution
+setopt PROMPT_SUBST
+TMOUT=1
 
-
+TRAPALRM() {
+    ((C=(C+1) % 232));
+    zle reset-prompt;
+}
 
 
 
