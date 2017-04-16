@@ -57,6 +57,10 @@ alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 #   -----------------------------------------------------
 alias t='tmux a &> /dev/null || tmux new'
 
+#   easier git push
+#   -----------------------------------------------------
+alias gpo='git push origin'
+
 #   Common misspellings
 #   -----------------------------------------------------
 alias pyhton=python

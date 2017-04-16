@@ -47,30 +47,33 @@ load_TR_prompt () {
     s="$@"
     tput civis;
     tput sc;
-    tput cup 0 $TRPROMPTPOS;
+    RPL=$(($(tput cols)-$(num_visible "$(print -P $RPROMPT)")))
+    del_length=$(min "$TRPROMPTPOS" "$RPL")
+    tput cup 0 $del_length;
     tput el;
-    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")));
-    tput cup 0 $TRPROMPTPOS;
-    print -P $s;
+    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")))
+    tput cup 0 $(($TRPROMPTPOS));
+    print -Pn $s;
     tput rc;
     tput cnorm;
 }
 
 
-TRPROMPT='%B%F{39}$(print -rD $PWD) | $(date +%r)%f%b'
+TRPROMPT='%B%F{39}$(print -rnD $PWD)%f%b'
 
 # zsh builitn defining what to do before prompt load
 precmd() { load_TR_prompt "$TRPROMPT"; }
 # Set left justified prompt
 export C;
-PROMPT='${ret_status}%F{39}%c%b%F{7}$(git_super_status)%F{$C} $%f '
+PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
+#RPROMPT='%B%F{12}$(date +%r)%b%f'
 #export PS1='$(junk sss) '
 #Allow prompt substitution
 setopt PROMPT_SUBST
 TMOUT=1
 
 TRAPALRM() {
-    ((C=(C+1) % 232));
+    ((C=((C+1) % 124) + 88));
     zle reset-prompt;
 }
 
