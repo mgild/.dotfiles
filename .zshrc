@@ -42,47 +42,57 @@ srcs=(
 
 for f in $srcs; test -e $f && . $f
 
-export TRPROMPTPOS=$(tput cols)
-load_TR_prompt () {
-    s="$TRPROMPT";
-    RPL=$(($(tput cols)-$(num_visible "$(print -P $RPROMPT)")));
-    del_length=$(min "$TRPROMPTPOS" "$RPL");
-    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")));
-    out=$(print -Pn $s)
-    fill=$((TRPROMPTPOS - del_length));
-    filler=""
-    for ((i = 0; i < fill; i++)); do
-        filler=$filler" ";
-    done
-    cursor_pos=$(min $del_length $TRPROMPTPOS);
-    civis=$(tput civis);
-    cnorm=$(tput cnorm);
-    tput sc;
-    echo -n $civis;
-    tput cup 0 $cursor_pos;
-    echo -n $filler$out$cnorm;
-    tput rc;
+
+cursor_coord(){
+    bash -c 'exec < /dev/tty;oldstty=$(stty -g);stty raw -echo min 0;echo -en "\033[6n" > /dev/tty;IFS=; read -r -d R -a pos;stty $oldstty;echo $pos;'
+}
+
+_newline=$'\n'
+_lineup=$'\e[1A'
+_linedown=$'\e[1B'
+load_TRPROMPT(){
+    new_prompt=$(print -P "$@");
+    new_len=$(num_visible "$new_prompt");
+    fill=$((old_len - new_len));
+    old_len=$new_len;
+    res='';
+    filler=''
+    for ((i=0; i < fill; ++i)) {
+        filler="$filler ";
+    }
+    h=($(bash ~/pos.sh | split ' ')) #$(tput lines);
+    for ((i=0; i < h[1]; ++i)) {
+        res="${res}%{${_lineup}%}";
+    }
+    res="${res}${filler}${@}";
+    for ((i=0; i < h[1]; ++i)) {
+        res="${res}%{${_linedown}%}";
+    }
+    echo -n $res
 }
 
 
-TRPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b'
+export TRPROMPTPOS=$(tput cols)
+
+TRPROMPT() {
+    echo -n "%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b"
+}
 
 # zsh builitn defining what to do before prompt load
 precmd() {
     ((C=((C+1) % 124) + 88));
-    load_TR_prompt;
+    # load_TR_prompt;
 }
 # Set left justified prompt
 export C;
 PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
-#RPROMPT='%B%F{12}$(date +%r)%b%f'
+RPROMPT='$(load_TRPROMPT "$(TRPROMPT)")'
 #export PS1='$(junk sss) '
 #Allow prompt substitution
 setopt PROMPT_SUBST
 TMOUT=1
 
 TRAPALRM() {
-    precmd;
     zle reset-prompt; #add that github thing
 }
 
