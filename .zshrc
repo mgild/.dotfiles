@@ -44,7 +44,7 @@ for f in $srcs; test -e $f && . $f
 
 export TRPROMPTPOS=$(tput cols)
 load_TR_prompt () {
-    s="$@";
+    s="$TRPROMPT";
     RPL=$(($(tput cols)-$(num_visible "$(print -P $RPROMPT)")));
     del_length=$(min "$TRPROMPTPOS" "$RPL");
     TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")));
@@ -55,19 +55,23 @@ load_TR_prompt () {
         filler=$filler" ";
     done
     cursor_pos=$(min $del_length $TRPROMPTPOS);
+    civis=$(tput civis);
+    cnorm=$(tput cnorm);
     tput sc;
-    tput civis;
+    echo -n $civis;
     tput cup 0 $cursor_pos;
-    echo -n $filler$out;
+    echo -n $filler$out$cnorm;
     tput rc;
-    tput cnorm;
 }
 
 
-TRPROMPT='%B%F{39}[%D{%L:%M:%S}]$(print -rnD $PWD)%f%b'
+TRPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b'
 
 # zsh builitn defining what to do before prompt load
-precmd() { load_TR_prompt "$TRPROMPT"; }
+precmd() {
+    ((C=((C+1) % 124) + 88));
+    load_TR_prompt;
+}
 # Set left justified prompt
 export C;
 PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
@@ -78,9 +82,8 @@ setopt PROMPT_SUBST
 TMOUT=1
 
 TRAPALRM() {
-    ((C=((C+1) % 124) + 88));
+    precmd;
     zle reset-prompt; #add that github thing
-    precmd "$TRPROMPT";
 }
 
 
