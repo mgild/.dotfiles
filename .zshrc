@@ -44,22 +44,27 @@ for f in $srcs; test -e $f && . $f
 
 export TRPROMPTPOS=$(tput cols)
 load_TR_prompt () {
-    s="$@"
-    tput civis;
+    s="$@";
+    RPL=$(($(tput cols)-$(num_visible "$(print -P $RPROMPT)")));
+    del_length=$(min "$TRPROMPTPOS" "$RPL");
+    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")));
+    out=$(print -Pn $s)
+    fill=$((TRPROMPTPOS - del_length));
+    filler=""
+    for ((i = 0; i < fill; i++)); do
+        filler=$filler" ";
+    done
+    cursor_pos=$(min $del_length $TRPROMPTPOS);
     tput sc;
-    RPL=$(($(tput cols)-$(num_visible "$(print -P $RPROMPT)")))
-    del_length=$(min "$TRPROMPTPOS" "$RPL")
-    tput cup 0 $del_length;
-    tput el;
-    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")))
-    tput cup 0 $(($TRPROMPTPOS));
-    print -Pn $s;
+    tput civis;
+    tput cup 0 $cursor_pos;
+    echo -n $filler$out;
     tput rc;
     tput cnorm;
 }
 
 
-TRPROMPT='%B%F{39}$(print -rnD $PWD)%f%b'
+TRPROMPT='%B%F{39}[%D{%L:%M:%S}]$(print -rnD $PWD)%f%b'
 
 # zsh builitn defining what to do before prompt load
 precmd() { load_TR_prompt "$TRPROMPT"; }
@@ -74,7 +79,8 @@ TMOUT=1
 
 TRAPALRM() {
     ((C=((C+1) % 124) + 88));
-    zle reset-prompt;
+    zle reset-prompt; #add that github thing
+    precmd "$TRPROMPT";
 }
 
 
