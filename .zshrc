@@ -70,7 +70,7 @@ TRPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b'
 # zsh builitn defining what to do before prompt load
 precmd() {
     ((C=((C+1) % 124) + 88));
-    load_TR_prompt;
+    (load_TR_prompt &)
 }
 # Set left justified prompt
 export C;
@@ -83,7 +83,9 @@ TMOUT=1
 
 TRAPALRM() {
     precmd;
-    zle reset-prompt; #add that github thing
+    if [[ $WIDGET != *"complete"* && $WIDGET != *"beginning-search" ]]; then;
+        zle reset-prompt;
+    fi
 }
 
 

@@ -68,7 +68,7 @@ alias mkae=make
 
 #   Colorize ls
 #   -----------------------------------------------------
-alias ls='ls --color=auto'
+alias ls="ls -FHG"
 
 #   memHogsTop, memHogsPs:  Find memory hogs
 #   -----------------------------------------------------
