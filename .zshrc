@@ -45,23 +45,23 @@ for f in $srcs; test -e $f && . $f
 export TRPROMPTPOS=$(tput cols)
 load_TR_prompt () {
     s="$TRPROMPT";
-    RPL=$(($(tput cols)-$(num_visible "$(print -P $RPROMPT)")));
-    del_length=$(min "$TRPROMPTPOS" "$RPL");
-    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -P $s)")));
-    out=$(print -Pn $s)
+    del_length="$TRPROMPTPOS";
+    out=$(print -Pn $s);
+    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$out")));
     fill=$((TRPROMPTPOS - del_length));
-    filler=""
+    #echo $del_length $TRPROMPTPOS $(tput cols)
+    filler="";
     for ((i = 0; i < fill; i++)); do
         filler=$filler" ";
     done
-    cursor_pos=$(min $del_length $TRPROMPTPOS);
     civis=$(tput civis);
     cnorm=$(tput cnorm);
-    tput sc;
-    echo -n $civis;
-    tput cup 0 $cursor_pos;
-    echo -n $filler$out$cnorm;
-    tput rc;
+    cnewpos=$(tput cup 0 $(min $del_length $TRPROMPTPOS));
+    sc=$(tput sc);
+    rc=$(tput rc)
+    assembled="$sc$civis$cnewpos$filler$out$cnorm$rc";
+    # single echo statement. Make as fast as possible
+    echo -n $assembled;
 }
 
 
@@ -70,7 +70,7 @@ TRPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b'
 # zsh builitn defining what to do before prompt load
 precmd() {
     ((C=((C+1) % 124) + 88));
-    (load_TR_prompt &)
+    load_TR_prompt
 }
 # Set left justified prompt
 export C;
