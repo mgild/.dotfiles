@@ -61,7 +61,8 @@ load_TR_prompt () {
     rc=$(tput rc)
     assembled="$sc$civis$cnewpos$filler$out$cnorm$rc";
     # single echo statement. Make as fast as possible
-    echo -n $assembled;
+    exec < /dev/tty;
+    echo -n $assembled > /dev/tty;
 }
 
 
@@ -88,7 +89,15 @@ TRAPALRM() {
     fi
 }
 
-
+get_cursor_row() {
+    exec < /dev/tty;
+    oldstty=$(stty -g);
+    stty raw -echo min 0;
+    tput u7 > /dev/tty;
+    read -r -d R pos;
+    stty $oldstty;
+    echo ${pos:2} | sed 's/;.*//g';
+}
 
 
 
