@@ -43,40 +43,45 @@ srcs=(
 for f in $srcs; test -e $f && . $f
 
 export TRPROMPTPOS=$(tput cols)
-load_TR_prompt () {
-    s="$TRPROMPT";
+#ENV VARIABLE NOT MAINTAINED WHEN LOADING PROMPT. PASS IT IN how do i set?
+load_TRPROMPT () {
+    s="$(TRPROMPT)";
     del_length="$TRPROMPTPOS";
     out=$(print -Pn $s);
     TRPROMPTPOS=$(($(tput cols)-$(num_visible "$out")));
-    fill=$((TRPROMPTPOS - del_length));
-    #echo $del_length $TRPROMPTPOS $(tput cols)
-    filler="";
-    for ((i = 0; i < fill; i++)); do
-        filler=$filler" ";
-    done
-    civis=$(tput civis);
-    cnorm=$(tput cnorm);
-    cnewpos=$(tput cup 0 $(min $del_length $TRPROMPTPOS));
-    sc=$(tput sc);
-    rc=$(tput rc)
-    assembled="$sc$civis$cnewpos$filler$out$cnorm$rc";
-    # single echo statement. Make as fast as possible
-    exec < /dev/tty;
-    echo -n $assembled > /dev/tty;
+    row=$(get_cursor_row);
+    if [[ $row == 1 ]]; then
+        echo -n "$s";
+    else
+        fill=$((TRPROMPTPOS - del_length));
+        #echo $del_length $TRPROMPTPOS $(tput cols)
+        filler="";
+        for ((i = 0; i < fill; i++)); do
+            filler=$filler" ";
+        done
+        civis=$(tput civis);
+        cnorm=$(tput cnorm);
+        cnewpos=$(tput cup 0 $(($(min $del_length $TRPROMPTPOS) - 1)));
+        sc=$(tput sc);
+        rc=$(tput rc)
+        assembled="$sc$civis$cnewpos$filler$out$cnorm$rc";
+        # single echo statement. Make as fast as possible
+        exec < /dev/tty;
+        echo -n $assembled > /dev/tty;
+    fi;
 }
 
 
-TRPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b'
+TRPROMPT(){echo -n "%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b"}
 
 # zsh builitn defining what to do before prompt load
 precmd() {
     ((C=((C+1) % 124) + 88));
-    load_TR_prompt
 }
 # Set left justified prompt
 export C;
 PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
-#RPROMPT='%B%F{12}$(date +%r)%b%f'
+RPROMPT='$(load_TRPROMPT)$TRPROMPTPOS'
 #export PS1='$(junk sss) '
 #Allow prompt substitution
 setopt PROMPT_SUBST
@@ -88,7 +93,7 @@ TRAPALRM() {
         zle reset-prompt;
     fi
 }
-
+#
 get_cursor_row() {
     exec < /dev/tty;
     oldstty=$(stty -g);
@@ -96,7 +101,7 @@ get_cursor_row() {
     tput u7 > /dev/tty;
     read -r -d R pos;
     stty $oldstty;
-    echo ${pos:2} | sed 's/;.*//g';
+    echo ${pos:2} | sed -E 's/;.*//g';
 }
 
 
