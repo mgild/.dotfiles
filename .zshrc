@@ -42,18 +42,17 @@ srcs=(
 
 for f in $srcs; test -e $f && . $f
 
-export TRPROMPTPOS=$(tput cols)
+export TRPROMPTPOS=$(tput cols);
+export OLDTRPROMPTPOS=$TRPROMPTPOS;
 #ENV VARIABLE NOT MAINTAINED WHEN LOADING PROMPT. PASS IT IN how do i set?
 load_TRPROMPT () {
     s="$(TRPROMPT)";
-    del_length="$TRPROMPTPOS";
     out=$(print -Pn $s);
-    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$out")));
     row=$(get_cursor_row);
     if [[ $row == 1 ]]; then
         echo -n "$s";
     else
-        fill=$((TRPROMPTPOS - del_length));
+        fill=$((TRPROMPTPOS - OLDTRPROMPTPOS));
         #echo -n "---${fill}---";
         filler="";
         for ((i = 0; i < fill; i++)); do
@@ -61,7 +60,7 @@ load_TRPROMPT () {
         done
         civis=$(tput civis);
         cnorm=$(tput cnorm);
-        cnewpos=$(tput cup 0 $(($(min $del_length $TRPROMPTPOS) - 1)));
+        cnewpos=$(tput cup 0 $(($(min $OLDTRPROMPTPOS $TRPROMPTPOS) - 1)));
         sc=$(tput sc);
         rc=$(tput rc)
         assembled="$sc$civis$cnewpos$filler$out$cnorm$rc";
@@ -77,14 +76,15 @@ TRPROMPT(){echo -n "%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b"}
 # zsh builitn defining what to do before prompt load
 precmd() {
     ((C=((C+1) % 124) + 88));
+    OLDTRPROMPTPOS=$TRPROMPTPOS;
+    TRPROMPTPOS=$(($(tput cols)-$(num_visible "$(print -Pn "$(TRPROMPT)")")));
+    #echo $TRPROMPTPOS;
 }
 # Set left justified prompt
 export C;
 PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
 # TODO: Make a LASTTRPROMPTPOS VARIABLE AND RE-EVALUATE BEFORE LOAD TRPROMTP
 RPROMPT+='$(load_TRPROMPT)'
-RPROMPT+='$((TRPROMPTPOS=$(tput cols)-$(num_visible "$(print -Pn "$(TRPROMPT)")")))'
-#export PS1='$(junk sss) '
 #Allow prompt substitution
 setopt PROMPT_SUBST
 TMOUT=1
