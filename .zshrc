@@ -53,7 +53,7 @@ load_TRPROMPT () {
         echo -n "$s";
     else
         fill=$((TRPROMPTPOS - OLDTRPROMPTPOS));
-        #echo -n "---${fill}---";
+        # TODO: only add filler if you are on the last line (tput rows - rows = 0);
         filler="";
         for ((i = 0; i < fill; i++)); do
             filler=$filler" ";
