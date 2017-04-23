@@ -54,7 +54,7 @@ load_TRPROMPT () {
         echo -n "$s";
     else
         fill=$((TRPROMPTPOS - del_length));
-        #echo $del_length $TRPROMPTPOS $(tput cols)
+        #echo -n "---${fill}---";
         filler="";
         for ((i = 0; i < fill; i++)); do
             filler=$filler" ";
@@ -81,7 +81,9 @@ precmd() {
 # Set left justified prompt
 export C;
 PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
-RPROMPT='$(load_TRPROMPT)$TRPROMPTPOS'
+# TODO: Make a LASTTRPROMPTPOS VARIABLE AND RE-EVALUATE BEFORE LOAD TRPROMTP
+RPROMPT+='$(load_TRPROMPT)'
+RPROMPT+='$((TRPROMPTPOS=$(tput cols)-$(num_visible "$(print -Pn "$(TRPROMPT)")")))'
 #export PS1='$(junk sss) '
 #Allow prompt substitution
 setopt PROMPT_SUBST
