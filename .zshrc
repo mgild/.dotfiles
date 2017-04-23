@@ -97,13 +97,14 @@ TRAPALRM() {
 }
 #
 get_cursor_row() {
+    #echo 0; return;
     exec < /dev/tty;
     oldstty=$(stty -g);
     stty raw -echo min 0;
-    tput u7 > /dev/tty;
-    read -r -d R pos;
+    echo -en "\033[6n" > /dev/tty;
+    IFS=';' read -r -d R -A pos;
     stty $oldstty;
-    echo ${pos:2} | sed -E 's/;.*//g';
+    echo ${pos[1]:2}
 }
 
 
