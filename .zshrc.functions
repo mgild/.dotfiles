@@ -179,3 +179,15 @@ num_visible(){
     t=$(echo "$1" | perl -pe 's/\x1b\[[^m]+m//g')
     echo ${#t}
 }
+
+
+# fairly slow
+get_cursor_row() {
+    exec < /dev/tty;
+    oldstty=$(stty -g);
+    stty raw -echo min 0;
+    echo -en "\033[6n" > /dev/tty;
+    IFS=';' read -r -d R -A pos;
+    stty $oldstty;
+    echo ${pos[1]:2}
+}
