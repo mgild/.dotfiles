@@ -38,7 +38,7 @@ srcs=(
     ~/.zshrc.exports
     ~/.zshrc.functions
     ~/.zshrc.alias
-    ~/trprompt.sh
+    #~/.dotfiles/zsh-trprompt/trprompt.zsh
 )
 
 for f in $srcs; test -e $f && . $f

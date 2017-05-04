@@ -71,7 +71,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeWinSize=15 " change nerdtree default size
 let NERDTreeMapOpenInTab='<ENTER>' " press enter on nerdtree item for new tab
 " let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
-" Toggle NerdTree
+let NERDTreeIgnore = ['\.pyc$']
 
 " Fast file switching
 Plugin 'kien/ctrlp.vim'
@@ -84,6 +84,7 @@ let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_experimental_simple_template_highlight = 1
 let g:cpp_concepts_highlight = 1
+autocmd BufNewFile,BufRead *.epy   set syntax=htmldjango
 
 Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
@@ -102,6 +103,11 @@ let g:DoxygenToolkit_returnTag="@Returns"
 let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
 " let g:vim_resize_disable_auto_mappings = 1
+
+
+" Django support
+Plugin 'lambdalisue/vim-django-support'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -128,7 +134,7 @@ if &term =~ '^screen'
 endif
 " ------------------------------
 " Themes -----------------------
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline " Force set gui font
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13 " Force set gui font
 set t_Co=256
 colorscheme Monokai
 " colorscheme Benokai

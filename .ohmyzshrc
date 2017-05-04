@@ -33,6 +33,7 @@ plugins=(
     fasd
     autojump
     command-not-found
+    #zsh-trprompt
 )
 # load oh-my-zsh
 . $ZSH/oh-my-zsh.sh
@@ -47,4 +48,4 @@ if ! (( ${+functions[_zsh_highlight]} )); then
     . $ZSH_CUSTOM/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 fi
 
-
+#source ~/.dotfiles/zsh-trprompt/trprompt.plugin.zsh

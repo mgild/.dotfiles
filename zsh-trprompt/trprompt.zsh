@@ -24,7 +24,7 @@ function load_TRPROMPT () {
     cnewpos=$(tput cup 0 $(($(min $OLDTRPROMPTPOS $TRPROMPTPOS) - 1)));
     sc=$(tput sc);
     rc=$(tput rc);
-    assembled="$sc$civis$cnewpos$filler$out$cnorm$rc";
+    assembled="$sc$civis$cnewpos$filler$out $cnorm$rc";
     # single echo statement. Make as fast as possible
     exec < /dev/tty;
     echo -n $assembled > /dev/tty;
