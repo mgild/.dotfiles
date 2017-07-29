@@ -45,7 +45,7 @@ if [[ ! -a "${HOME}/.oh-my-zsh" ]]; then
 fi
 
 # Ensure custom zsh plugins are downloaded
-if [[ ! -d  $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]]; then
+if [[ ! -d  $ZSH_CUSTOM/plugins/fast-syntax-highlighting ]]; then
     git clone https://github.com/zdharma/fast-syntax-highlighting.git $ZSH_CUSTOM/plugins/fast-syntax-highlighting
 fi
 
