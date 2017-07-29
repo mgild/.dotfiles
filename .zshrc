@@ -49,5 +49,13 @@ precmd() {
 }
 
 PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
-TRPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b';
+#RPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b';
+
+# setopt PROMPT_SUBST;
+# TMOUT=1;
+# TRAPALRM() {
+    # precmd;
+    # zle reset-prompt;
+# }
+#
 

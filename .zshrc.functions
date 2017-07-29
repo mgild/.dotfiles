@@ -11,6 +11,12 @@ function lsym() {
     done;
 }
 
+#  Show directories in given directory (including symlink dirs)
+#   -----------------------------------------------------
+function lsd() {
+    ls -p | grep /;
+}
+
 min() {
     ((($1 < $2)) && echo $1) || echo $2
 }
@@ -35,7 +41,8 @@ zman() {
 man() {
     vartype=$(type "$@");
     if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
-        command man zshbuiltins | less -p "^       $@ ";
+        #command man zshbuiltins | less -p "^       $@ ";
+        zman | less -p "^       $@ ";
     else
         command man "$@";
     fi;
@@ -190,4 +197,19 @@ get_cursor_row() {
     IFS=';' read -r -d R -A pos;
     stty $oldstty;
     echo ${pos[1]:2}
+}
+
+gen_MAC() {
+    s=""; repeat 6; do echo -n "$s"; printf "%02X" "$(( $RANDOM % 256 ))"; s=":"; done;
+    echo
+}
+
+randomize_MAC() {
+    set_MAC "$(gen_MAC)";
+}
+
+set_MAC() {
+    sudo ifconfig en0 ether "$1";
+    sudo ifconfig en0 down;
+    sudo ifconfig en0 up;
 }

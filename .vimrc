@@ -63,6 +63,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " NerdTree
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
+let g:nerdtree_tabs_open_on_console_startup=1
 autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
@@ -90,7 +91,10 @@ Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
 let g:airline_powerline_fonts = 1
 let g:Powerline_symbols='unicode'
+" Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 Plugin 'flazz/vim-colorschemes'
@@ -138,6 +142,7 @@ set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13 " Force set gui font
 set t_Co=256
 colorscheme Monokai
 " colorscheme Benokai
+hi TabLineFill ctermfg=DarkGrey
 " ------------------------------
 " Search -----------------------
 set incsearch           " search as characters are entered
@@ -172,3 +177,9 @@ nnoremap <S-h> gT
 nnoremap <S-l> gt
 "Press enter to accept YCM option
 " -----------------------------
+
+
+" Overrides
+" -----------------------------
+"  Prevent same file in multiple tabs
+

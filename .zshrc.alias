@@ -16,6 +16,11 @@ alias unique_set='declare -U'
 alias lower='declare -l'
 alias upper='declare -u'
 
+
+#   Global alias to /dev/null
+#   -----------------------------------------------------
+alias -g null="/dev/null"
+
 #  sudo last command
 #   -----------------------------------------------------
 alias fuck='sudo $(fc -ln -1)'
@@ -41,6 +46,10 @@ alias back='cd ~-'
 #   -----------------------------------------------------
 alias gsl='git log --all --decorate --oneline --graph --color=always'
 
+#   Search directory tree for regex (add -l to follow symlinks)
+#   -----------------------------------------------------
+alias dsearch='tree -fi | grep'
+
 #   Quick clear
 #   -----------------------------------------------------
 alias c=clear
@@ -55,11 +64,12 @@ alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
 #   Make tmux auto reattach if it can
 #   -----------------------------------------------------
-alias t='tmux a &> /dev/null || tmux new'
+alias t='tmux a &> null || tmux new'
 
-#   easier git push
+#   easier git commands
 #   -----------------------------------------------------
 alias gpo='git push origin'
+alias gcm='git commit -m'
 
 #   Common misspellings
 #   -----------------------------------------------------
@@ -70,8 +80,11 @@ alias mkae=make
 #   -----------------------------------------------------
 alias ls="ls -FHG"
 
-#   memHogsTop, memHogsPs:  Find memory hogs
+#   youtube-dl with optimal download settings
 #   -----------------------------------------------------
+alias ydl="youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'"
+
+#   memHogsTop, memHogsPs:  Find memory hogs
 alias memHogsTop='top -l 1 -o rsize | head -20'
 alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
 function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'}
@@ -98,4 +111,6 @@ alias ipInfo0='ipconfig getpacket en0'
 alias ipInfo1='ipconfig getpacket en1'
 # openPorts:    All listening connections
 alias openPorts='sudo lsof -i | grep LISTEN'
+
+
 

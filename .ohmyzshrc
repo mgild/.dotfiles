@@ -33,6 +33,7 @@ plugins=(
     fasd
     autojump
     command-not-found
+    fast-syntax-highlighting
     #zsh-trprompt
 )
 # load oh-my-zsh
@@ -43,9 +44,5 @@ plugins=(
 # These plugins must be loaded manually
 . $ZSH_CUSTOM/plugins/tab-completion/tab-completion.sh
 . $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
-
-if ! (( ${+functions[_zsh_highlight]} )); then
-    . $ZSH_CUSTOM/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-fi
 
 #source ~/.dotfiles/zsh-trprompt/trprompt.plugin.zsh
