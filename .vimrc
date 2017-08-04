@@ -159,6 +159,9 @@ set shiftwidth=4 " Make indentaion 4 spaces
 " Sets 'S' and 'Silent' to silently exec command
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
 command! -nargs=1 Vsrc execute 'source ~/.vimrc'
+" Auto-Commands ---------------------
+" Detect file changes and offer reload
+au CursorMoved,CursorHold * checktime
 " -----------------------------
 " Pane Resizing --------------
 " nmap <silent> <S-h> :CmdResizeLeft<cr>

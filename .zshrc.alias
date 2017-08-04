@@ -76,9 +76,9 @@ alias gcm='git commit -m'
 alias pyhton=python
 alias mkae=make
 
-#   Colorize ls
+#   Colorize ls (tries GNU ls colorize then non-GNU)
 #   -----------------------------------------------------
-alias ls="ls -FHG"
+alias ls='ls --color=auto 2>& /dev/null || ls -FG';
 
 #   youtube-dl with optimal download settings
 #   -----------------------------------------------------
