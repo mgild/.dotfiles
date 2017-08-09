@@ -44,7 +44,7 @@ alias back='cd ~-'
 
 #   Git Smart Log
 #   -----------------------------------------------------
-alias gsl='git log --all --decorate --oneline --graph --color=always'
+alias gsl="git log --all --decorate --oneline --graph --color=always  --pretty=format:'%C(auto)%h%C(auto)%d %s %C(cyan)(%aN, %ar)'"
 
 #   Search directory tree for regex (add -l to follow symlinks)
 #   -----------------------------------------------------
@@ -70,6 +70,7 @@ alias t='tmux a &> null || tmux new'
 #   -----------------------------------------------------
 alias gpo='git push origin'
 alias gcm='git commit -m'
+alias gpull='git pull'
 
 #   Common misspellings
 #   -----------------------------------------------------
@@ -78,7 +79,9 @@ alias mkae=make
 
 #   Colorize ls (tries GNU ls colorize then non-GNU)
 #   -----------------------------------------------------
-alias ls='ls --color=auto 2>& /dev/null || ls -FG';
+ls() {
+    command ls --color=auto $@ 2>& /dev/null || command ls -FG $@;
+}
 
 #   youtube-dl with optimal download settings
 #   -----------------------------------------------------

@@ -30,9 +30,6 @@ plugins=(
     colorize
     z
     zsh-autosuggestions
-    fasd
-    autojump
-    command-not-found
     fast-syntax-highlighting
     #zsh-trprompt
 )

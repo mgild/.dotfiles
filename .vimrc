@@ -172,13 +172,11 @@ au CursorMoved,CursorHold * checktime
 " Key Mappings -----------------
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap <F4> :NERDTreeToggle<CR>
-"To create a new tab
-nnoremap <C-t> :tabnew<Space>
-inoremap <C-t> <Esc>:tabnew<Space>
-"Tab Navigation
-nnoremap <S-h> gT
-nnoremap <S-l> gt
-"Press enter to accept YCM option
+"Buffer Navigation
+noremap <C-n> :bnext<CR>
+noremap <C-b> :bprevious<CR>
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
 " -----------------------------
 
 
