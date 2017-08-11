@@ -79,7 +79,7 @@ alias mkae=make
 
 #   Colorize ls (tries GNU ls colorize then non-GNU)
 #   -----------------------------------------------------
-ls() {
+function ls() {
     command ls --color=auto $@ 2>& /dev/null || command ls -FG $@;
 }
 

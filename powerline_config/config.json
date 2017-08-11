@@ -26,7 +26,7 @@
 		},
 		"tmux": {
 			"colorscheme": "default",
-			"theme": "custom"
+			"theme": "default"
 		},
 		"vim": {
 			"colorscheme": "default",
@@ -46,7 +46,8 @@
 		},
 		"wm": {
 			"colorscheme": "default",
-			"theme": "default"
+			"theme": "default",
+			"update_interval": 2
 		}
 	}
 }

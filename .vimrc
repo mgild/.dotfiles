@@ -179,7 +179,6 @@ nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 " -----------------------------
 
-
 " Overrides
 " -----------------------------
 "  Prevent same file in multiple tabs

@@ -9,8 +9,6 @@
 		"window:current":       {"fg": "mediumcyan", "bg": "darkblue", "attrs": []},
 		"window_name":          {"fg": "white",      "bg": "darkblue", "attrs": ["bold"]},
 		"session":              {"fg": "black",      "bg": "gray90",   "attrs": ["bold"]},
-		"session:prefix":       {"fg": "gray90",     "bg": "darkblue", "attrs": ["bold"]},
-        "mem_usage":            { "fg": "gray8", "bg": "gray0", "attr": [] },
-        "mem_usage_gradient":   { "fg": "green_yellow_orange_red", "bg": "gray0", "attr": [] }
+		"session:prefix":       {"fg": "gray90",     "bg": "darkblue", "attrs": ["bold"]}
 	}
 }
