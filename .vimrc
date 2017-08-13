@@ -19,10 +19,10 @@ let g:tagbar_autoclose = 0 "keep tagbar open after selection
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
-let g:easytags_async = 1 " async tag loading
+" let g:easytags_async = 1 " async tag loading
 nnoremap <C-]> <C-w><C-]><C-w>T
 "
-Plugin 'scrooloose/nerdcommenter'
+""Plugin 'scrooloose/nerdcommenter'
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 " Allow commenting and inverting empty lines (useful when commenting a region)
@@ -33,20 +33,24 @@ let g:NERDTrimTrailingWhitespace = 1
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
 " Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
+" "Plugin 'git://git.wincent.com/command-t.git'
 " git repos on your local machine (i.e. when working on your own plugin)
 " Plugin 'file:///home/gmarik/path/to/plugin'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
-Plugin 'ascenator/L9', {'name': 'newL9'}
+" "Plugin 'ascenator/L9', {'name': 'newL9'}
 " Syntax checker
 Plugin 'w0rp/ale'
 let g:airline#extensions#ale#enabled = 1
 let g:ale_cpp_gcc_executable = '-std=c++14 -Wall'
-let g:ale_python_flake8_options = '--ignore=E501,E303,E225'
+let g:ale_python_flake8_executable = 'python'
+let g:ale_python_flake8_options = '-m flake8 --ignore=E501,E303,E225'
+""let g:ale_python_flake8_options = '--ignore=E501,E303,E225'
+" Write this in your vimrc file
+" let g:ale_lint_on_text_changed = 'never'
 
 " Code completion
 Plugin 'valloric/youcompleteme'
@@ -136,8 +140,9 @@ endif
 " Themes -----------------------
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13 " Force set gui font
 set t_Co=256
+let g:solarized_termcolors=256
 colorscheme Monokai
-" colorscheme Benokai
+" "colorscheme solarized
 hi TabLineFill ctermfg=DarkGrey
 " ------------------------------
 " Search -----------------------
@@ -178,4 +183,3 @@ nnoremap <S-Tab> :bprevious<CR>
 " Overrides
 " -----------------------------
 "  Prevent same file in multiple tabs
-

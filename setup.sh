@@ -96,7 +96,7 @@ fi
 
 # Download and build YouCompleteMe compiler
 if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]; then
-    python ~/.vim/bundle/youcompleteme/install.py --all
+    python ~/.vim/bundle/youcompleteme/install.py --clang-completer --tern-completer
 fi
 
 
