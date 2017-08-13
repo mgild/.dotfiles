@@ -43,11 +43,10 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " different version somewhere else.
 Plugin 'ascenator/L9', {'name': 'newL9'}
 " Syntax checker
-Plugin 'scrooloose/syntastic'
-let g:syntastic_cpp_checkers = ['gcc']
-let g:syntastic_cpp_compiler = 'gcc'
-let g:syntastic_cpp_compiler_options = '-std=c++14'
-let g:syntastic_python_flake8_exec = '/usr/bin/python2'
+Plugin 'w0rp/ale'
+let g:airline#extensions#ale#enabled = 1
+let g:ale_cpp_gcc_executable = '-std=c++14 -Wall'
+let g:ale_python_flake8_options = '--ignore=E501,E303,E225'
 
 " Code completion
 Plugin 'valloric/youcompleteme'
@@ -62,15 +61,12 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " NerdTree
 Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs' " Add tab commands to Nerdtree
-let g:nerdtree_tabs_open_on_console_startup=1
 autocmd vimenter * NERDTree " Auto open NerdTree
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 " let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
 " Close vim if only NerdTree left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeWinSize=15 " change nerdtree default size
-let NERDTreeMapOpenInTab='<ENTER>' " press enter on nerdtree item for new tab
 " let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
 let NERDTreeIgnore = ['\.pyc$']
 
@@ -161,7 +157,7 @@ command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
 command! -nargs=1 Vsrc execute 'source ~/.vimrc'
 " Auto-Commands ---------------------
 " Detect file changes and offer reload
-au CursorMoved,CursorHold * checktime
+au CursorHold * checktime
 " -----------------------------
 " Pane Resizing --------------
 " nmap <silent> <S-h> :CmdResizeLeft<cr>

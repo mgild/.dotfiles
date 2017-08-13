@@ -9,7 +9,7 @@ export VISUAL=$EDITOR
 
 # Set less options
 # -------------------------------------------------------
-export LESS=-asrRix8
+export LESS=-MasrRix8
 
 # Set less options
 # -------------------------------------------------------
