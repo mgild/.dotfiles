@@ -47,7 +47,7 @@ Plugin 'w0rp/ale'
 let g:airline#extensions#ale#enabled = 1
 let g:ale_cpp_gcc_executable = '-std=c++14 -Wall'
 let g:ale_python_flake8_executable = 'python'
-let g:ale_python_flake8_options = '-m flake8 --ignore=E501,E303,E225'
+let g:ale_python_flake8_options = '-m flake8 --ignore=E203,E231,E501,E302,E303,E225'
 ""let g:ale_python_flake8_options = '--ignore=E501,E303,E225'
 " Write this in your vimrc file
 " let g:ale_lint_on_text_changed = 'never'
@@ -63,20 +63,19 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-" NerdTree
-Plugin 'scrooloose/nerdtree'
-autocmd vimenter * NERDTree " Auto open NerdTree
-autocmd vimenter * wincmd p " Cursor by default not in NerdTree
-" let g:NERDTreeMapOpenInTabSilent = '<2-LeftMouse>'
-" Close vim if only NerdTree left
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeWinSize=15 " change nerdtree default size
-" let g:nerdtree_tabs_open_on_console_startup=1 " toggle nerdtree tab settings
-let NERDTreeIgnore = ['\.pyc$']
 
+" Press "-" for file explorer
+Plugin 'tpope/vim-vinegar'
+Plugin 'scrooloose/nerdtree'
+" Open nerdtree on start if no file specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd vimenter * wincmd p " Cursor by default not in NerdTre
+let g:NERDTreeWinSize=15 " change nerdtree default size
+let NERDTreeIgnore = ['\.pyc$']
+noremap <F4> :NERDTreeToggle<CR>
 " Fast file switching
 Plugin 'kien/ctrlp.vim'
-let g:NERDTreeUseSimpleIndicator = 1
 
 " General enhanced syntax highlighting
 Plugin 'sheerun/vim-polyglot'
@@ -102,7 +101,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'spf13/vim-autoclose'
 Plugin 'DoxygenToolkit.vim'
 let g:DoxygenToolkit_briefTag_pre="@Brief"
-let g:DoxygenToolkit_paramTag_pre="@Param "
+let g:DoxygenToolkit_paramTag_pre="@Param"
 let g:DoxygenToolkit_returnTag="@Returns"
 let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
@@ -162,7 +161,7 @@ command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
 command! -nargs=1 Vsrc execute 'source ~/.vimrc'
 " Auto-Commands ---------------------
 " Detect file changes and offer reload
-au CursorHold * checktime
+au FocusGained,CursorHold,BufEnter * checktime
 " -----------------------------
 " Pane Resizing --------------
 " nmap <silent> <S-h> :CmdResizeLeft<cr>
@@ -172,7 +171,6 @@ au CursorHold * checktime
 " -----------------------------
 " Key Mappings -----------------
 nnoremap <F8> :TagbarToggle<CR>
-nnoremap <F4> :NERDTreeToggle<CR>
 "Buffer Navigation
 noremap <C-n> :bnext<CR>
 noremap <C-b> :bprevious<CR>
