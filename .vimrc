@@ -47,7 +47,7 @@ Plugin 'w0rp/ale'
 let g:airline#extensions#ale#enabled = 1
 let g:ale_cpp_gcc_executable = '-std=c++14 -Wall'
 let g:ale_python_flake8_executable = 'python'
-let g:ale_python_flake8_options = '-m flake8 --ignore=E203,E231,E501,E302,E303,E225'
+let g:ale_python_flake8_options = '-m flake8 --ignore=E201,E202,E203,E225,E231,E302,E303,E501'
 ""let g:ale_python_flake8_options = '--ignore=E501,E303,E225'
 " Write this in your vimrc file
 " let g:ale_lint_on_text_changed = 'never'
@@ -100,9 +100,9 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'spf13/vim-autoclose'
 Plugin 'DoxygenToolkit.vim'
-let g:DoxygenToolkit_briefTag_pre="@Brief"
-let g:DoxygenToolkit_paramTag_pre="@Param"
-let g:DoxygenToolkit_returnTag="@Returns"
+let g:DoxygenToolkit_briefTag_pre="@Brief "
+let g:DoxygenToolkit_paramTag_pre="@Param "
+let g:DoxygenToolkit_returnTag="@Returns "
 let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
 " let g:vim_resize_disable_auto_mappings = 1
