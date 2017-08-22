@@ -12,9 +12,10 @@ vim -E -c "PluginInstall" -c "q" -c "q"
 mv ~/.vim/colors  ~/.vim/colors.old
 ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors
 
+# No longer needed. switched to mucomplete
 # Download and build YouCompleteMe compiler
-if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]; then
-    python ~/.vim/bundle/youcompleteme/install.py --clang-completer --tern-completer
-fi
+# if [[ ! -a ${HOME}/.vim/bundle/youcompleteme/third_party/ycmd/ycm_core.so ]]; then
+    # python ~/.vim/bundle/youcompleteme/install.py --clang-completer --tern-completer
+# fi
 
 

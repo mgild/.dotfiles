@@ -19,10 +19,10 @@ let g:tagbar_autoclose = 0 "keep tagbar open after selection
 
 Plugin 'https://github.com/xolox/vim-misc.git' " misc
 Plugin 'xolox/vim-easytags' " jump to definition (<Ctrl> + ]), + stuff
-" let g:easytags_async = 1 " async tag loading
+let g:easytags_async = 1 " async tag loading
 nnoremap <C-]> <C-w><C-]><C-w>T
 "
-""Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdcommenter'
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 " Allow commenting and inverting empty lines (useful when commenting a region)
@@ -32,40 +32,42 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-" Git plugin not hosted on GitHub
-" "Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" "Plugin 'ascenator/L9', {'name': 'newL9'}
 " Syntax checker
 Plugin 'w0rp/ale'
 let g:airline#extensions#ale#enabled = 1
-let g:ale_cpp_gcc_executable = '-std=c++14 -Wall'
+let g:ale_cpp_gcc_executable = '-std=c++14 -Wall -lssl -lcrypto'
 let g:ale_python_flake8_executable = 'python'
 let g:ale_python_flake8_options = '-m flake8 --ignore=E201,E202,E203,E225,E231,E302,E303,E501'
-""let g:ale_python_flake8_options = '--ignore=E501,E303,E225'
-" Write this in your vimrc file
 " let g:ale_lint_on_text_changed = 'never'
 
 " Code completion
-Plugin 'valloric/youcompleteme'
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_add_preview_to_completeopt = 0
+Plugin 'honza/vim-snippets'
+Plugin 'lifepillar/vim-mucomplete'
+set completeopt+=menuone
+inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+inoremap <expr> <cr> mucomplete#popup_exit("\<cr>")
+""set completeopt+=noselect
+set completeopt+=noinsert
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
+let g:mucomplete#enable_auto_at_startup = 1
+set noshowmode shortmess+=c
 set completeopt-=preview
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
+set completeopt+=longest,menuone,noinsert,noselect
+let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
+let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
+let g:jedi#popup_on_dot = 0  " It may be 1 as well
+set noinfercase
+" The following line assumes `brew install llvm` in macOS
+let g:clang_library_path = '/usr/local/opt/llvm/lib/libclang.dylib'
+let g:clang_user_options = '-std=c++14'
+let g:clang_complete_auto = 1
+let g:mucomplete#chains.default = ['c-n', 'omni', 'dict', 'file']
+let g:mucomplete#enable_auto_at_startup = 1
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-" Press "-" for file explorer
-Plugin 'tpope/vim-vinegar'
 Plugin 'scrooloose/nerdtree'
 " Open nerdtree on start if no file specified
 autocmd StdinReadPre * let s:std_in=1
@@ -98,7 +100,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 Plugin 'flazz/vim-colorschemes'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'spf13/vim-autoclose'
+Plugin 'tpope/vim-surround'
 Plugin 'DoxygenToolkit.vim'
 let g:DoxygenToolkit_briefTag_pre="@Brief "
 let g:DoxygenToolkit_paramTag_pre="@Param "
@@ -158,7 +160,7 @@ set shiftwidth=4 " Make indentaion 4 spaces
 " Commands ---------------------
 " Sets 'S' and 'Silent' to silently exec command
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
-command! -nargs=1 Vsrc execute 'source ~/.vimrc'
+command! Vsrc execute 'source ~/.vimrc'
 " Auto-Commands ---------------------
 " Detect file changes and offer reload
 au FocusGained,CursorHold,BufEnter * checktime
@@ -180,4 +182,5 @@ nnoremap <S-Tab> :bprevious<CR>
 
 " Overrides
 " -----------------------------
-"  Prevent same file in multiple tabs
+" mini insert (single char)
+noremap m i <Esc>r

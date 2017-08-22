@@ -14,7 +14,6 @@ function assertInstalled() {
     done
     $success || exit 1
 }
-
 assertInstalled zsh vim wget python pip git cmake ctags tmux
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
