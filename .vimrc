@@ -68,14 +68,6 @@ let g:mucomplete#enable_auto_at_startup = 1
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-Plugin 'scrooloose/nerdtree'
-" Open nerdtree on start if no file specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd vimenter * wincmd p " Cursor by default not in NerdTre
-let g:NERDTreeWinSize=15 " change nerdtree default size
-let NERDTreeIgnore = ['\.pyc$']
-noremap <F4> :NERDTreeToggle<CR>
 " Fast file switching
 Plugin 'kien/ctrlp.vim'
 
@@ -184,3 +176,13 @@ nnoremap <S-Tab> :bprevious<CR>
 " -----------------------------
 " mini insert (single char)
 noremap m i <Esc>r
+" -----------------------------
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 15
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END
