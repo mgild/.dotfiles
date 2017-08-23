@@ -59,3 +59,6 @@ PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
 # }
 #
 
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

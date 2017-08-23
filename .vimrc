@@ -104,7 +104,7 @@ let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 
 " Django support
 Plugin 'lambdalisue/vim-django-support'
-
+Plugin 'junegunn/fzf'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -177,12 +177,29 @@ nnoremap <S-Tab> :bprevious<CR>
 " mini insert (single char)
 noremap m i <Esc>r
 " -----------------------------
+" NetRW
+" -----------------------------
+" netrw style
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 15
+let g:netrw_mousemaps = 0
+" NetRW ignore specification (comma seperated)
+let g:netrw_list_hide= '.*\.swp$,.*\.pyc,^\..*'
+" auto open netrw
 augroup ProjectDrawer
   autocmd!
   autocmd VimEnter * :Vexplore
 augroup END
+" auto close netrw if only split open
+aug netrw_close
+  au!
+  au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"|q|endif
+aug END
+" move cursor out of netrw
+autocmd VimEnter * wincmd p
+
+" -----------------------------
+set rtp+=~/.fzf

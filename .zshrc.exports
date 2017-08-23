@@ -27,4 +27,5 @@ export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 
 
+export FZF_DEFAULT_OPTS='--extended'
 
