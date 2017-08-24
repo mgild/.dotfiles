@@ -19,6 +19,8 @@ CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
     . "$CWD/osxsetup.sh";
+elif test "$(uname -s)" = "Linux"; then
+    . "$CWD/linuxsetup.sh";
 fi
 
 . "$CWD/moveSrcs.sh";
@@ -31,10 +33,11 @@ fi
 
 . "$CWD/plugin-setup.sh";
 
-. "$CWD/tmux-setup.sh"
+. "$CWD/tmux-setup.sh";
 
 . "$CWD/powerline-setup.sh";
 
+. "$CWD/fzf-setup.sh";
 # Enter zsh shell
 zsh
 

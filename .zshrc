@@ -2,7 +2,7 @@
 # Path extensions
 path=(
     # Linuxbrew
-    ${HOME}/.linuxbrew/bin
+    {/home/linuxbrew,${HOME}}/.linuxbrew/bin
     # python 2.7 user bin on osx
     ${HOME}/Library/Python/2.7/bin
     # Latex tools (osx)
@@ -20,14 +20,14 @@ path=(
 export PATH=${(j/:/)path}
 
 man_path=(
-    ${HOME}/.linuxbrew/bin
+    {/home/linuxbrew,${HOME}}/.linuxbrew/bin
     /usr/local/opt/coreutils/libexec/gnuman
     /usr/{local/,}share/man
 )
 export MANPATH=${(j/:/)man_path}
 
 info_path=(
-    ${HOME}/.linuxbrew/share/info
+    {/home/linuxbrew,${HOME}}/.linuxbrew/share/info
 )
 export INFOPATH=${(j/:/)info_path}
 
