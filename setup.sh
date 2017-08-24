@@ -34,8 +34,8 @@ fi
 . "$CWD/moveSrcs.sh";
 . "$CWD/zshrc-setup.sh";
 
-attemptInstall zsh vim python python3 git ctags tmux
-assertInstalled zsh vim python python3 git ctags tmux
+attemptInstall zsh vim python git ctags tmux
+assertInstalled zsh vim python git ctags tmux
 
 # install pip
 if ! which pip &> /dev/null; then
