@@ -105,7 +105,16 @@ let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 " Django support
 Plugin 'lambdalisue/vim-django-support'
 Plugin 'junegunn/fzf'
-
+Plugin 'junegunn/fzf.vim'
+Plugin 'junegunn/vim-easy-align'
+" only highlight curr scope
+Plugin 'junegunn/limelight.vim'
+Plugin 'scrooloose/nerdtree'
+noremap <C-E> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
+autocmd VimEnter * NERDTreeToggle "Open nerdtree on start
+autocmd vimenter * wincmd p " Cursor by default not in NerdTree
+let g:NERDTreeWinSize=20 " change nerdtree default size
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -155,7 +164,7 @@ command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
 command! Vsrc execute 'source ~/.vimrc'
 " Auto-Commands ---------------------
 " Detect file changes and offer reload
-au FocusGained,CursorHold,BufEnter * checktime
+au FocusGained,CursorHold,CursorHoldI,BufEnter * checktime
 " -----------------------------
 " Pane Resizing --------------
 " nmap <silent> <S-h> :CmdResizeLeft<cr>
@@ -188,18 +197,4 @@ let g:netrw_winsize = 15
 let g:netrw_mousemaps = 0
 " NetRW ignore specification (comma seperated)
 let g:netrw_list_hide= '.*\.swp$,.*\.pyc,^\..*'
-" auto open netrw
-augroup ProjectDrawer
-  autocmd!
-  autocmd VimEnter * :Vexplore
-augroup END
-" auto close netrw if only split open
-aug netrw_close
-  au!
-  au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&filetype") == "netrw"|q|endif
-aug END
-" move cursor out of netrw
-autocmd VimEnter * wincmd p
-
 " -----------------------------
-set rtp+=~/.fzf
