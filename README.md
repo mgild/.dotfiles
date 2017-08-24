@@ -2,7 +2,7 @@
 
 To install, run setup.sh
 
-Prereqs: zsh, vim, wget, cmake, libpython2.7-dev. pip, git, ctags, tmux >= 2.1
+Prereqs: zsh, ruby, libpython2.7-dev
 
 Change your non-ASCII character font for your preferred terminal to one of the provided powerline fonts
 

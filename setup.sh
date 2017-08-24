@@ -34,8 +34,14 @@ fi
 . "$CWD/moveSrcs.sh";
 . "$CWD/zshrc-setup.sh";
 
-attemptInstall zsh vim python pip git ctags tmux
-assertInstalled zsh vim python pip git ctags tmux
+attemptInstall zsh vim python python3 git ctags tmux
+assertInstalled zsh vim python python3 git ctags tmux
+
+# install pip
+if ! which pip &> /dev/null; then
+    curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
+    python /tmp/get-pip.py --user
+fi
 
 . "$CWD/vim-setup.sh";
 
