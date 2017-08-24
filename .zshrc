@@ -1,3 +1,4 @@
+setopt extended_glob
 
 # Path extensions
 path=(

@@ -31,12 +31,11 @@ elif test "$(uname -s)" = "Linux"; then
     . "$CWD/linuxsetup.sh";
 fi
 
+. "$CWD/moveSrcs.sh";
+. "$CWD/zshrc-setup.sh";
+
 attemptInstall zsh vim python pip git ctags tmux
 assertInstalled zsh vim python pip git ctags tmux
-
-. "$CWD/moveSrcs.sh";
-
-. "$CWD/zshrc-setup.sh";
 
 . "$CWD/vim-setup.sh";
 
