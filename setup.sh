@@ -14,7 +14,15 @@ function assertInstalled() {
     done
     $success || exit 1
 }
-assertInstalled zsh vim wget python pip git cmake ctags tmux
+
+function attemptInstall() {
+    for var in "$@"; do
+        if ! which $var &> /dev/null; then
+            brew install $var
+        fi
+    done
+}
+
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
@@ -22,6 +30,9 @@ if test "$(uname -s)" = "Darwin"; then
 elif test "$(uname -s)" = "Linux"; then
     . "$CWD/linuxsetup.sh";
 fi
+
+attemptInstall zsh vim python pip git ctags tmux
+assertInstalled zsh vim python pip git ctags tmux
 
 . "$CWD/moveSrcs.sh";
 
