@@ -34,9 +34,6 @@ elif test "$(uname -s)" = "Linux"; then
 fi
 
 . "$CWD/moveSrcs.sh";
-. "$CWD/zshrc-setup.sh";
-. "$CWD/ohmyzsh-setup.sh";
-. "$CWD/plugin-setup.sh";
 
 attemptInstall vim python ctags tmux
 assertInstalled vim python ctags tmux
@@ -49,12 +46,12 @@ if ! which pip &> /dev/null; then
 fi
 
 . "$CWD/vim-setup.sh";
-
 . "$CWD/tmux-setup.sh";
-
 . "$CWD/powerline-setup.sh";
-
 . "$CWD/fzf-setup.sh";
+. "$CWD/zshrc-setup.sh";
+. "$CWD/ohmyzsh-setup.sh";
+. "$CWD/plugin-setup.sh";
 # Enter zsh shell
 echo "Entering zsh"
 exec zsh
