@@ -1,4 +1,3 @@
-set -e
 # Symlink the vimrc
 ln -s $CWD/.vimrc ~/
 

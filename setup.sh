@@ -1,5 +1,5 @@
 #! /bin/zsh
-set -e
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 # Would you like to use another custom folder than $ZSH/custom?
@@ -25,7 +25,6 @@ function attemptInstall() {
 }
 
 assertInstalled ruby git zsh
-
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
@@ -43,6 +42,7 @@ attemptInstall vim python ctags tmux
 assertInstalled vim python ctags tmux
 
 # install pip
+source "$CWD/.zshrc"
 if ! which pip &> /dev/null; then
     curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
     python /tmp/get-pip.py --user --force
@@ -56,5 +56,6 @@ fi
 
 . "$CWD/fzf-setup.sh";
 # Enter zsh shell
-zsh
+echo "Entering zsh"
+exec zsh
 
