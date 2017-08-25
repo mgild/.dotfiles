@@ -9,6 +9,7 @@ if [[ ! -a "/home/${USER}/python-dev/include/python2.7/Python.h" ]]; then
     cd ~/Python-2.7.13/
     ./configure --enable-shared --enable-unicode --prefix=/home/${USER}/python-dev
     make && make install
+    rm ~/Python-2.7.13/
 fi
 
 
