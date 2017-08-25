@@ -49,9 +49,9 @@ fi
 . "$CWD/tmux-setup.sh";
 . "$CWD/powerline-setup.sh";
 . "$CWD/fzf-setup.sh";
-. "$CWD/zshrc-setup.sh";
 . "$CWD/ohmyzsh-setup.sh";
 . "$CWD/plugin-setup.sh";
+. "$CWD/zshrc-setup.sh";
 # Enter zsh shell
 echo "Entering zsh"
 exec zsh

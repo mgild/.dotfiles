@@ -2,8 +2,6 @@ setopt extended_glob
 
 # Path extensions
 path=(
-    # Linuxbrew
-    {/home/linuxbrew,${HOME}}/.linuxbrew/bin
     # python 2.7 user bin on osx
     ${HOME}/Library/Python/2.7/bin
     # Latex tools (osx)
@@ -16,6 +14,8 @@ path=(
     /usr/local/opt{/go/libexec/bin,/coreutils/libexec/gnubin,}
     # default paths
     /{usr/,}{local/,}{s,}bin
+    # Linuxbrew
+    {/home/linuxbrew,${HOME}}/.linuxbrew/bin
 )
 # Join path and export
 export PATH=${(j/:/)path}
