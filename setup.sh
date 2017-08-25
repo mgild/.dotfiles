@@ -45,7 +45,7 @@ assertInstalled vim python ctags tmux
 # install pip
 if ! which pip &> /dev/null; then
     curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
-    python /tmp/get-pip.py --user
+    python /tmp/get-pip.py --user --force
 fi
 
 . "$CWD/vim-setup.sh";
