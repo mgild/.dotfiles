@@ -1,7 +1,7 @@
 if ! which brew &> /dev/null; then
+    PATH="$PATH:/home/${USER}/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin"
     # unbiquitous non-root package manager for linux distros
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
-    PATH="$PATH:/home/${USER}/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin"
 fi
 
 if [[ ! -a "/home/${USER}/python-dev/include/python2.7/Python.h" ]]; then
