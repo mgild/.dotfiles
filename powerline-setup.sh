@@ -4,10 +4,10 @@ if ! is_pipped powerline-status; then
     pip install --user powerline-status
 fi
 if ! is_pipped powerline-mem-segment; then
-    pip install --user powerline-mem-segment
+    pip install --global-option=build_ext --global-option="-I/home/${USER}/python-dev/include/python2.7" --user powerline-mem-segment
 fi
 if ! is_pipped netifaces; then
-    pip install --user netifaces
+    pip install --global-option=build_ext --global-option="-I/home/${USER}/python-dev/include/python2.7" --user netifaces
 fi
 POWERLINE_ROOT="$(pip show powerline-status | grep '^Location: ' | sed 's/^Location: //')/powerline"
 powerline_config="$POWERLINE_ROOT/config_files"
