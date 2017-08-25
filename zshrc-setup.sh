@@ -5,4 +5,3 @@ ln -sfn $CWD/.zshrc.exports ~/
 ln -sfn $CWD/.zshrc.functions ~/
 ln -sfn $CWD/.ohmyzshrc ~/
 
-source $CWD/.zshrc

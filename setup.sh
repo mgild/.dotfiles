@@ -33,6 +33,9 @@ fi
 
 . "$CWD/moveSrcs.sh";
 . "$CWD/zshrc-setup.sh";
+. "$CWD/ohmyzsh-setup.sh";
+. "$CWD/plugin-setup.sh";
+source ~/.zshrc
 
 attemptInstall zsh vim python git ctags tmux
 assertInstalled zsh vim python git ctags tmux
@@ -44,10 +47,6 @@ if ! which pip &> /dev/null; then
 fi
 
 . "$CWD/vim-setup.sh";
-
-. "$CWD/ohmyzsh-setup.sh";
-
-. "$CWD/plugin-setup.sh";
 
 . "$CWD/tmux-setup.sh";
 
