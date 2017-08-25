@@ -1,4 +1,5 @@
 #! /bin/zsh
+set -e
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 # Would you like to use another custom folder than $ZSH/custom?
