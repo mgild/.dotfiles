@@ -1,4 +1,5 @@
-if ! which brew &> /dev/null; then
+if [[ ! -a "/home/${USER}/.linuxbrew/bin/brew" && \
+      ! -a "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
     PATH="$PATH:/home/${USER}/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin"
     # unbiquitous non-root package manager for linux distros
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
