@@ -124,6 +124,7 @@ filetype plugin indent on    " required
 " General ----------------------
 syntax on " syntax based on file type
 set number " turn line numbers on
+set autoread " auto reload on foreign changes to files
 set cursorline " Show a line on the line the cursor is on
 set wildmenu "enable extended menus
 filetype indent on
