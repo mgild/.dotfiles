@@ -41,30 +41,35 @@ let g:ale_python_flake8_options = '-m flake8 --ignore=E201,E202,E203,E225,E231,E
 " let g:ale_lint_on_text_changed = 'never'
 
 " Code completion
+Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'lifepillar/vim-mucomplete'
 set completeopt+=menuone
 inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
 inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
 inoremap <expr> <cr> mucomplete#popup_exit("\<cr>")
-""set completeopt+=noselect
-set completeopt+=noinsert
-set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 let g:mucomplete#enable_auto_at_startup = 1
 set noshowmode shortmess+=c
 set completeopt-=preview
-set completeopt+=longest,menuone,noinsert,noselect
-let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
-let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
+set completeopt=menu,menuone,noinsert,noselect
+"set completeopt+=longest,menuone,noinsert,noselect
+let g:UltiSnipsUsePythonVersion = 2
+let g:UltiSnipsExpandTrigger="<C-w>"
+let g:UltiSnipsJumpForwardTrigger="<C-w>"
+let g:UltiSnipsJumpBackwardTrigger="<C-q>"
+let g:mucomplete#chains = {}
+let g:mucomplete#chains = {
+\   'default' : ['ulti', 'c-n', 'omni', 'user', 'dict', 'file']
+\}
+"let g:UltiSnipsExpandTrigger="<c-j>"
 let g:jedi#popup_on_dot = 0  " It may be 1 as well
 set noinfercase
 " The following line assumes `brew install llvm` in macOS
 let g:clang_library_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:clang_user_options = '-std=c++14'
 let g:clang_complete_auto = 1
-let g:mucomplete#chains.default = ['c-n', 'omni', 'dict', 'file']
-let g:mucomplete#enable_auto_at_startup = 1
+"let g:mucomplete#chains.default = ['c-n', 'dict', 'file']
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
@@ -101,14 +106,13 @@ let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
 " let g:vim_resize_disable_auto_mappings = 1
 
-
 " Django support
 Plugin 'lambdalisue/vim-django-support'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/vim-easy-align'
+"Plugin 'junegunn/fzf'
+"Plugin 'junegunn/fzf.vim'
+"Plugin 'junegunn/vim-easy-align'
 " only highlight curr scope
-Plugin 'junegunn/limelight.vim'
+"Plugin 'junegunn/limelight.vim'
 Plugin 'scrooloose/nerdtree'
 noremap <C-E> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']

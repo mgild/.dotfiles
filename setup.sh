@@ -24,7 +24,7 @@ function attemptInstall() {
     done
 }
 
-assertInstalled ruby git zsh curl wget
+assertInstalled ruby git zsh curl wget gcc make
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then

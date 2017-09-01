@@ -25,6 +25,7 @@ ZSH_CUSTOM=$ZSH/custom
 plugins=(
     git
     git-extras
+    github
     sublime
     brew
     colorize

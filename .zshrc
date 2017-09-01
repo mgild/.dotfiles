@@ -1,5 +1,5 @@
 setopt extended_glob
-
+set -gh
 # Path extensions
 path=(
     # python 2.7 user bin on osx
