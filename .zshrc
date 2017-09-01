@@ -1,5 +1,8 @@
 setopt extended_glob
 set -gh
+# start docker daemon
+#eval "$(docker-machine env docker-vm)"
+
 # Path extensions
 path=(
     # python 2.7 user bin on osx
