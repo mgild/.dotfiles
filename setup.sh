@@ -1,5 +1,10 @@
 #! /bin/zsh
 
+if [[ $EUID == 0 ]]; then
+   echo "Don't run setup as root!"
+   exit 1
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 # Would you like to use another custom folder than $ZSH/custom?
