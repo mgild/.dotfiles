@@ -41,10 +41,6 @@ fi
 . "$CWD/moveSrcs.sh";
 
 attemptInstall vim python ctags tmux
-# alias python if brew only installed python under python2
-if which python2 &> /dev/null && ! which python &> /dev/null; then
-    alias python='python2';
-fi
 assertInstalled vim python ctags tmux
 
 # install pip

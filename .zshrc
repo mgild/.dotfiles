@@ -19,6 +19,8 @@ path=(
     /{usr/,}{local/,}{s,}bin
     # Linuxbrew
     {/home/linuxbrew,${HOME}}/.linuxbrew/bin
+    # custom python build path from dotfiles script
+    ${HOME}/python-dev/bin
 )
 # Join path and export
 export PATH=${(j/:/)path}
