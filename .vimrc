@@ -46,7 +46,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'lifepillar/vim-mucomplete'
 set completeopt+=menuone
 inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+" inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
 inoremap <expr> <cr> mucomplete#popup_exit("\<cr>")
 set belloff+=ctrlg " If Vim beeps during completion
 let g:mucomplete#enable_auto_at_startup = 1
@@ -77,10 +77,13 @@ Plugin 'kien/ctrlp.vim'
 
 " General enhanced syntax highlighting
 Plugin 'sheerun/vim-polyglot'
+" Plugin 'octol/vim-cpp-enhanced-highlight'
 let python_highlight_all = 1
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
-let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+" let g:cpp_experimental_simple_template_highlight = 1 " (very slow)
 let g:cpp_concepts_highlight = 1
 autocmd BufNewFile,BufRead *.epy   set syntax=htmldjango
 
@@ -104,6 +107,16 @@ let g:DoxygenToolkit_returnTag="@Returns "
 let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 " Plugin 'breuckelen/vim-resize' " Better pane resizing
 " let g:vim_resize_disable_auto_mappings = 1
+
+" Color match bracings
+Plugin 'kien/rainbow_parentheses.vim'
+au VimEnter * RainbowParenthesesToggle
+autocmd BufEnter * RainbowParenthesesLoadRound
+autocmd BufEnter * RainbowParenthesesLoadSquare
+autocmd BufEnter * RainbowParenthesesLoadBraces
+
+" Quick commands for jumping between headers and cpps
+Plugin 'vim-scripts/a.vim'
 
 " Django support
 Plugin 'lambdalisue/vim-django-support'
@@ -152,12 +165,13 @@ set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13 " Force set gui font
 set t_Co=256
 let g:solarized_termcolors=256
 colorscheme Monokai
-" "colorscheme solarized
+"colorscheme solarized
 hi TabLineFill ctermfg=DarkGrey
 " ------------------------------
 " Search -----------------------
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
+set ignorecase          " ignore case on search
 " ------------------------------
 " Tabs -------------------------
 set expandtab " Expand tabs to spaces
@@ -181,6 +195,8 @@ noremap <C-b> :bprevious<CR>
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 " -----------------------------
-
-" Overrides
-" -----------------------------
+" Useful  ---------------------
+" jump to the last position when reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
