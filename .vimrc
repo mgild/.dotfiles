@@ -39,8 +39,8 @@ let g:ale_cpp_gcc_executable = '-std=c++14 -Wall -lssl -lcrypto'
 let g:ale_python_flake8_executable = 'python'
 let g:ale_python_flake8_options = '-m flake8 --ignore=E201,E202,E203,E225,E231,E302,E303,E501'
 " let g:ale_lint_on_text_changed = 'never'
-
-" Code completion
+"
+" Code completion (ulti and snippets slow?)
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'lifepillar/vim-mucomplete'
@@ -62,7 +62,6 @@ let g:mucomplete#chains = {}
 let g:mucomplete#chains = {
 \   'default' : ['ulti', 'c-n', 'omni', 'user', 'dict', 'file']
 \}
-"let g:UltiSnipsExpandTrigger="<c-j>"
 let g:jedi#popup_on_dot = 0  " It may be 1 as well
 set noinfercase
 " The following line assumes `brew install llvm` in macOS
@@ -72,7 +71,7 @@ let g:clang_complete_auto = 1
 "let g:mucomplete#chains.default = ['c-n', 'dict', 'file']
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
+"
 " Fast file switching
 Plugin 'kien/ctrlp.vim'
 
@@ -110,15 +109,19 @@ let g:DoxygenToolkit_authorName="Mitch Gildenberg"
 Plugin 'lambdalisue/vim-django-support'
 "Plugin 'junegunn/fzf'
 "Plugin 'junegunn/fzf.vim'
-"Plugin 'junegunn/vim-easy-align'
+Plugin 'junegunn/vim-easy-align'
 " only highlight curr scope
-"Plugin 'junegunn/limelight.vim'
+Plugin 'junegunn/limelight.vim'
 Plugin 'scrooloose/nerdtree'
 noremap <C-E> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
 autocmd VimEnter * NERDTreeToggle "Open nerdtree on start
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 let g:NERDTreeWinSize=20 " change nerdtree default size
+"yank over ssh
+"usage: <Leader>y{motion}
+map <Leader>y <Plug>(operator-poweryank-osc52)
+Plugin 'haya14busa/vim-poweryank.git'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -166,16 +169,9 @@ set shiftwidth=4 " Make indentaion 4 spaces
 " Commands ---------------------
 " Sets 'S' and 'Silent' to silently exec command
 command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
-command! Vsrc execute 'source ~/.vimrc'
 " Auto-Commands ---------------------
 " Detect file changes and offer reload
 au FocusGained,CursorHold,CursorHoldI,BufEnter * checktime
-" -----------------------------
-" Pane Resizing --------------
-" nmap <silent> <S-h> :CmdResizeLeft<cr>
-" nmap <silent> <C-S-j> :CmdResizeDown<cr>
-" nmap <silent> <C-S-k> :CmdResizeUp<cr>
-" nmap <silent> <C-S-l> :CmdResizeRight<cr>
 " -----------------------------
 " Key Mappings -----------------
 nnoremap <F8> :TagbarToggle<CR>
@@ -187,19 +183,4 @@ nnoremap <S-Tab> :bprevious<CR>
 " -----------------------------
 
 " Overrides
-" -----------------------------
-" mini insert (single char)
-noremap m i <Esc>r
-" -----------------------------
-" NetRW
-" -----------------------------
-" netrw style
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 15
-let g:netrw_mousemaps = 0
-" NetRW ignore specification (comma seperated)
-let g:netrw_list_hide= '.*\.swp$,.*\.pyc,^\..*'
 " -----------------------------
