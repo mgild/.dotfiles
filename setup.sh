@@ -39,8 +39,7 @@ fi
 attemptInstall vim python ctags tmux
 assertInstalled vim python ctags tmux
 
-# setup zshrc
-. "$CWD/zshrc-setup.sh";
+
 . "$CWD/.zshrc"
 
 # install pip
@@ -55,6 +54,7 @@ fi
 . "$CWD/fzf-setup.sh";
 . "$CWD/ohmyzsh-setup.sh";
 . "$CWD/plugin-setup.sh";
+. "$CWD/zshrc-setup.sh";
 # Enter zsh shell
 echo "Entering zsh"
 exec zsh
