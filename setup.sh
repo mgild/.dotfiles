@@ -34,22 +34,17 @@ elif test "$(uname -s)" = "Linux"; then
 fi
 
 . "$CWD/moveSrcs.sh";
-
+. "$CWD/zshrc-setup.sh";
 . "$CWD/.zshrc"
 attemptInstall vim python ctags tmux
 assertInstalled vim python ctags tmux
 
-
-. "$CWD/.zshrc"
-
 # install pip
 if ! which pip &> /dev/null; then
-    python -m pip install -U pip
-    #curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
-    #python /tmp/get-pip.py --user --force
+    curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
+    python /tmp/get-pip.py --user --force
 fi
 
-. "$CWD/zshrc-setup.sh";
 . "$CWD/vim-setup.sh";
 . "$CWD/tmux-setup.sh";
 . "$CWD/powerline-setup.sh";
