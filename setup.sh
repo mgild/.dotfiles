@@ -1,5 +1,21 @@
 #! /bin/zsh
 set -e
+path=(
+    # python 2.7 user bin on osx
+    ${HOME}/Library/Python/2.7/bin
+    # user builds
+    ${HOME}/{.,}local/bin
+    # Homebrew packages, go executables, gnu bin
+    /usr/local/opt{/go/libexec/bin,/coreutils/libexec/gnubin,}
+    # default paths
+    /{usr/,}{local/,}{s,}bin
+    # Linuxbrew
+    {/home/linuxbrew,${HOME}}/.linuxbrew/bin
+    # custom python build path from dotfiles script
+    ${HOME}/python-dev/bin
+)
+# Join path and export
+export PATH=${(j/:/)path}
 
 if [[ $EUID == 0 ]]; then
    echo "Don't run setup as root!"
@@ -35,8 +51,6 @@ elif test "$(uname -s)" = "Linux"; then
 fi
 
 . "$CWD/moveSrcs.sh";
-. "$CWD/zshrc-setup.sh";
-. "$CWD/.zshrc"
 attemptInstall vim python ctags tmux
 assertInstalled vim python ctags tmux
 
@@ -46,6 +60,7 @@ if ! which pip &> /dev/null; then
     python /tmp/get-pip.py --user --force
 fi
 
+. "$CWD/zshrc-setup.sh";
 . "$CWD/vim-setup.sh";
 . "$CWD/tmux-setup.sh";
 . "$CWD/powerline-setup.sh";
