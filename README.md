@@ -2,8 +2,7 @@
 
 To install, run setup.sh
 
-Prereqs: zsh, ruby, libpython2.7-dev
-
+Prereqs: ruby git zsh curl make gcc
 Change your non-ASCII character font for your preferred terminal to one of the provided powerline fonts
 
 For tmux powerline:
