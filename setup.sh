@@ -43,7 +43,7 @@ function attemptInstall() {
     done
 }
 
-assertInstalled ruby git zsh curl gcc
+assertInstalled ruby git zsh curl make gcc
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
