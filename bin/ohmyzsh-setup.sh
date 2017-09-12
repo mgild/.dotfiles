@@ -1,4 +1,4 @@
 # install oh-my-zsh
 if [[ ! -a "${HOME}/.oh-my-zsh" ]]; then
-    . "$CWD/ohmyzsh_build.sh"
+    . "$CWD/bin/ohmyzsh_build.sh"
 fi

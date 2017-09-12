@@ -1,4 +1,4 @@
-xcode-select --install 2> /dev/null
+xcode-select --install 2> /dev/null || true
 
 if ! which brew &> /dev/null; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

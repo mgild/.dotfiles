@@ -1,5 +1,5 @@
 # Symlink the vimrc
-ln -s $CWD/.vimrc ~/
+ln -s $CWD/src/.vimrc ~/
 
 # install Vundle
 if [[ ! -a "${HOME}/.vim/bundle/Vundle.vim" ]]; then

@@ -12,6 +12,6 @@ if [[ ! -d $ZSH_CUSTOM/plugins/zsh-git-prompt ]]; then
 fi
 
 # Link tab completion (custom plugin taken from prezto)
-ln -sfn $CWD/tab-completion $ZSH_CUSTOM/plugins/tab-completion
+ln -sfn $CWD/bin/custom_plugins/tab-completion $ZSH_CUSTOM/plugins/tab-completion
 
 

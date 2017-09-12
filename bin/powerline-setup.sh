@@ -14,7 +14,7 @@ powerline_config="$POWERLINE_ROOT/config_files"
 if [ ! -L $powerline_config ]; then
     mv $powerline_config $powerline_config.old
 fi
-ln -sfn "$CWD/powerline_config" "$powerline_config"
+ln -sfn "$CWD/src/powerline_config" "$powerline_config"
 ln -sfn "$POWERLINE_ROOT/bindings/tmux/powerline.conf" "${HOME}"
 
 # install powerline fonts
