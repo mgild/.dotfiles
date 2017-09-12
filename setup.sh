@@ -5,11 +5,6 @@ if [[ $EUID == 0 ]]; then
    exit 1
 fi
 
-# Path to your oh-my-zsh installation.
-# export ZSH=~/.oh-my-zsh
-# # Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=$ZSH/custom
-
 function assertInstalled() {
     local success=true
     for var in "$@"; do
@@ -43,8 +38,11 @@ fi
 attemptInstall vim python ctags tmux
 assertInstalled vim python ctags tmux
 
+# setup zshrc
+. "$CWD/zshrc-setup.sh";
+. "$CWD/.zshrc"
+
 # install pip
-source "$CWD/.zshrc"
 if ! which pip &> /dev/null; then
     curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
     python /tmp/get-pip.py --user --force
@@ -56,7 +54,6 @@ fi
 . "$CWD/fzf-setup.sh";
 . "$CWD/ohmyzsh-setup.sh";
 . "$CWD/plugin-setup.sh";
-. "$CWD/zshrc-setup.sh";
 # Enter zsh shell
 echo "Entering zsh"
 exec zsh
