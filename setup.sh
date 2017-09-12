@@ -1,4 +1,5 @@
 #! /bin/zsh
+set -e
 
 if [[ $EUID == 0 ]]; then
    echo "Don't run setup as root!"
