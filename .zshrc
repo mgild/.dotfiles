@@ -1,7 +1,7 @@
 setopt extended_glob
 set -gh
 # start docker daemon
-#eval "$(docker-machine env docker-vm)"
+# docker-machine start docker-vm && eval "$(docker-machine env docker-vm)"
 
 # Path extensions
 path=(

@@ -35,6 +35,7 @@ fi
 
 . "$CWD/moveSrcs.sh";
 
+. "$CWD/.zshrc"
 attemptInstall vim python ctags tmux
 assertInstalled vim python ctags tmux
 
