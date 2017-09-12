@@ -32,7 +32,7 @@ up() {
 }
 
 zman() {
-    PAGER="less -g -s '+/^       "$1"'" man zshall
+    PAGER="less -g -s '+/^       "$1"'" command man zshall
 }
 
 # Better man

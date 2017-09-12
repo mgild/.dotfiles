@@ -6,9 +6,9 @@ if [[ $EUID == 0 ]]; then
 fi
 
 # Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-# Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=$ZSH/custom
+# export ZSH=~/.oh-my-zsh
+# # Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=$ZSH/custom
 
 function assertInstalled() {
     local success=true
@@ -29,7 +29,7 @@ function attemptInstall() {
     done
 }
 
-assertInstalled ruby git zsh curl wget gcc make
+assertInstalled ruby git zsh curl gcc make
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
