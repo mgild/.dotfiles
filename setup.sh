@@ -44,17 +44,18 @@ assertInstalled vim python ctags tmux
 
 # install pip
 if ! which pip &> /dev/null; then
-    curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
-    python /tmp/get-pip.py --user --force
+    python -m pip install -U pip
+    #curl -fssL "https://bootstrap.pypa.io/get-pip.py" > /tmp/get-pip.py
+    #python /tmp/get-pip.py --user --force
 fi
 
+. "$CWD/zshrc-setup.sh";
 . "$CWD/vim-setup.sh";
 . "$CWD/tmux-setup.sh";
 . "$CWD/powerline-setup.sh";
 . "$CWD/fzf-setup.sh";
 . "$CWD/ohmyzsh-setup.sh";
 . "$CWD/plugin-setup.sh";
-. "$CWD/zshrc-setup.sh";
 # Enter zsh shell
 echo "Entering zsh"
 exec zsh
