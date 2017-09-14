@@ -100,6 +100,7 @@ Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 Plugin 'flazz/vim-colorschemes'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
 Plugin 'DoxygenToolkit.vim'
 let g:DoxygenToolkit_briefTag_pre="@Brief "
 let g:DoxygenToolkit_paramTag_pre="@Param "
