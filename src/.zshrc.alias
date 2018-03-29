@@ -64,7 +64,7 @@ alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
 #   Make tmux auto reattach if it can
 #   -----------------------------------------------------
-alias t='tmux a &> null || tmux new'
+alias t='tmx2 a &> null || tmx2 new'
 
 #   easier git commands
 #   -----------------------------------------------------

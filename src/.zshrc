@@ -5,6 +5,8 @@ set -gh
 
 # Path extensions
 path=(
+    # cors_sdk tools
+    ~/depot_tools
     # python 2.7 user bin on osx
     ${HOME}/Library/Python/2.7/bin
     # Latex tools (osx)
@@ -54,7 +56,28 @@ precmd() {
     ((C=((C+1) % 124) + 88));
 }
 
-PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
+
+function g4_prompt_info() {
+    local working_dir=`pwd`
+    local g4client=`g4 set P4CLIENT | awk -F: '{print $2}'`
+    if [[ ${#g4client} -ne 0 ]]; then
+        echo "(%B%F{6}g4:%F{26}${g4client}%b%f)"
+        return 0
+    fi
+    return 1
+}
+
+vcs_info() {
+    g4info=$(g4_prompt_info)
+    if [[ $? -eq 0 ]]; then
+        echo $g4info
+    elif [[ $GIT_BRANCH != ":" ]]; then
+        git_super_status
+    fi
+}
+
+
+PROMPT='%F{13}%B%C%b%f$(vcs_info) %F{$C}$%f '
 #RPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b';
 
 # setopt PROMPT_SUBST;
@@ -68,3 +91,12 @@ PROMPT='${ret_status}%F{12}%c%b%F{7}$(git_super_status)%F{$C} $%f '
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source /etc/bash_completion.d/g4d
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+export HISTFILE=~/.zsh_history
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_SAVE_NO_DUPS
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY

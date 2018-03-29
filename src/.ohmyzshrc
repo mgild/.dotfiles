@@ -25,22 +25,28 @@ ZSH_CUSTOM=$ZSH/custom
 plugins=(
     git
     git-extras
-    github
-    sublime
-    brew
-    colorize
     z
     zsh-autosuggestions
-    fast-syntax-highlighting
-    #zsh-trprompt
+    # zsh-syntax-highlighting
+    history-substring-search
+    zsh-trprompt
 )
 # load oh-my-zsh
-. $ZSH/oh-my-zsh.sh
+ . $ZSH/oh-my-zsh.sh
+# setopt extended_glob
+# for plugin in $plugins; do
+    # plug_files=($ZSH/{,custom/}plugins/$plugin/$plugin.plugin.zsh)
+    # for plugf in $plug_files; do
+        # test -e $plugf && . $plugf;
+    # done
+# done
 # . $ZSH/plugins/z/z.sh
 # set custom git prompt
 
 # These plugins must be loaded manually
-. $ZSH_CUSTOM/plugins/tab-completion/tab-completion.sh
+# . $ZSH_CUSTOM/plugins/tab-completion/tab-completion.sh
 . $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+export GIT_PROMPT_EXECUTABLE="haskell"
 
 #source ~/.dotfiles/zsh-trprompt/trprompt.plugin.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=6'

@@ -213,3 +213,12 @@ set_MAC() {
     sudo ifconfig en0 down;
     sudo ifconfig en0 up;
 }
+
+find_gale() {
+    nmap 192.168.8{6,4,2}.1 -p 22 -oG - | awk '/Up$/{print $2}'
+}
+
+# g4 info
+get_g4set() {
+	g4 set $1
+}
