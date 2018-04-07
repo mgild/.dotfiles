@@ -47,12 +47,12 @@ assertInstalled ruby git zsh curl make gcc
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
-    . "$CWD/bin/osxsetup.sh";
+    . "$CWD/setup_files/osxsetup.sh";
 elif test "$(uname -s)" = "Linux"; then
-    . "$CWD/bin/linuxsetup.sh";
+    . "$CWD/setup_files/linuxsetup.sh";
 fi
 
-. "$CWD/bin/moveSrcs.sh";
+. "$CWD/setup_files/moveSrcs.sh";
 attemptInstall vim python ctags tmux
 assertInstalled vim python tmux
 
@@ -62,13 +62,13 @@ if ! which pip &> /dev/null; then
     python /tmp/get-pip.py --user --force
 fi
 
-. "$CWD/bin/vim-setup.sh";
-. "$CWD/bin/tmux-setup.sh";
-. "$CWD/bin/powerline-setup.sh";
-. "$CWD/bin/fzf-setup.sh";
-. "$CWD/bin/ohmyzsh-setup.sh";
-. "$CWD/bin/plugin-setup.sh";
-. "$CWD/bin/zshrc-setup.sh";
+. "$CWD/setup_files/vim-setup.sh";
+. "$CWD/setup_files/tmux-setup.sh";
+. "$CWD/setup_files/powerline-setup.sh";
+. "$CWD/setup_files/fzf-setup.sh";
+. "$CWD/setup_files/ohmyzsh-setup.sh";
+. "$CWD/setup_files/plugin-setup.sh";
+. "$CWD/setup_files/zshrc-setup.sh";
 # Enter zsh shell
 echo "Entering zsh"
 exec zsh
