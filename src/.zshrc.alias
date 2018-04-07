@@ -115,5 +115,3 @@ alias ipInfo1='ipconfig getpacket en1'
 # openPorts:    All listening connections
 alias openPorts='sudo lsof -i | grep LISTEN'
 
-
-

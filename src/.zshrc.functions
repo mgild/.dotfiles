@@ -39,13 +39,18 @@ zman() {
 # Find man page for builtin commands easily
 # If not a builtin, works like normal man
 man() {
+    command man "$@" 2&> /dev/null;
+    if [[ $? -eq 0 ]]; then
+        return 0;
+    fi;
     vartype=$(type "$@");
     if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
         #command man zshbuiltins | less -p "^       $@ ";
         zman | less -p "^       $@ ";
-    else
-        command man "$@";
+        return 0;
     fi;
+    echo "No manual entry for $@"
+    return 1;
 }
 
 #   A good way to be annoying
@@ -200,7 +205,7 @@ get_cursor_row() {
 }
 
 gen_MAC() {
-    s=""; repeat 6; do echo -n "$s"; printf "%02X" "$(( $RANDOM % 256 ))"; s=":"; done;
+    local s=""; repeat 6; do echo -n "$s"; printf "%02X" "$(( $RANDOM % 256 ))"; s=":"; done;
     echo
 }
 
@@ -215,10 +220,85 @@ set_MAC() {
 }
 
 find_gale() {
-    nmap 192.168.8{6,4,2}.1 -p 22 -oG - | awk '/Up$/{print $2}'
+    local result="$(nmap 192.168.8{6,4,2}.1 -p 22 -oG - | awk '/Up$/{print $2}')"
+    [[ ${#result} -eq 0 ]] && return 1 || echo $result
 }
 
 # g4 info
 get_g4set() {
-	g4 set $1
+    g4 set $1
+}
+
+find_owners() {
+    local cwd=`pwd`
+    while true; do
+        ls 'OWNERS' &> /dev/null && pwd && cat OWNERS
+        if [[ `pwd` == '/' ]]; then
+            cd $cwd
+            return;
+        fi;
+        cd ..
+    done
+}
+
+git_root() {
+    git rev-parse --show-toplevel
+}
+
+gale_sh() {
+    which sshpass &> /dev/null || sudo apt-get install sshpass
+    sshpass -f "${HOME}/gale_psswd.txt" ssh root@$(find_gale) -oStrictHostKeyChecking=no -t 'bash;exit'
+}
+
+# fbr - checkout git branch
+fbr() {
+  local branches branch
+  branches=$(git branch -vv) &&
+  branch=$(echo "$branches" | fzf +m) &&
+  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+}
+
+# fbr - checkout git branch (including remote branches)
+fbrr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# fcoc - checkout git commit
+fcoc() {
+  local commits commit
+  commits=$(git log --pretty=oneline --abbrev-commit --reverse) &&
+  commit=$(echo "$commits" | fzf --tac +s +m -e) &&
+  git checkout $(echo "$commit" | sed "s/ .*//")
+}
+
+# fshow - git commit browser
+fshow() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
+}
+
+unalias z
+# fzf menu presented when no arguments given to z
+z() {
+  if [[ -z "$*" ]]; then
+    cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
+  else
+    _last_z_args="$@"
+    _z "$@"
+  fi
+}
+
+# Relauch zz with its arguments being the previous command
+zz() {
+  cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
 }

@@ -1,7 +1,5 @@
 setopt extended_glob
 set -gh
-# start docker daemon
-# docker-machine start docker-vm && eval "$(docker-machine env docker-vm)"
 
 # Path extensions
 path=(
@@ -46,7 +44,6 @@ srcs=(
     ~/.zshrc.exports
     ~/.zshrc.functions
     ~/.zshrc.alias
-    #~/.dotfiles/zsh-trprompt/trprompt.zsh
 )
 
 for f in $srcs; test -e $f && . $f
@@ -76,27 +73,9 @@ vcs_info() {
     fi
 }
 
-
-PROMPT='%F{13}%B%C%b%f$(vcs_info) %F{$C}$%f '
-#RPROMPT='%B%F{39}[%D{%L:%M:%S}] | $(print -rnD $PWD)%f%b';
-
-# setopt PROMPT_SUBST;
-# TMOUT=1;
-# TRAPALRM() {
-    # precmd;
-    # zle reset-prompt;
-# }
-#
-
-
+local ret_status="%B%(?:%F{6}:%F{1})➜%f%b"
+PROMPT='${ret_status} %F{13}%B%C%b%f$(vcs_info) %F{$C}$%f '
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source /etc/bash_completion.d/g4d
-export HISTSIZE=100000                   # big big history
-export HISTFILESIZE=100000               # big big history
-export HISTFILE=~/.zsh_history
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_SAVE_NO_DUPS
-setopt APPEND_HISTORY
-setopt EXTENDED_HISTORY
+
