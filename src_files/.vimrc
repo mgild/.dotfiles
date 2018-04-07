@@ -39,8 +39,7 @@ Plugin 'lifepillar/vim-mucomplete'
 set belloff+=ctrlg " If Vim beeps during completion
 let g:mucomplete#enable_auto_at_startup = 1
 set noshowmode shortmess+=c
-set completeopt=menu,menuone,noinsert,noselect
-"set completeopt+=longest,menuone,noinsert,noselect
+set completeopt=menu,menuone,noinsert,noselect,longest
 let g:UltiSnipsUsePythonVersion='3'
 let g:UltiSnipsExpandTrigger="<C-w>"
 let g:UltiSnipsJumpForwardTrigger="<C-w>"
@@ -55,6 +54,7 @@ let g:clang_user_options = '-std=c++14'
 let g:clang_complete_auto = 1
 " General enhanced syntax highlighting
 Plugin 'sheerun/vim-polyglot'
+autocmd BufEnter *.\(gypi\?\|gn\) :set syntax=python
 " Plugin 'octol/vim-cpp-enhanced-highlight'
 let python_highlight_all = 1
 let g:cpp_class_scope_highlight = 1
