@@ -43,18 +43,16 @@ function attemptInstall() {
     done
 }
 
-assertInstalled ruby git zsh curl make gcc
+assertInstalled ruby git zsh curl make gcc vim python tmux
 CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 if test "$(uname -s)" = "Darwin"; then
     . "$CWD/setup_files/osxsetup.sh";
 elif test "$(uname -s)" = "Linux"; then
-    . "$CWD/setup_files/linuxsetup.sh";
+    # . "$CWD/setup_files/linuxsetup.sh";
 fi
 
 . "$CWD/setup_files/moveSrcs.sh";
-attemptInstall vim python ctags tmux
-assertInstalled vim python tmux
 
 # install pip
 if ! which pip &> /dev/null; then

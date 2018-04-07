@@ -49,7 +49,7 @@ main() {
   umask g-w,o-w
 
   printf "${BLUE}Cloning Oh My Zsh...${NORMAL}\n"
-  hash git >/dev/null 2>&1 || {
+  which git >/dev/null 3>&1 || {
     echo "Error: git is not installed"
     exit 1
   }
