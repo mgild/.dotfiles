@@ -27,9 +27,8 @@ plugins=(
     git-extras
     z
     zsh-autosuggestions
-    # zsh-syntax-highlighting
     history-substring-search
-    zsh-trprompt
+    zsh-syntax-highlighting
 )
 # load oh-my-zsh
  . $ZSH/oh-my-zsh.sh

@@ -40,12 +40,12 @@ zman() {
 # If not a builtin, works like normal man
 man() {
     vartype=$(type "$@");
+    command man "$@" 2>& /dev/null && return 0
     if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
-        #command man zshbuiltins | less -p "^       $@ ";
         zman | less -p "^       $@ ";
-    else
-        command man "$@";
+        return 0
     fi;
+    return 1
 }
 
 #   A good way to be annoying

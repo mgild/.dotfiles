@@ -39,13 +39,14 @@ Plugin 'lifepillar/vim-mucomplete'
 set belloff+=ctrlg " If Vim beeps during completion
 let g:mucomplete#enable_auto_at_startup = 1
 set noshowmode shortmess+=c
-set completeopt=menu,menuone,noinsert,noselect,longest
+" set completeopt=menu,menuone,noinsert,noselect,longest
+set completeopt+=menuone,noselect
 let g:UltiSnipsUsePythonVersion='3'
 let g:UltiSnipsExpandTrigger="<C-w>"
 let g:UltiSnipsJumpForwardTrigger="<C-w>"
 let g:UltiSnipsJumpBackwardTrigger="<C-q>"
 let g:mucomplete#chains = {
-\   'default' : ['ulti', 'c-n', 'omni', 'user', 'dict', 'file']
+\   'default' : ['incl', 'c-n', 'omni', 'user', 'dict', 'file', 'ulti', 'tags']
 \}
 let g:jedi#popup_on_dot = 0  " It may be 1 as well
 set noinfercase
