@@ -2,6 +2,11 @@ set encoding=utf-8
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+set nocompatible
+filetype plugin indent on
+syntax on
+" Glug youcompleteme-google
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -21,19 +26,35 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
+Plugin 'luochen1990/rainbow'
+let g:rainbow_active = 1
+
 " Syntax checker
 Plugin 'w0rp/ale'
+" let g:ale_linters = {
+" \   'cpp': ['clang++', 'clang-check', 'gcc', 'cpplint', 'flawfinder'],
+" \}
 " if you don't want linters to run on opening a file
 let g:ale_lint_on_enter = 0
+
+let g:ale_cpp_clang_options = $CPPFLAGS
+let g:ale_cpp_gcc_options = $CPPFLAGS
+let g:ale_cpp_clangcheck_options = $CPPFLAGS
+let g:ale_cpp_clangtidy_options = $CPPFLAGS
+let g:ale_cpp_cpplint_options = $CPPFLAGS
+
 " Lint only on save
 let g:ale_lint_on_text_changed = 'never'
 let g:airline#extensions#ale#enabled = 1
-let g:ale_cpp_gcc_executable = '-std=c++14 -Wall -lssl -lcrypto'
 let g:ale_python_flake8_executable = 'python3'
 let g:ale_python_flake8_options = '-m flake8 --ignore=E201,E202,E203,E225,E231,E302,E303,E501'
 " let g:ale_lint_on_text_changed = 'never'
 "
-Plugin 'lifepillar/vim-mucomplete'
+" Plugin 'lifepillar/vim-mucomplete'
+Plugin 'valloric/youcompleteme'
+set completeopt-=preview
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'
+
 " inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
 " inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
 set belloff+=ctrlg " If Vim beeps during completion
@@ -55,7 +76,8 @@ let g:clang_user_options = '-std=c++14'
 let g:clang_complete_auto = 1
 " General enhanced syntax highlighting
 Plugin 'sheerun/vim-polyglot'
-autocmd BufEnter *.\(gypi\?\|gn\) :set syntax=python
+autocmd BufEnter *.\(gyp\|gypi\|gn\) :set syntax=python
+" autocmd BufEnter *.conf :set syntax=xml
 " Plugin 'octol/vim-cpp-enhanced-highlight'
 let python_highlight_all = 1
 let g:cpp_class_scope_highlight = 1
@@ -111,6 +133,8 @@ match Todo /\s\+$/ " highlight trailing spaces
 set colorcolumn=80
 set backspace=2 " makes backspace remove previous character instead of where the cursor is
 set mouse=a " allow point and click UI
+" Don't conceal characters. Applicable for quote hiding in json files
+autocmd bufenter * set conceallevel=0
 " Mouse fix for tmux
 if &term =~ '^screen'
 " tmux knows the extended mouse mode
@@ -123,7 +147,7 @@ colorscheme Monokai
 " Search -----------------------
 set incsearch  " search as characters are entered
 set hlsearch   " highlight matches
-set ignorecase " ignore case on search
+" set ignorecase " ignore case on search
 " ------------------------------
 " Tabs -------------------------
 retab
@@ -138,6 +162,13 @@ au FocusGained,CursorHold,CursorHoldI,BufEnter * checktime
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 " -----------------------------
 " Key Mappings -----------------
+" copy the current text selection to the system clipboard
+" if has('gui_running') || has('nvim') && exists('$DISPLAY')
+  " noremap <Leader>y "+y
+" else
+  " " copy to attached terminal using the yank(1) script:
+  " noremap <silent> <Leader>y y:call system('yank > /dev/tty', @0)<Return>
+" endif
 "Buffer Navigation
 noremap <C-n> :bnext<CR>
 noremap <C-b> :bprevious<CR>
@@ -145,3 +176,68 @@ noremap <C-b> :bprevious<CR>
 " :map <ScrollWheelUp>     5<Down>
 " :map <ScrollWheelDown>   5<Up>
 " -----------------------------
+" Set indentation to 2 spaces for C++
+au BufRead,BufNewFile *.cc,*.h setl sw=2 sts=2 ts=2 et
+
+function s:Kwbd(kwbdStage)
+  if(a:kwbdStage == 1)
+    if(!buflisted(winbufnr(0)))
+      bd!
+      return
+    endif
+    let s:kwbdBufNum = bufnr("%")
+    let s:kwbdWinNum = winnr()
+    windo call s:Kwbd(2)
+    execute s:kwbdWinNum . 'wincmd w'
+    let s:buflistedLeft = 0
+    let s:bufFinalJump = 0
+    let l:nBufs = bufnr("$")
+    let l:i = 1
+    while(l:i <= l:nBufs)
+      if(l:i != s:kwbdBufNum)
+        if(buflisted(l:i))
+          let s:buflistedLeft = s:buflistedLeft + 1
+        else
+          if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
+            let s:bufFinalJump = l:i
+          endif
+        endif
+      endif
+      let l:i = l:i + 1
+    endwhile
+    if(!s:buflistedLeft)
+      if(s:bufFinalJump)
+        windo if(buflisted(winbufnr(0))) | execute "b! " . s:bufFinalJump | endif
+      else
+        enew
+        let l:newBuf = bufnr("%")
+        windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif
+      endif
+      execute s:kwbdWinNum . 'wincmd w'
+    endif
+    if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr("%"))
+      execute "bd! " . s:kwbdBufNum
+    endif
+    if(!s:buflistedLeft)
+      set buflisted
+      set bufhidden=delete
+      set buftype=nofile
+      setlocal noswapfile
+    endif
+  else
+    if(bufnr("%") == s:kwbdBufNum)
+      let prevbufvar = bufnr("#")
+      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
+        b #
+      else
+        bn
+      endif
+    endif
+  endif
+endfunction
+
+command! Kwbd call <SID>Kwbd(1)
+nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>
+
+" Create a mapping (e.g. in your .vimrc) like this:
+nmap <C-W>w <Plug>Kwbd

@@ -23,15 +23,16 @@ ZSH_CUSTOM=$ZSH/custom
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(
+    autojump
     git
     git-extras
-    z
     zsh-autosuggestions
     history-substring-search
     zsh-syntax-highlighting
+    z
 )
 # load oh-my-zsh
- . $ZSH/oh-my-zsh.sh
+. $ZSH/oh-my-zsh.sh
 # setopt extended_glob
 # for plugin in $plugins; do
     # plug_files=($ZSH/{,custom/}plugins/$plugin/$plugin.plugin.zsh)
@@ -45,6 +46,7 @@ plugins=(
 # These plugins must be loaded manually
 # . $ZSH_CUSTOM/plugins/tab-completion/tab-completion.sh
 . $ZSH_CUSTOM/plugins/zsh-git-prompt/zshrc.sh
+set ZSH_THEME_GIT_PROMPT_CACHE
 
 #source ~/.dotfiles/zsh-trprompt/trprompt.plugin.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=6'

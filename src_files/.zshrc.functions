@@ -14,12 +14,13 @@ function lsym() {
 #  Show directories in given directory (including symlink dirs)
 #   -----------------------------------------------------
 function lsd() {
-    ls -p | grep /;
+    ls -p | grep / --color=never;
 }
 
 min() {
     ((($1 < $2)) && echo $1) || echo $2
 }
+
 # Quick up n levels
 # Requires: n >= 0
 up() {
@@ -32,7 +33,7 @@ up() {
 }
 
 zman() {
-    PAGER="less -g -s '+/^       "$1"'" command man zshall
+    PAGER="less -g -s '+/^       "$1" '" command man zshall
 }
 
 # Better man
@@ -48,37 +49,8 @@ man() {
     return 1
 }
 
-#   A good way to be annoying
-#   ------------------------------------------------------------
-export BLINK_START='\033[5m'
-export BLINK_END='\033[0m'
-blink() {
-    echo -en $BLINK_START
-    while IFS= read -r line; do
-        echo -e $line | sed 's/'$(echo "\[0m")/$(echo "\[0m$BLINK_START")'/g';
-    done
-}
-
-
 # Security checks
 alias checkrootkits="sudo rkhunter --update; sudo rkhunter --propupd; sudo rkhunter --check"
-
-# nullpointer url shortener
-short() {
-    if [[ -z $1 ]]; then
-        return 1;
-    fi
-    link=$(curl -s -F"shorten=$*" https://0x0.st | sed 's;https://;;g')
-    echo $link "copied to clipboard" && printf $link | pbcopy
-}
-
-#   weather: pass your city or zip code, and it returns the weather!
-#   USAGE - weather cleveland
-#         OR
-#         weather 44106
-#   WARNING - city and zip code args may yield inaccurate/different results.
-#   ------------------------------------------------------
-weather() { curl wttr.in/"$1"; }
 
 # split string into multiple lines(array). Supports regex
 split(){
@@ -95,17 +67,9 @@ join() {
     echo;
 }
 
-isset() {
-    which "$@" &> /dev/null
-}
-
 # run commands in the background
 background() {
-    nohup zsh -c "$@" &
-}
-
-grep_dir() {
-    grep -RnisI "$@" * --color=always
+    nohup bash -c "$@" &
 }
 
 qaz() {
@@ -124,6 +88,12 @@ color_test () {
     for code in {000..255}; do
         print -P -- "$code: %F{$code}Test%f %K{$code}Test%k";
     done
+}
+
+#   Colorize ls (tries GNU ls colorize then non-GNU)
+#   -----------------------------------------------------
+function ls() {
+    command ls --color=auto $@ 2>& /dev/null || command ls -FG $@;
 }
 
 function termcolors () {
@@ -187,7 +157,6 @@ num_visible(){
     echo ${#t}
 }
 
-
 # fairly slow
 get_cursor_row() {
     exec < /dev/tty;
@@ -214,11 +183,6 @@ set_MAC() {
     sudo ifconfig en0 up;
 }
 
-find_gale() {
-    local result="$(nmap 192.168.8{6,4,2}.1 -p 22 -oG - | awk '/Up$/{print $2}')"
-    [[ ${#result} -eq 0 ]] && return 1 || echo $result
-}
-
 # g4 info
 get_g4set() {
     g4 set $1
@@ -238,11 +202,6 @@ find_owners() {
 
 git_root() {
     git rev-parse --show-toplevel
-}
-
-gale_sh() {
-    which sshpass &> /dev/null || sudo apt-get install sshpass
-    sshpass -f "${HOME}/gale_psswd.txt" ssh root@$(find_gale) -oStrictHostKeyChecking=no -t 'bash;exit'
 }
 
 # fbr - checkout git branch
@@ -282,18 +241,32 @@ fshow() {
 FZF-EOF"
 }
 
-unalias z
-# fzf menu presented when no arguments given to z
-z() {
-  if [[ -z "$*" ]]; then
-    cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
-  else
-    _last_z_args="$@"
-    _z "$@"
-  fi
+let_it_snow() {
+    which lolcat &> /dev/null || sudo apt-get install lolcat
+    ruby -e 'C=`stty size`.scan(/\d+/)[1].to_i;S=["2743".to_i(16)].pack("U*");a={};puts "\033[2J";loop{a[rand(C)]=0;a.each{|x,o|;a[x]+=1;print "\033[#{o};#{x}H \033[#{a[x]};#{x}H#{S} \033[0;0H"};$stdout.flush;sleep 0.1}' 2&> /dev/null | lolcat
 }
 
-# Relauch zz with its arguments being the previous command
-zz() {
-  cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
+fix_ssh() {
+    eval $(ssh-agent -s)
+}
+
+j() {
+    if [[ "$#" -ne 0 ]]; then
+        cd $(autojump $@)
+        return
+    fi
+    cd "$(autojump -s | \
+        sed '/^_____/Q; s/^[0-9,.:]*\s*//' | \
+        fzf --height 40% --nth 1.. --reverse --inline-info +s --tac --query "${*##-* }" )"
+}
+
+g4base() {
+    pwd | grep '/google3/' &> /dev/null || return
+    cd $(pwd | sed 's/google3\/.*$/google3/')
+}
+
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }

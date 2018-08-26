@@ -16,16 +16,6 @@ alias unique_set='declare -U'
 alias lower='declare -l'
 alias upper='declare -u'
 
-
-#   Global alias to /dev/null
-#   -----------------------------------------------------
-alias -g null="/dev/null"
-
-#  sudo last command
-#   -----------------------------------------------------
-alias fuck='sudo $(fc -ln -1)'
-alias plz=fuck
-
 #   Refresh tmux config
 #   ------------------------------------------------------
 alias tsrc='tmux source-file ~/.tmux.conf'
@@ -44,7 +34,8 @@ alias back='cd ~-'
 
 #   Git Smart Log
 #   -----------------------------------------------------
-alias gsl="git log --all --decorate --oneline --graph --color=always  --pretty=format:'%C(auto)%h%C(auto)%d %s %C(cyan)(%aN, %ar)'"
+alias gsl="git log --all --decorate --oneline --graph --color=always \
+    --pretty=format:'%C(auto)%h%C(auto)%d %s %C(cyan)(%aN, %ar)'"
 
 #   Search directory tree for regex (add -l to follow symlinks)
 #   -----------------------------------------------------
@@ -66,6 +57,10 @@ alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 #   -----------------------------------------------------
 alias t='tmx2 a &> null || tmx2 new'
 
+#   Quick repo upload current branch
+#   -----------------------------------------------------
+alias ru='repo upload . --cbr'
+
 #   easier git commands
 #   -----------------------------------------------------
 alias gpo='git push origin'
@@ -77,25 +72,13 @@ alias gpull='git pull'
 alias pyhton=python
 alias mkae=make
 
-#   Colorize ls (tries GNU ls colorize then non-GNU)
-#   -----------------------------------------------------
-function ls() {
-    command ls --color=auto $@ 2>& /dev/null || command ls -FG $@;
-}
-
 #   youtube-dl with optimal download settings
 #   -----------------------------------------------------
 alias ydl="youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'"
 
-#   memHogsTop, memHogsPs:  Find memory hogs
-alias memHogsTop='top -l 1 -o rsize | head -20'
-alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
-function mem_stat() { vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'}
-
-
-#   NETWORKING
+#   Networking
 #   ---------------------------
-localip(){ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'}
+localip(){ifconfig "$@" | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'}
 myip(){dig +short myip.opendns.com @resolver1.opendns.com}
 
 # netCons:      Show all open TCP/IP sockets
