@@ -1,8 +1,3 @@
-#   my_ps: List processes owned by my user:
-#   ------------------------------------------------------------
-my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
-
-
 #  Show symlinks in given directory
 #   -----------------------------------------------------
 function lsym() {
@@ -36,22 +31,6 @@ zman() {
     PAGER="less -g -s '+/^       "$1" '" command man zshall
 }
 
-# Better man
-# Find man page for builtin commands easily
-# If not a builtin, works like normal man
-man() {
-    vartype=$(type "$@");
-    command man "$@" 2>& /dev/null && return 0
-    if [[ $vartype == *"shell builtin" || $vartype == *"reserved word" ]]; then
-        zman | less -p "^       $@ ";
-        return 0
-    fi;
-    return 1
-}
-
-# Security checks
-alias checkrootkits="sudo rkhunter --update; sudo rkhunter --propupd; sudo rkhunter --check"
-
 # split string into multiple lines(array). Supports regex
 split(){
     awk -F "$1" '{ for (i=1; i<=NF;++i){print $i;} }'
@@ -81,7 +60,7 @@ qaz() {
 code_test() {
     range=($(echo {1..7} {30..36} {40..47} {90..97} {100..107} | split ' '))
     echo "Code 0 (color reset): [0m"
-    for i in $range; print "\e[${i}mCode: $i -- [${i}m\e[0m"
+    for i in $range; do print "\e[${i}mCode: $i -- [${i}m\e[0m"; done
 }
 
 color_test () {
@@ -90,10 +69,8 @@ color_test () {
     done
 }
 
-#   Colorize ls (tries GNU ls colorize then non-GNU)
-#   -----------------------------------------------------
 function ls() {
-    command ls --color=auto $@ 2>& /dev/null || command ls -FG $@;
+    command ls --color=auto $@
 }
 
 function termcolors () {
@@ -183,10 +160,6 @@ set_MAC() {
     sudo ifconfig en0 up;
 }
 
-# g4 info
-get_g4set() {
-    g4 set $1
-}
 
 find_owners() {
     local cwd=`pwd`
@@ -229,44 +202,185 @@ fcoc() {
   git checkout $(echo "$commit" | sed "s/ .*//")
 }
 
-# fshow - git commit browser
-fshow() {
-  git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-      --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-                {}
-FZF-EOF"
+cros_sdk() {
+    cd ${HOME}/chromiumos;
+    command cros_sdk $@
 }
 
 let_it_snow() {
-    which lolcat &> /dev/null || sudo apt-get install lolcat
+    type lolcat &> /dev/null || sudo apt-get install lolcat
     ruby -e 'C=`stty size`.scan(/\d+/)[1].to_i;S=["2743".to_i(16)].pack("U*");a={};puts "\033[2J";loop{a[rand(C)]=0;a.each{|x,o|;a[x]+=1;print "\033[#{o};#{x}H \033[#{a[x]};#{x}H#{S} \033[0;0H"};$stdout.flush;sleep 0.1}' 2&> /dev/null | lolcat
 }
 
-fix_ssh() {
-    eval $(ssh-agent -s)
+
+unalias z 2> /dev/null;
+z() {
+    j $@
 }
 
 j() {
     if [[ "$#" -ne 0 ]]; then
-        cd $(autojump $@)
+        cd "$(autojump $@)"
         return
     fi
-    cd "$(autojump -s | \
-        sed '/^_____/Q; s/^[0-9,.:]*\s*//' | \
-        fzf --height 40% --nth 1.. --reverse --inline-info +s --tac --query "${*##-* }" )"
+    local dir="$(autojump -s |
+        sed '/_____/Q; s,'${HOME}',~,' |
+        sort -n -k1,1 -r |
+        fzf --height 40% --reverse --inline-info |
+        sed 's/^[0-9,.:]*\s*//')"
+    cd "$(eval echo $dir)"
 }
 
-g4base() {
-    pwd | grep '/google3/' &> /dev/null || return
-    cd $(pwd | sed 's/google3\/.*$/google3/')
+git_super_duper_status() {
+    [[ "$GIT_BRANCH" != ":" ]] && print $@ "$(git_super_status)"
 }
 
-unalias z 2> /dev/null
-z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+vcs_info() {
+    git_super_duper_status $@
+}
+
+function cd() {
+    if [[ "$#" != 0 ]]; then
+        builtin cd "$@";
+        return
+    fi
+    while true; do
+        local lsd=($(echo ".." && ls -p | grep '/$' | sed 's;/$;;'))
+        local dir="$(printf '%s\n' "${lsd[@]}" |
+            fzf --reverse --preview '
+                __cd_nxt="$(echo {})";
+                __cd_path="$(echo $(pwd)/${__cd_nxt} | sed "s;//;/;")";
+                echo $__cd_path;
+                echo;
+                ls -p --color=always "${__cd_path}";
+        ')"
+        [[ ${#dir} != 0 ]] || return 0
+        builtin cd "$dir" &> /dev/null
+    done
+}
+
+function nav() {
+    type highlight &> /dev/null || sudo apt-get install highlight
+    while true; do
+        local lsd=($(echo ".." && ls -p))
+        local sel="$(printf '%s\n' ${lsd[@]} |
+            fzf --reverse --preview '
+                __nav_nxt="$(echo {})";
+                __nav_path="$(echo $(pwd)/${__nav_nxt} | sed "s;//;/;")";
+                if [ -d "$__nav_nxt" ]; then
+                    echo $__nav_path;
+                    echo;
+                    ls -p --color=always "${__nav_path}";
+                else
+                    echo $__nav_path;
+                    highlight "$__nav_nxt" --out-format xterm256 --line-numbers --force --style=solarized-dark
+                fi
+        ')"
+        [[ ${#sel} != 0 ]] || return 0
+        if [ -d "$sel" ]; then
+            builtin cd "$sel" &> /dev/null
+        else
+            ${EDITOR:-vim} "$sel"
+        fi
+    done
+}
+
+export BOOKMARKS=~/bookmarks
+abm() {
+    touch "$BOOKMARKS"
+    pwd >> "$BOOKMARKS"
+    sort -u -o "$BOOKMARKS" "$BOOKMARKS"
+}
+
+dbm() {
+    touch "$BOOKMARKS"
+    cat "$BOOKMARKS" | grep -v "^$(pwd)$" > "$BOOKMARKS"
+}
+
+bm() {
+    touch "$BOOKMARKS"
+    cd "$(cat "$BOOKMARKS" | fzf --height 40% --reverse --inline-info)"
+}
+
+powerline_font_test() {
+    echo -e "Powerline glyphs:\n\
+        Code points Glyphe  Description                Old code point
+        U+E0A0      \xee\x82\xa0       Version control branch     (U+2B60 \xe2\xad\xa0 )\n\
+        U+E0A1      \xee\x82\xa1       LN (line) symbol           (U+2B61 \xe2\xad\xa1 )\n\
+        U+E0A2      \xee\x82\xa2       Closed padlock             (U+2B64 \xe2\xad\xa4 )\n\
+        U+E0B0      \xee\x82\xb0       Rightwards black arrowhead (U+2B80 \xe2\xae\x80 )\n\
+        U+E0B1      \xee\x82\xb1       Rightwards arrowhead       (U+2B81 \xe2\xae\x81 )\n\
+        U+E0B2      \xee\x82\xb2       Leftwards black arrowhead  (U+2B82 \xe2\xae\x82 )\n\
+        U+E0B3      \xee\x82\xb3       Leftwards arrowhead        (U+2B83 \xe2\xae\x83 )\n\
+        "
+}
+
+#   Make tmux auto reattach if it can
+#   -----------------------------------------------------
+t() {
+    local session_name="${@:-0}"
+    tmx2 a -t $session_name > /dev/null || tmx2 new -s $session_name
+}
+
+batt() {
+    highlight $@ --out-format xterm256 --line-numbers --force --style=solarized-dark
+}
+
+p() {
+    if ! ps -p $SSH_AGENT_PID > /dev/null; then
+        echo "Refreshing ssh agent"
+        eval "$(ssh-agent -s)"
+    fi
+    prodaccess
+}
+
+# fup - cd to selected parent directory
+fup() {
+  local declare dirs=()
+  get_parent_dirs() {
+    if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
+    if [[ "${1}" == '/' ]]; then
+      for _dir in "${dirs[@]}"; do echo $_dir; done
+    else
+      get_parent_dirs $(dirname "$1")
+    fi
+  }
+  local DIR=$(get_parent_dirs $(realpath "${1:-$(dirname $PWD)}") | fzf --height 20% )
+  cd "$DIR"
+}
+
+bb() {
+    blaze build $(blaze query :all | fzf)
+}
+
+summation() {
+    awk '{s+=$1} END {print s}'
+}
+
+# search source code, then pipe files with 10 line buffer into fzf preview using bat.
+# requirements:
+# - fzf: https://github.com/junegunn/fzf
+# - ag: https://github.com/ggreer/the_silver_searcher
+# - bat: https://github.com/sharkdp/bat
+# - vim-fetch: https://github.com/wsdjeg/vim-fetch
+# Notes:
+#  - if you want to replace ag for rg feel free (https://blog.burntsushi.net/ripgrep/)
+#  - Same goes for bat, although ccat and others are definitely worse
+#  - the $ext extraction uses a ZSH specific text globber
+s(){
+  local margin=5 # number of lines above and below search result.
+  local preview_cmd='search={};file=$(echo $search | cut -d':' -f 1 );'
+  preview_cmd+="margin=$margin;" # Inject value into scope.
+  preview_cmd+='line=$(echo $search | cut -d':' -f 2 ); ext=$(echo $file(:e));'
+  preview_cmd+='tail -n +$(( $(( $line - $margin )) > 0 ? $(($line-$margin)) : 0)) $file | head -n $(($margin*2+1)) |'
+  preview_cmd+='bat --paging=never --color=always --style=plain --language=$ext --highlight-line $(($margin+1))'
+  full=$(ag "$*" \
+    | fzf --select-1 --exit-0 --preview-window up:$(($margin*2+1)) --height=60%  --preview $preview_cmd)
+  file="$(echo $full | awk -F: '{print $1}')"
+  line="$(echo $full | awk -F: '{print $2}')"
+  [ -n "$file" ] && vim "$file" +$line
+}
+
+ru() {
+    yes | repo upload . --cbr $@ && echo
 }

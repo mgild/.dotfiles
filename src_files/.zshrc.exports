@@ -43,3 +43,4 @@ setopt EXTENDED_HISTORY
 # Google exports
 # -------------------------------------------------------
 export BOARD=gale
+export CITCTOOLS_DIFF="sh -c 'git diff --color \$0 \$1 | diff-so-fancy'"

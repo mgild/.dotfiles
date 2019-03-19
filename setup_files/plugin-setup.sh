@@ -8,5 +8,5 @@ if [[ ! -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then
 fi
 
 if [[ ! -d $ZSH_CUSTOM/plugins/zsh-git-prompt ]]; then
-    git clone https://github.com/mgild/zsh-git-prompt.git $ZSH_CUSTOM/plugins/zsh-git-prompt
+    git clone https://github.com/olivierverdier/zsh-git-prompt.git $ZSH_CUSTOM/plugins/zsh-git-prompt
 fi

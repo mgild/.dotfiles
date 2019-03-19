@@ -5,7 +5,7 @@ filetype off                  " required
 set nocompatible
 filetype plugin indent on
 syntax on
-" Glug youcompleteme-google
+let g:ycm_show_diagnostics_ui = 0
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -26,25 +26,33 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-Plugin 'luochen1990/rainbow'
+" Plugin 'luochen1990/rainbow'
 let g:rainbow_active = 1
 
 " Syntax checker
 Plugin 'w0rp/ale'
-" let g:ale_linters = {
-" \   'cpp': ['clang++', 'clang-check', 'gcc', 'cpplint', 'flawfinder'],
-" \}
+let g:ale_linters = {
+\   'cpp': ['gcc'],
+\}
 " if you don't want linters to run on opening a file
+let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
 
-let g:ale_cpp_clang_options = $CPPFLAGS
-let g:ale_cpp_gcc_options = $CPPFLAGS
-let g:ale_cpp_clangcheck_options = $CPPFLAGS
-let g:ale_cpp_clangtidy_options = $CPPFLAGS
-let g:ale_cpp_cpplint_options = $CPPFLAGS
+let g:ale_cpp_ccls_options=$VIM_CPP_FLAGS
+let g:ale_cpp_clang_options=$VIM_CPP_FLAGS
+let g:ale_cpp_clangcheck_options=$VIM_CPP_FLAGS
+let g:ale_cpp_clangd_options=$VIM_CPP_FLAGS
+let g:ale_cpp_clangtidy_options=$VIM_CPP_FLAGS
+let g:ale_cpp_clazy_options=$VIM_CPP_FLAGS
+let g:ale_cpp_cppcheck_options=$VIM_CPP_FLAGS
+let g:ale_cpp_cpplint_options=$VIM_CPP_FLAGS
+let g:ale_cpp_cquery_options=$VIM_CPP_FLAGS
+let g:ale_cpp_flawfinder_options=$VIM_CPP_FLAGS
+let g:ale_cpp_gcc_options=$VIM_CPP_FLAGS
 
 " Lint only on save
-let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_text_changed = 'never'
 let g:airline#extensions#ale#enabled = 1
 let g:ale_python_flake8_executable = 'python3'
 let g:ale_python_flake8_options = '-m flake8 --ignore=E201,E202,E203,E225,E231,E302,E303,E501'
@@ -52,8 +60,9 @@ let g:ale_python_flake8_options = '-m flake8 --ignore=E201,E202,E203,E225,E231,E
 "
 " Plugin 'lifepillar/vim-mucomplete'
 Plugin 'valloric/youcompleteme'
+let g:ycm_show_diagnostics_ui = 0
 set completeopt-=preview
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '/usr/local/google/home/mgild/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'
 
 " inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
 " inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
@@ -69,7 +78,7 @@ let g:UltiSnipsJumpBackwardTrigger="<C-q>"
 let g:mucomplete#chains = {
 \   'default' : ['incl', 'c-n', 'omni', 'user', 'dict', 'file', 'ulti', 'tags']
 \}
-let g:jedi#popup_on_dot = 0  " It may be 1 as well
+let g:jedi#popup_on_dot = 0
 set noinfercase
 let g:clang_library_path = '$HOME/chromiumos/chroot/usr/lib64/libclang.so.7.0'
 let g:clang_user_options = '-std=c++14'
@@ -86,6 +95,8 @@ let g:cpp_class_decl_highlight = 1
 let g:cpp_experimental_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 
+Plugin 'patstockwell/vim-monokai-tasty'
+
 Plugin 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
 let g:airline_powerline_fonts = 1
@@ -98,10 +109,11 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " Plugin 'airblade/vim-gitgutter' " Show git differences in sidebar
 Plugin 'mhinz/vim-signify' " VCS gutter (works with git and g4)
 Plugin 'flazz/vim-colorschemes'
+Plugin 'ervandew/supertab'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
-noremap <C-p> :FZF<CR>
+map <C-p> :FZF<CR>
 Plugin 'junegunn/vim-easy-align'
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -109,6 +121,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 " only highlight curr scope
 Plugin 'scrooloose/nerdtree'
+let g:NERDTreeNodeDelimiter = "\u00a0"
 noremap <C-E> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
 autocmd VimEnter * NERDTreeToggle "Open nerdtree on start
@@ -123,6 +136,7 @@ filetype plugin indent on    " required
 syntax on " syntax based on file type
 set number " turn line numbers on
 set autoread " auto reload on foreign changes to files
+set noeb vb t_vb= " disable bell
 set cursorline " Show a line on the line the cursor is on
 set wildmenu " enable extended menus
 filetype indent on
@@ -143,6 +157,8 @@ endif
 " ------------------------------
 " Themes -----------------------
 colorscheme Monokai
+" let g:vim_monokai_tasty_italic = 1
+" colorscheme vim-monokai-tasty
 " ------------------------------
 " Search -----------------------
 set incsearch  " search as characters are entered
@@ -179,65 +195,5 @@ noremap <C-b> :bprevious<CR>
 " Set indentation to 2 spaces for C++
 au BufRead,BufNewFile *.cc,*.h setl sw=2 sts=2 ts=2 et
 
-function s:Kwbd(kwbdStage)
-  if(a:kwbdStage == 1)
-    if(!buflisted(winbufnr(0)))
-      bd!
-      return
-    endif
-    let s:kwbdBufNum = bufnr("%")
-    let s:kwbdWinNum = winnr()
-    windo call s:Kwbd(2)
-    execute s:kwbdWinNum . 'wincmd w'
-    let s:buflistedLeft = 0
-    let s:bufFinalJump = 0
-    let l:nBufs = bufnr("$")
-    let l:i = 1
-    while(l:i <= l:nBufs)
-      if(l:i != s:kwbdBufNum)
-        if(buflisted(l:i))
-          let s:buflistedLeft = s:buflistedLeft + 1
-        else
-          if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
-            let s:bufFinalJump = l:i
-          endif
-        endif
-      endif
-      let l:i = l:i + 1
-    endwhile
-    if(!s:buflistedLeft)
-      if(s:bufFinalJump)
-        windo if(buflisted(winbufnr(0))) | execute "b! " . s:bufFinalJump | endif
-      else
-        enew
-        let l:newBuf = bufnr("%")
-        windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif
-      endif
-      execute s:kwbdWinNum . 'wincmd w'
-    endif
-    if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr("%"))
-      execute "bd! " . s:kwbdBufNum
-    endif
-    if(!s:buflistedLeft)
-      set buflisted
-      set bufhidden=delete
-      set buftype=nofile
-      setlocal noswapfile
-    endif
-  else
-    if(bufnr("%") == s:kwbdBufNum)
-      let prevbufvar = bufnr("#")
-      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
-        b #
-      else
-        bn
-      endif
-    endif
-  endif
-endfunction
-
-command! Kwbd call <SID>Kwbd(1)
-nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>
-
-" Create a mapping (e.g. in your .vimrc) like this:
-nmap <C-W>w <Plug>Kwbd
+" Close buffer without closing split
+command! BD sb # | bd #
