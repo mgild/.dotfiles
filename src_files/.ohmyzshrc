@@ -19,14 +19,15 @@ COMPLETION_WAITING_DOTS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=$ZSH/custom
 
+DISABLE_AUTO_TITLE="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(
     autojump
-    # fast-syntax-highlighting
-    git
-    git-extras
+    fast-syntax-highlighting
+    # git
+    # git-extras
     zsh-autosuggestions
 )
 # load oh-my-zsh

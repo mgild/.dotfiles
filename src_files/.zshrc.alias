@@ -45,23 +45,9 @@ alias dsearch='tree -fi | grep'
 #   -----------------------------------------------------
 alias c=clear
 
-#   Better interactive python
-#   -----------------------------------------------------
-alias ipython="python -m IPython"
-
-#   cpuHogs:  Find CPU hogs
-#   -----------------------------------------------------
-alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
-
-#   Quick repo upload current branch
-#   -----------------------------------------------------
-# alias ru='yes | repo upload . --cbr && echo'
-
 #   easier git commands
 #   -----------------------------------------------------
 alias gpo='git push origin'
-alias gcm='git commit -m'
-alias gpull='git pull'
 
 #   Common misspellings
 #   -----------------------------------------------------
@@ -97,3 +83,6 @@ alias openPorts='sudo lsof -i | grep LISTEN'
 
 alias g4o="g4 o"
 alias e='eval $(ssh-agent -s)'
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard'
+alias flex='/usr/bin/flex.par'

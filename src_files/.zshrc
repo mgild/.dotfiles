@@ -1,25 +1,21 @@
- setopt extended_glob
- set -gh
+setopt extended_glob
+set -gh
 
 # Path extensions
 path=(
-    # cors_sdk tools
-    ${HOME}/depot_tools
-    # python 2.7 user bin on osx
-    ${HOME}/Library/Python/2.7/bin
-    # Latex tools (osx)
-    /Library/TeX/texbin
     # X11
     /opt/X11/bin
     # user builds
     ${HOME}/{,.}local/bin
     ${HOME}/.local/diff-so-fancy
+    # gems
+    ${HOME}/.ruby/bin
     # default paths
     /{usr/,}{local/,}{s,}bin
-    # custom python build path from dotfiles script
-    ${HOME}/python-dev/bin
     # games
     /usr/games
+    # cargo bin
+    ${HOME}/.cargo/bin
 )
 # Join path and export
 export PATH=${(j/:/)path}
@@ -41,10 +37,9 @@ srcs=(
     ${HOME}/.ohmyzshrc
     ${HOME}/.zshrc.local
     # ${HOME}/.iterm2_shell_integration.zsh
-    ${HOME}/.zshrc.exports
     ${HOME}/.zshrc.functions
     ${HOME}/.zshrc.alias
-    ${HOME}/.zshrc.fzf
+    ${HOME}/.zshrc.exports
 )
 
 for f in $srcs; test -e "$f" && . "$f"
@@ -61,7 +56,24 @@ PROMPT='%F{209}%B%f%b${ret_status} %F{13}%B%C%b%f %F{$C}$%f '
 umask 022
 export EDITOR=vim
 export VISUAL=vim
+export DISPLAY=vim
+export P4PORT=perforce:1666
 
 # zsh fix for tab completion lag in google3
 zstyle ':completion:*' users root $USER
-source $HOME/.cargo/env
+export GCLOUD_PROJ="mgild-test-proj-1"
+export PROJECT_ID="mgild-test-proj-1"
+
+mkcd() {
+  mkdir -p "$1"; cd "$1"
+}
+export REGION="us-central1"
+export GOOGLE_ORG_ID="433637338589"
+
+# # The next line updates PATH for the Google Cloud SDK.
+# if [ -f '/usr/local/google/home/mgild/.local/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/google/home/mgild/.local/google-cloud-sdk/path.zsh.inc'; fi
+#
+# # The next line enables shell command completion for gcloud.
+# if [ -f '/usr/local/google/home/mgild/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google/home/mgild/.local/google-cloud-sdk/completion.zsh.inc'; fi
+alias python=python3
+alias pip=pip3

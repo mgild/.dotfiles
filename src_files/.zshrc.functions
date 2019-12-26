@@ -27,6 +27,17 @@ up() {
     cd "$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')/";
 }
 
+# cd to selected directory
+into() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null |
+                  sed 's;^\./;;' |
+                  grep -v "^\.$" |
+                  fzf +s --height "40%" --reverse) &&
+  cd "$dir"
+}
+
 zman() {
     PAGER="less -g -s '+/^       "$1" '" command man zshall
 }
@@ -69,8 +80,9 @@ color_test () {
     done
 }
 
+unalias ls &> /dev/null
 function ls() {
-    command ls --color=auto $@
+    command ls -Xp --group-directories-first --color=auto $@
 }
 
 function termcolors () {
@@ -119,30 +131,10 @@ function termcolors () {
     done
 }
 
-
-map_hops(){
-    iponmap -t $(sudo mtr -r -b -l $1  2> /dev/null |\
-        grep '^h' |\
-        sed 's/.* //g' |\
-        join ' '
-    );
-}
-
 # Get number of visible characters in a string
 num_visible(){
     t=$(echo "$1" | perl -pe 's/\x1b\[[^m]+m//g')
     echo ${#t}
-}
-
-# fairly slow
-get_cursor_row() {
-    exec < /dev/tty;
-    oldstty=$(stty -g);
-    stty raw -echo min 0;
-    echo -en "\033[6n" > /dev/tty;
-    IFS=';' read -r -d R -A pos;
-    stty $oldstty;
-    echo ${pos[1]:2}
 }
 
 gen_MAC() {
@@ -160,6 +152,10 @@ set_MAC() {
     sudo ifconfig en0 up;
 }
 
+# g4 info
+get_g4set() {
+    g4 set $1
+}
 
 find_owners() {
     local cwd=`pwd`
@@ -185,33 +181,18 @@ fbr() {
   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
 
-# fbr - checkout git branch (including remote branches)
-fbrr() {
-  local branches branch
-  branches=$(git branch --all | grep -v HEAD) &&
-  branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+fix_ssh() {
+    eval $(ssh-agent -s)
 }
 
-# fcoc - checkout git commit
-fcoc() {
-  local commits commit
-  commits=$(git log --pretty=oneline --abbrev-commit --reverse) &&
-  commit=$(echo "$commits" | fzf --tac +s +m -e) &&
-  git checkout $(echo "$commit" | sed "s/ .*//")
-}
 
-cros_sdk() {
-    cd ${HOME}/chromiumos;
-    command cros_sdk $@
+g4base() {
+  if ! is_in_g3; then
+    echo "Run from a google3 dir"
+    return 1
+  fi
+  cd "$(citc_root)/google3"
 }
-
-let_it_snow() {
-    type lolcat &> /dev/null || sudo apt-get install lolcat
-    ruby -e 'C=`stty size`.scan(/\d+/)[1].to_i;S=["2743".to_i(16)].pack("U*");a={};puts "\033[2J";loop{a[rand(C)]=0;a.each{|x,o|;a[x]+=1;print "\033[#{o};#{x}H \033[#{a[x]};#{x}H#{S} \033[0;0H"};$stdout.flush;sleep 0.1}' 2&> /dev/null | lolcat
-}
-
 
 unalias z 2> /dev/null;
 z() {
@@ -231,38 +212,40 @@ j() {
     cd "$(eval echo $dir)"
 }
 
+p4_pending_status() {
+  local changed=0
+  local added=0
+  local deleted=0
+  for opened in $(p4 opened 2&> /dev/null |
+        awk -F " - " '{print $2}' |
+        awk '{print $1}'); do
+      if [[ $opened == "edit" ]];then
+          (( changed+=1 ))
+      elif [[ $opened == "add" ]];then
+          (( added+=1 ))
+      elif [[ $opened == "delete" ]];then
+          (( deleted+=1 ))
+      fi
+  done
+  [[ $added > 0 ]] && echo -n "%F{34}+$added%f"
+  [[ $changed > 0 ]] && echo -n "%F{142}~$changed%f"
+  [[ $deleted > 0 ]] && echo -n "%F{124}-$deleted%f"
+}
+
+
 git_super_duper_status() {
     [[ "$GIT_BRANCH" != ":" ]] && print $@ "$(git_super_status)"
 }
 
 vcs_info() {
-    git_super_duper_status $@
-}
-
-function cd() {
-    if [[ "$#" != 0 ]]; then
-        builtin cd "$@";
-        return
-    fi
-    while true; do
-        local lsd=($(echo ".." && ls -p | grep '/$' | sed 's;/$;;'))
-        local dir="$(printf '%s\n' "${lsd[@]}" |
-            fzf --reverse --preview '
-                __cd_nxt="$(echo {})";
-                __cd_path="$(echo $(pwd)/${__cd_nxt} | sed "s;//;/;")";
-                echo $__cd_path;
-                echo;
-                ls -p --color=always "${__cd_path}";
-        ')"
-        [[ ${#dir} != 0 ]] || return 0
-        builtin cd "$dir" &> /dev/null
-    done
+    p4_prompt_info $@ || git_super_duper_status $@
 }
 
 function nav() {
     type highlight &> /dev/null || sudo apt-get install highlight
+    type fzf &> /dev/null || sudo apt-get install fzf
     while true; do
-        local lsd=($(echo ".." && ls -p))
+        local lsd=($(echo ".." && ls -Xp --group-directories-first))
         local sel="$(printf '%s\n' ${lsd[@]} |
             fzf --reverse --preview '
                 __nav_nxt="$(echo {})";
@@ -270,7 +253,7 @@ function nav() {
                 if [ -d "$__nav_nxt" ]; then
                     echo $__nav_path;
                     echo;
-                    ls -p --color=always "${__nav_path}";
+                    ls -Xp --group-directories-first --color=always "${__nav_path}";
                 else
                     echo $__nav_path;
                     highlight "$__nav_nxt" --out-format xterm256 --line-numbers --force --style=solarized-dark
@@ -298,9 +281,77 @@ dbm() {
 }
 
 bm() {
+    type fzf &> /dev/null || sudo apt-get install fzf
     touch "$BOOKMARKS"
     cd "$(cat "$BOOKMARKS" | fzf --height 40% --reverse --inline-info)"
 }
+
+export GBOOKMARKS=~/gbookmarks
+gabm() {
+    if ! is_in_g3; then
+      echo "Run from a google3 dir"
+      return 1
+    fi
+    local client_name="$(p4 --format %Client% client -o | awk -F: '{print $2}')"
+    file="${GBOOKMARKS}.${client_name}"
+    if [[ ${$#} > 1  && "$1" == "-g" ]]; then
+      file="$GBOOKMARKS"
+    fi
+    touch "$file"
+    local gpath="$(pwd | sed 's;^.*/google3[/]*;;')"
+    # if [[ ${#gpath} == 0 ]]; then
+      # return 1;
+    # fi
+    echo $gpath >> "$file"
+    sort -u -o "$file" "$file"
+}
+
+gdbm() {
+    if ! is_in_g3; then
+      echo "Run from a google3 dir"
+      return 1
+    fi
+    local client_name="$(p4 --format %Client% client -o | awk -F: '{print $2}')"
+    file="${GBOOKMARKS}.${client_name}"
+    if [[ ${$#} -ge 1 && "$1" == "-g" ]]; then
+      file="$GBOOKMARKS"
+    fi
+    touch "$file"
+    local gpath="$(pwd | sed 's;^.*/google3/;;')"
+    local newbms="$(cat "$file" | grep -v "^$gpath$")"
+    echo "$newbms" | grep -v "^$" > "$file"
+}
+
+gbm() {
+    if ! is_in_g3; then
+      echo "Run from a google3 dir"
+      return 1
+    fi
+    type fzf &> /dev/null || sudo apt-get install fzf
+    local client_name="$(p4 --format %Client% client -o | awk -F: '{print $2}')"
+    client_bms="${GBOOKMARKS}.${client_name}"
+    touch "$GBOOKMARKS"
+    touch "$client_bms"
+    local bms=""
+    query="$1"
+    if [[ "$1" == "-a" ]]; then
+      query="$2"
+      bms+="$(cat $GBOOKMARKS*)"
+    elif [[ "$1" == "-g" ]]; then
+      query="$2"
+      bms+="$(cat $GBOOKMARKS)"
+    fi
+    bms+=$(echo && cat "$client_bms")
+
+    local basepath="$(pwd | sed 's;/google3/.*$;/google3/;')"
+    local chosen="$(echo $bms | grep -vE '^$' | sort -u | fzf -q "$query" --height 40% --reverse --inline-info --preview "ls -Xp --group-directories-first --color=always ${basepath}/{}")"
+    if [[ ${#chosen} == 0 ]]; then
+      return 1;
+    fi
+    cd "$basepath/$chosen"
+}
+
+
 
 powerline_font_test() {
     echo -e "Powerline glyphs:\n\
@@ -318,11 +369,19 @@ powerline_font_test() {
 #   Make tmux auto reattach if it can
 #   -----------------------------------------------------
 t() {
-    local session_name="${@:-0}"
+    type tmux &> /dev/null || sudo apt-get install tmux
+    type fzf &> /dev/null || sudo apt-get install fzf
+    type tmx2 &> /dev/null || alias tmx2=tmux # for non-corp
+    local clients="$(tmux ls -F "#S" 2> /dev/null | grep -v '^$')";
+    if [[ ${#} == 0 && $(echo -n "$clients" | wc -l) > 0 ]]; then
+      tmx2 a -t "$(echo $clients | fzf -1 --height 15% --reverse)"
+      return
+    fi
+    local session_name="${1:-0}"
     tmx2 a -t $session_name > /dev/null || tmx2 new -s $session_name
 }
 
-batt() {
+bat() {
     highlight $@ --out-format xterm256 --line-numbers --force --style=solarized-dark
 }
 
@@ -357,30 +416,45 @@ summation() {
     awk '{s+=$1} END {print s}'
 }
 
-# search source code, then pipe files with 10 line buffer into fzf preview using bat.
-# requirements:
-# - fzf: https://github.com/junegunn/fzf
-# - ag: https://github.com/ggreer/the_silver_searcher
-# - bat: https://github.com/sharkdp/bat
-# - vim-fetch: https://github.com/wsdjeg/vim-fetch
-# Notes:
-#  - if you want to replace ag for rg feel free (https://blog.burntsushi.net/ripgrep/)
-#  - Same goes for bat, although ccat and others are definitely worse
-#  - the $ext extraction uses a ZSH specific text globber
-s(){
-  local margin=5 # number of lines above and below search result.
-  local preview_cmd='search={};file=$(echo $search | cut -d':' -f 1 );'
-  preview_cmd+="margin=$margin;" # Inject value into scope.
-  preview_cmd+='line=$(echo $search | cut -d':' -f 2 ); ext=$(echo $file(:e));'
-  preview_cmd+='tail -n +$(( $(( $line - $margin )) > 0 ? $(($line-$margin)) : 0)) $file | head -n $(($margin*2+1)) |'
-  preview_cmd+='bat --paging=never --color=always --style=plain --language=$ext --highlight-line $(($margin+1))'
-  full=$(ag "$*" \
-    | fzf --select-1 --exit-0 --preview-window up:$(($margin*2+1)) --height=60%  --preview $preview_cmd)
-  file="$(echo $full | awk -F: '{print $1}')"
-  line="$(echo $full | awk -F: '{print $2}')"
-  [ -n "$file" ] && vim "$file" +$line
-}
-
 ru() {
     yes | repo upload . --cbr $@ && echo
 }
+
+# using ripgrep combined with preview
+# find-in-file - usage: fif <searchTerm>
+fif() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+}
+
+g4diff() {
+  g4 diff | colordiff | less
+}
+
+vg4o() {
+  $EDITOR "$(g4 o | awk -F "#" '{print $1}' | fzf)"
+}
+citc_root() {
+  p4 --format '%clientRoot%' info
+}
+
+g4odirs() {
+  if ! is_in_g3; then
+    echo "Run from a google3 dir"
+    return 1
+  fi
+  basepath="$(citc_root)/google3/"
+  cd "$(g4 o | awk -F'#' '{print $1}' | sed 's;//depot/google3/;;g' | xargs dirname |
+    sort -u | fzf --preview "ls --color=always ${basepath}/{}")"
+}
+
+rgf() {
+  local file_line="$(rg -n . | fzf $@ --reverse | awk -F: '{printf("%s:%s", $1, $2)}')"
+  local file="$(echo $file_line | awk -F: '{print $1}')"
+  declare -i line="$(echo $file_line | awk -F: '{print $2}')"
+  if [[ ${#file} == 0 ]]; then
+    return
+  fi
+  vim +$line "$file"
+}
+
