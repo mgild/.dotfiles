@@ -15,11 +15,6 @@ export PATH=${(j/:/)path}
 export ZSH=~/.oh-my-zsh
 ZSH_CUSTOM=$ZSH/custom
 
-if [[ $EUID == 0 ]]; then
-   echo "Don't run setup as root!"
-   exit 1
-fi
-
 function assertInstalled() {
     local success=true
     for var in "$@"; do
