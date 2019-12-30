@@ -82,7 +82,7 @@ color_test () {
 
 unalias ls &> /dev/null
 function ls() {
-    command ls -Xp --group-directories-first --color=auto $@
+    command ls -FG $@
 }
 
 function termcolors () {
@@ -234,11 +234,11 @@ p4_pending_status() {
 
 
 git_super_duper_status() {
-    [[ "$GIT_BRANCH" != ":" ]] && print $@ "$(git_super_status)"
+    [[ "$GIT_BRANCH" != ":" ]] && print $@ "$(git_super_status | sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g')"
 }
 
 vcs_info() {
-    p4_prompt_info $@ || git_super_duper_status $@
+    git_super_duper_status $@
 }
 
 function nav() {
@@ -371,14 +371,13 @@ powerline_font_test() {
 t() {
     type tmux &> /dev/null || sudo apt-get install tmux
     type fzf &> /dev/null || sudo apt-get install fzf
-    type tmx2 &> /dev/null || alias tmx2=tmux # for non-corp
     local clients="$(tmux ls -F "#S" 2> /dev/null | grep -v '^$')";
     if [[ ${#} == 0 && $(echo -n "$clients" | wc -l) > 0 ]]; then
-      tmx2 a -t "$(echo $clients | fzf -1 --height 15% --reverse)"
+      tmux a -t "$(echo $clients | fzf -1 --height 15% --reverse)"
       return
     fi
     local session_name="${1:-0}"
-    tmx2 a -t $session_name > /dev/null || tmx2 new -s $session_name
+    tmux a -t $session_name > /dev/null || tmx2 new -s $session_name
 }
 
 bat() {

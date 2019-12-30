@@ -16,6 +16,7 @@ path=(
     /usr/games
     # cargo bin
     ${HOME}/.cargo/bin
+    ${HOME}/local/google-cloud-sdk/bin
 )
 # Join path and export
 export PATH=${(j/:/)path}
@@ -42,6 +43,8 @@ srcs=(
     ${HOME}/.zshrc.exports
 )
 
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+
 for f in $srcs; test -e "$f" && . "$f"
 
 export C;
@@ -54,6 +57,8 @@ PROMPT='%F{209}%B%f%b${ret_status} %F{13}%B%C%b%f %F{$C}$%f '
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 umask 022
+alias vi=nvim
+alias vim=nvim
 export EDITOR=vim
 export VISUAL=vim
 export DISPLAY=vim

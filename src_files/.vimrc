@@ -2,7 +2,19 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 " set rtp+=~/.vim/bundle/Vundle.vim
 call plug#begin("~/.vim/plugged")
-"
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'ryanolsonx/vim-lsp-python'
+" Install with pip2 or crash
+" pip2 install python-language-server
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'pyls',
+    \ 'cmd': {server_info->['pyls', '--verbose', '--log-file', '/tmp/pyls-log.txt']},
+    \ 'whitelist': ['python'],
+    \ })
+
 " let g:lsc_auto_map = v:true
 " Send async completion requests.
 " WARNING: Might interfere with other completion plugins.
@@ -19,6 +31,8 @@ let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal 
 " Enabling fuzzy completion
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
+set completeopt-=preview
+let g:lsp_signature_help_enabled = v:false
 " set completeopt=noselect,menuone,preview
 " set completeopt+=longest
 nnoremap gd :<C-u>LspDefinition<CR>
@@ -86,6 +100,7 @@ Plug 'conradirwin/vim-bracketed-paste'
 call plug#end()            " required
 filetype plugin indent on    " required
 " General ----------------------
+set guicursor= " Disable cursor style changing
 let mapleader = "\\" " set leader key to backslash
 syntax on " syntax based on file type
 set number " turn line numbers on
@@ -398,3 +413,4 @@ function! FF()
     endif
   endfor
 endfunction
+autocmd InsertLeave,CompleteDone * redraw!
