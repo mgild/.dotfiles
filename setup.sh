@@ -15,11 +15,6 @@ export PATH=${(j/:/)path}
 export ZSH=~/.oh-my-zsh
 ZSH_CUSTOM=$ZSH/custom
 
-if [[ $EUID == 0 ]]; then
-   echo "Don't run setup as root!"
-   exit 1
-fi
-
 function assertInstalled() {
     local success=true
     for var in "$@"; do
@@ -40,9 +35,13 @@ CWD="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 . "$CWD/setup_files/tmux-setup.sh";
 . "$CWD/setup_files/powerline-setup.sh";
 . "$CWD/setup_files/fzf-setup.sh";
+echo "=== fzf setup done==="
 . "$CWD/setup_files/ohmyzsh-setup.sh";
+echo "=== omz setup done==="
 . "$CWD/setup_files/plugin-setup.sh";
+echo "=== plugin setup done==="
 . "$CWD/setup_files/zshrc-setup.sh";
+echo "=== zsh setup done==="
 # Enter zsh shell
 echo "Entering zsh"
 exec zsh
