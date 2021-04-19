@@ -82,7 +82,7 @@ color_test () {
 
 unalias ls &> /dev/null
 function ls() {
-    command ls -FG $@
+    command ls -Xp --group-directories-first --color=auto $@
 }
 
 function termcolors () {
@@ -181,10 +181,21 @@ fbr() {
   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
 
+fix_network() {
+    iface="$(ifconfig | grep RUNNING | grep -v LOOPBACK | awk -F: '{ print $1 }')"
+    echo "Setting SNAX to iface $iface"
+    nmcli con down "SNAX"
+    nmcli con modify "SNAX" connection.interface-name $iface
+    nmcli con up "SNAX"
+}
+
 fix_ssh() {
     eval $(ssh-agent -s)
 }
 
+is_in_g3() {
+    pwd | grep "/google/src/cloud/${USER}/[^/]*/google3" &> /dev/null || return 1
+}
 
 g4base() {
   if ! is_in_g3; then
@@ -232,13 +243,32 @@ p4_pending_status() {
   [[ $deleted > 0 ]] && echo -n "%F{124}-$deleted%f"
 }
 
+p4_prompt_info() {
+    # if first param specified, cd to that directory before p4 info taken
+    if [[ ${#1} -ne 0 ]]; then
+      cd "$1"
+    fi
+    type p4 &> /dev/null || return 1
+    if [[ "$PWD" != "/google/src/cloud/$USER"* ]]; then
+        return 1
+    fi
+    local p4client=$(pwd | awk -F/ '{print $6}')
+    if [[ ${#p4client} -ne 0 ]]; then
+        local st="$(p4_pending_status)"
+        local sep=""
+        [[ ${#st} -ne 0 ]] && sep="|"
+        print -Pn "(%B%F{6}g4:%F{26}${p4client}%f${sep}${st}%b)"
+        return 0
+    fi
+    return 1
+}
 
 git_super_duper_status() {
-    [[ "$GIT_BRANCH" != ":" ]] && print $@ "$(git_super_status | sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g')"
+    [[ "$GIT_BRANCH" != ":" ]] && print $@ "$(git_super_status)"
 }
 
 vcs_info() {
-    git_super_duper_status $@
+    cd "$PWD"; p4_prompt_info $@ || git_super_duper_status $@
 }
 
 function nav() {
@@ -286,7 +316,7 @@ bm() {
     cd "$(cat "$BOOKMARKS" | fzf --height 40% --reverse --inline-info)"
 }
 
-export GBOOKMARKS=~/gbookmarks
+export GBOOKMARKS=~/marks/gbookmarks
 gabm() {
     if ! is_in_g3; then
       echo "Run from a google3 dir"
@@ -299,9 +329,6 @@ gabm() {
     fi
     touch "$file"
     local gpath="$(pwd | sed 's;^.*/google3[/]*;;')"
-    # if [[ ${#gpath} == 0 ]]; then
-      # return 1;
-    # fi
     echo $gpath >> "$file"
     sort -u -o "$file" "$file"
 }
@@ -334,24 +361,67 @@ gbm() {
     touch "$client_bms"
     local bms=""
     query="$1"
-    if [[ "$1" == "-a" ]]; then
-      query="$2"
-      bms+="$(cat $GBOOKMARKS*)"
-    elif [[ "$1" == "-g" ]]; then
-      query="$2"
-      bms+="$(cat $GBOOKMARKS)"
-    fi
+    bms+="$(cat $GBOOKMARKS)"
     bms+=$(echo && cat "$client_bms")
 
     local basepath="$(pwd | sed 's;/google3/.*$;/google3/;')"
-    local chosen="$(echo $bms | grep -vE '^$' | sort -u | fzf -q "$query" --height 40% --reverse --inline-info --preview "ls -Xp --group-directories-first --color=always ${basepath}/{}")"
+    local chosen="$(echo $bms | grep -vE '^$' | sort -u | fzf -q "$query" --height 100% --reverse --inline-info --preview "ls -Xp --group-directories-first --color=always ${basepath}/{}")"
     if [[ ${#chosen} == 0 ]]; then
       return 1;
     fi
     cd "$basepath/$chosen"
 }
 
+gbme() {
+    if ! is_in_g3; then
+      echo "Run from a google3 dir"
+      return 1
+    fi
+    type fzf &> /dev/null || sudo apt-get install fzf
+    local client_name="$(p4 --format %Client% client -o | awk -F: '{print $2}')"
+    g4base
+    client_bms="${GBOOKMARKS}.${client_name}"
+    touch "$GBOOKMARKS"
+    touch "$client_bms"
+    local bms=""
+    query="$1"
+    bms+="$(cat $GBOOKMARKS)"
+    bms+=$(echo && cat "$client_bms")
 
+    local basepath="$(pwd | sed 's;/google3/.*$;/google3/;')"
+    local files=""
+    while read -r bm; do
+      for x in $(ls $bm); do
+        files="$files\n$bm/$x"
+      done
+    done < <(echo $bms)
+    local chosen="$(echo $files | grep -vE '^$' | sort -u | fzf -q "$query" --height 100% --reverse --inline-info)"
+    if [[ ${#chosen} == 0 ]]; then
+      return 1;
+    fi
+    if [[ "$chosen" == *"/" ]]; then
+      cd "$basepath/$chosen"
+      return
+    fi
+    cd "$(dirname "$basepath/$chosen")"
+    vim "$basepath/$chosen"
+}
+
+
+# Clone current client to a new client
+clone_client() {
+  local cl="$(cl_num)"
+  g4d -f "${1}"
+  g4 patch -c "${cl}"
+}
+
+blaze-query-graph() {
+  # usage should be printed by the function, so user don't have to look at the source.
+  : ${1:?"usage: blaze-query-graph 'somepath(file/util/fileutil_lib:all, third_party/utf:all)'"}
+  # We would like to use dotty instead of the double pipe, but dotty is broken on ghardy.
+  # This workaround was suggested by jjamison.
+  blaze query "$@" --output=graph | dot -Tps -o /tmp/query.ps ; gv /tmp/query.ps
+}
 
 powerline_font_test() {
     echo -e "Powerline glyphs:\n\
@@ -371,13 +441,14 @@ powerline_font_test() {
 t() {
     type tmux &> /dev/null || sudo apt-get install tmux
     type fzf &> /dev/null || sudo apt-get install fzf
+    type tmx2 &> /dev/null || alias tmx2=tmux # for non-corp
     local clients="$(tmux ls -F "#S" 2> /dev/null | grep -v '^$')";
     if [[ ${#} == 0 && $(echo -n "$clients" | wc -l) > 0 ]]; then
-      tmux a -t "$(echo $clients | fzf -1 --height 15% --reverse)"
+      tmx2 a -t "$(echo $clients | fzf -1 --height 15% --reverse)"
       return
     fi
     local session_name="${1:-0}"
-    tmux a -t $session_name > /dev/null || tmx2 new -s $session_name
+    tmx2 a -t $session_name > /dev/null || tmx2 new -s $session_name
 }
 
 bat() {
@@ -424,6 +495,36 @@ ru() {
 fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+}
+
+g4de() {
+  prodcertstatus &> /dev/null || prodaccess
+  local clients="$(g4 myclients | awk -F: '{print $2}' | sort)"
+  g4d -f "$(echo $clients | grep -v "^$" | fzf --reverse --preview="cd /google/src/cloud/$USER/{}/google3; g4 o")"
+}
+
+g4d_cleanup() {
+  prodcertstatus &> /dev/null || prodaccess
+  local clients=($(g4 myclients | awk -F: '{print $2}' | sort))
+  for client in $clients; do
+    echo $client
+    g4 citc -d "$client"
+  done
+}
+
+g4d_delete_f() {
+  echo "DELETES A CITC CLIENT WITHOUT ANY CONFIRMATION. BE CAREFUL."
+  echo "Press enter to continue"
+  read line
+  prodcertstatus &> /dev/null || prodaccess
+  local clients="$(g4 myclients | awk -F: '{print $2}')"
+  g4 citc -df "$(echo $clients | grep -v "^$" | fzf --preview="cd /google/src/cloud/$USER/{}/google3; g4 o")"
+}
+
+g4d_delete() {
+  prodcertstatus &> /dev/null || prodaccess
+  local clients="$(g4 myclients | awk -F: '{print $2}')"
+  g4 citc -d "$(echo $clients | grep -v "^$" | fzf --preview="cd /google/src/cloud/$USER/{}/google3; g4 o")"
 }
 
 g4diff() {

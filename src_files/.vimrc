@@ -1,20 +1,21 @@
+set nocompatible
+source /usr/share/vim/google/google.vim
+filetype plugin indent on
+syntax on
+source /usr/share/vim/google/glug/bootstrap.vim
+Glug google-csimporter
+" Glug youcompleteme-google
+" Glug glug sources+=/google/src/files/head/depot/google3/experimental/users/rahm
+" Glug radiation-release
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 " set rtp+=~/.vim/bundle/Vundle.vim
 call plug#begin("~/.vim/plugged")
-Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'ryanolsonx/vim-lsp-python'
-" Install with pip2 or crash
-" pip2 install python-language-server
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'pyls',
-    \ 'cmd': {server_info->['pyls', '--verbose', '--log-file', '/tmp/pyls-log.txt']},
-    \ 'whitelist': ['python'],
-    \ })
-
+Plug 'prabirshrestha/vim-lsp'
 " let g:lsc_auto_map = v:true
 " Send async completion requests.
 " WARNING: Might interfere with other completion plugins.
@@ -31,8 +32,21 @@ let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal 
 " Enabling fuzzy completion
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
-set completeopt-=preview
-let g:lsp_signature_help_enabled = v:false
+" au User lsp_setup call lsp#register_server({
+      " \ 'name': 'Kythe Language Server',
+      " \ 'cmd': {server_info->['/google/bin/releases/grok/tools/kythe_languageserver', '--google3']},
+      " \ 'whitelist': ['python', 'go', 'java', 'cpp', 'proto'],
+      " \})
+au User lsp_setup call lsp#register_server({
+      \ 'name': 'CiderLSP',
+      \ 'cmd': {server_info->[
+      \   '/google/bin/releases/editor-devtools/ciderlsp',
+      \   '--tooltag=vim-lsp',
+      \   '--noforward_sync_responses',
+      \   '-hub_addr=blade:languageservices-staging',
+      \ ]},
+      \ 'whitelist': ['c', 'cpp', 'java', 'proto', 'textproto', 'go'],
+      \})
 " set completeopt=noselect,menuone,preview
 " set completeopt+=longest
 nnoremap gd :<C-u>LspDefinition<CR>
@@ -44,7 +58,14 @@ nnoremap <leader>ff :NERDTreeFocus<cr>
 let g:NERDTreeNodeDelimiter = "\u00a0"
 nnoremap <C-E> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
-autocmd VimEnter * NERDTreeToggle "Open nerdtree on start
+" autocmd VimEnter * NERDTreeToggle "Open nerdtree on start
+function! NerdOnRegDir()
+  let l:file_count = str2nr(system('ls | wc -l'))
+  if l:file_count < 100
+    NERDTreeToggle
+  endif
+endfunction
+autocmd VimEnter * call NerdOnRegDir() "Open nerdtree on start
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 let g:NERDTreeWinSize=32 " change nerdtree default size
 Plug 'scrooloose/nerdcommenter'
@@ -63,9 +84,11 @@ Plug 'wesQ3/vim-windowswap'
 " Stylization ------------------
 " General enhanced syntax highlighting
 Plug 'sheerun/vim-polyglot'
-autocmd BufNewFile,BufRead *.dart set syntax=dart
-autocmd BufNewFile,BufRead *.ts set syntax=typescript
-autocmd BufNewFile,BufRead *.tmux.conf set syntax=tmux
+autocmd VimEnter,BufNewFile,BufRead *.dart set syntax=dart
+autocmd VimEnter,BufNewFile,BufRead *.ts set syntax=typescript
+autocmd VimEnter,BufNewFile,BufRead *.tmux.conf set syntax=tmux
+autocmd VimEnter,BufNewFile,BufRead *.service set syntax=gcl
+autocmd VimEnter,BufNewFile,BufRead *.cfg set syntax=yaml
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
@@ -100,7 +123,6 @@ Plug 'conradirwin/vim-bracketed-paste'
 call plug#end()            " required
 filetype plugin indent on    " required
 " General ----------------------
-set guicursor= " Disable cursor style changing
 let mapleader = "\\" " set leader key to backslash
 syntax on " syntax based on file type
 set number " turn line numbers on
@@ -132,227 +154,11 @@ set incsearch  " search as characters are entered
 set hlsearch   " highlight matches
 " ------------------------------
 " Custom Highlighting ----------
-hi JavaSubclass ctermfg=5
-hi JavaInPackage ctermfg=Red
-hi JavaClassFun ctermfg=Green
-hi JavaClassVars ctermfg=Yellow
-hi JavaStatic ctermfg=Yellow
-hi JavaImport ctermfg=Red
-hi JavaExtras ctermfg=Cyan
-function! HighlightJavaSubclass()
-  let save_pos = getpos(".")
-  let matches = []
-  %s/^\s*\(@\?interface\|public\|private\)[^(]*\s\([A-Za-z0-9_]\+\)\s*{/\=add(matches, submatch(2))/gn
-  syn clear JavaSubclass
-
-  call setpos('.', save_pos)
-  for match in matches
-    " call matchadd('JavaSubclass', '\(^\|[^A-Za-z0-9_]\)\zs' . match . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaSubclass ' . match
-    exec 'syn keyword JavaSubclass ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-  endfor
-endfunction
-function! HighlightJavaInPackage()
-  syn clear JavaInPackage
-  for fpath in split(globpath(substitute(expand('%:p:h'), 'javatests', 'java', ''), '*'), '/')
-    if fpath =~ ".java"
-      " call matchadd('JavaInPackage', '\(^\|[^A-Za-z0-9_]\)\zs' . split(fpath, '\.')[0] . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0]
-    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0] . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-    endif
-  endfor
-  for fpath in split(globpath(expand('%:p:h'), '*'), '/')
-    if fpath =~ ".java"
-      " call matchadd('JavaInPackage', '\(^\|[^A-Za-z0-9_]\)\zs' . split(fpath, '\.')[0] . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0]
-    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0] . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-    endif
-  endfor
-endfunction
-function! HighlightJavaClassFun()
-  let save_pos = getpos(".")
-  let matches = []
-  %s/\(public\|private\|protected\).*\s\([A-Za-z0-9_]\+\)\s*(/\=add(matches, submatch(2))/gn
-  " %s/^\s\+[A-Za-z<>\.]\+\s\+\([A-Za-z0-9_]\+\)\s*(.*{/\=add(matches, submatch(1))/gn
-  %s/^\s\+[A-Za-z<>\.]\+\s\+\([A-Za-z0-9_]\+\)\s*(.*\(;\|\(\|{\)$/\=add(matches, submatch(1))/gn
-  %s/^\s\+[A-Za-z<>\.]\+\s\+\([A-Za-z0-9_]\+\)\s*($/\=add(matches, submatch(1))/gn
-  " %s/\(^\s*[^ ]+\).*\s\([A-Za-z0-9_]\+\)\s*(/\=add(matches, submatch(2))/gn
-  syn clear JavaClassFun
-  call setpos('.', save_pos)
-  for match in matches
-    " call matchadd('JavaClassFun', '\(^\|[^A-Za-z0-9_\.]\)\zs' . match . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaClassFun ' . match
-    exec 'syn keyword JavaClassFun ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-  endfor
-endfunction
-function! HighlightJavaClassVars()
-  let save_pos = getpos(".")
-  let matches = []
-  %s/\(public\|private\).*\s\([A-Za-z0-9_]\+\);/\=add(matches, submatch(2))/gn
-  %s/\(public\|private\).*\s\([A-Za-z0-9_]\+\)\s*=/\=add(matches, submatch(2))/gn
-  syn clear JavaClassVars
-  call setpos('.', save_pos)
-  for match in matches
-    " call matchadd('JavaClassVars', '\(^\|[^A-Za-z0-9_]\)\zs' . match . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaClassVars ' . match
-    exec 'syn keyword JavaClassVars ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-  endfor
-endfunction
-function! HighlightJavaStatic()
-  let save_pos = getpos(".")
-  let matches = []
-  %s/static.*\s\([A-Za-z0-9_]\+\)\s\=/\=add(matches, submatch(1))/gn
-  syn clear JavaStatic
-
-  call setpos('.', save_pos)
-  for match in matches
-    " call matchadd('JavaStatic', '\(^\|[^A-Za-z0-9_]\)\zs' . match . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaStatic ' . match
-    exec 'syn keyword JavaStatic ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-  endfor
-endfunction
-function! HighlightJavaImports()
-  let save_pos = getpos(".")
-  let matches = []
-  %s/^import.*\.\([A-Za-z0-9_]*\);/\=add(matches, submatch(1))/gn
-  syn clear JavaImport
-  call setpos('.', save_pos)
-  for import in matches
-    " call matchadd('JavaImport', '\(^\|[^A-Za-z0-9_]\)\zs' . import . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaImport ' . import
-    exec 'syn keyword JavaImport ' . import . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-  endfor
-endfunction
-function! HighlightJavaExtras()
-
-  " https://source.corp.google.com/piper///depot/google3/third_party/java_src/jdk/openjdk8/u60/trunk/jdk/src/share/classes/java/lang/
-  let keywords = [
-        \'AbstractMethodError',
-        \'AbstractStringBuilder',
-        \'Appendable',
-        \'ApplicationShutdownHooks',
-        \'ArithmeticException',
-        \'ArrayIndexOutOfBoundsException',
-        \'ArrayStoreException',
-        \'AssertionError',
-        \'AssertionStatusDirectives',
-        \'AutoCloseable',
-        \'Boolean',
-        \'BootstrapMethodError',
-        \'Byte',
-        \'CharSequence',
-        \'Character',
-        \'CharacterData',
-        \'CharacterName',
-        \'Class',
-        \'ClassCastException',
-        \'ClassCircularityError',
-        \'ClassFormatError',
-        \'ClassLoader',
-        \'ClassNotFoundException',
-        \'ClassValue',
-        \'CloneNotSupportedException',
-        \'Cloneable',
-        \'Comparable',
-        \'Compiler',
-        \'ConditionalSpecialCasing',
-        \'Deprecated',
-        \'Double',
-        \'Enum',
-        \'EnumConstantNotPresentException',
-        \'Error',
-        \'Exception',
-        \'ExceptionInInitializerError',
-        \'Float',
-        \'FunctionalInterface',
-        \'IllegalAccessError',
-        \'IllegalAccessException',
-        \'IllegalArgumentException',
-        \'IllegalMonitorStateException',
-        \'IllegalStateException',
-        \'IllegalThreadStateException',
-        \'IncompatibleClassChangeError',
-        \'IndexOutOfBoundsException',
-        \'InheritableThreadLocal',
-        \'InstantiationError',
-        \'InstantiationException',
-        \'Integer',
-        \'InternalError',
-        \'InterruptedException',
-        \'Iterable',
-        \'LinkageError',
-        \'Long',
-        \'Math',
-        \'NegativeArraySizeException',
-        \'NoClassDefFoundError',
-        \'NoSuchFieldError',
-        \'NoSuchFieldException',
-        \'NoSuchMethodError',
-        \'NoSuchMethodException',
-        \'NullPointerException',
-        \'Number',
-        \'NumberFormatException',
-        \'Object',
-        \'OutOfMemoryError',
-        \'Override',
-        \'Package',
-        \'Process',
-        \'ProcessBuilder',
-        \'Readable',
-        \'ReflectiveOperationException',
-        \'Runnable',
-        \'Runtime',
-        \'RuntimeException',
-        \'RuntimePermission',
-        \'SafeVarargs',
-        \'SecurityException',
-        \'SecurityManager',
-        \'Short',
-        \'Shutdown',
-        \'StackOverflowError',
-        \'StackTraceElement',
-        \'StrictMath',
-        \'String',
-        \'StringBuffer',
-        \'StringBuilder',
-        \'StringCoding',
-        \'StringIndexOutOfBoundsException',
-        \'SuppressWarnings',
-        \'System',
-        \'Thread',
-        \'ThreadDeath',
-        \'ThreadGroup',
-        \'ThreadLocal',
-        \'Throwable',
-        \'TypeNotPresentException',
-        \'UnknownError',
-        \'UnsatisfiedLinkError',
-        \'UnsupportedClassVersionError',
-        \'UnsupportedOperationException',
-        \'VerifyError',
-        \'VirtualMachineError',
-        \'Void',
-        \'null',
-        \]
-
-  syn clear JavaExtras
-  for keyword in keywords
-    " call matchadd('JavaExtras', '\(^\|[^A-Za-z0-9_]\)\zs' . keyword . '\ze\($\|[^A-Za-z0-9_]\)')
-    exec 'syn keyword JavaExtras ' . keyword
-    exec 'syn keyword JavaExtras ' . keyword . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
-  endfor
-endfunction
-function! DoJavaHighlights()
-  " call clearmatches()
-  call HighlightJavaSubclass()
-  call HighlightJavaClassVars()
-  call HighlightJavaClassFun()
-  call HighlightJavaInPackage()
-  call HighlightJavaExtras()
-  call HighlightJavaImports()
-endfunction
-autocmd BufEnter,BufWritePost *.java silent! call DoJavaHighlights()
+so ~/.vimrc.java_highlights
 " let java_highlight_all=1
+" let java_highlight_functions="style"
+" let java_highlight_debug=1
+" let java_highlight_java_lang_ids=1
 " let java_highlight_functions="style"
 " let java_allow_cpp_keywords=1
 " autocmd BufEnter,VimEnter *.java silent! call HighlightJavaExtras()
@@ -413,4 +219,8 @@ function! FF()
     endif
   endfor
 endfunction
-autocmd InsertLeave,CompleteDone * redraw!
+autocmd CompleteDone * redraw!
+function! CO()
+  %bd|e#|bd#
+endfunction
+command! CO :call CO()
