@@ -6,14 +6,14 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'ryanolsonx/vim-lsp-python'
+" Plug 'ryanolsonx/vim-lsp-python'
 " Install with pip2 or crash
 " pip2 install python-language-server
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'pyls',
-    \ 'cmd': {server_info->['pyls', '--verbose', '--log-file', '/tmp/pyls-log.txt']},
-    \ 'whitelist': ['python'],
-    \ })
+" au User lsp_setup call lsp#register_server({
+    " \ 'name': 'pyls',
+    " \ 'cmd': {server_info->['pyls', '--verbose', '--log-file', '/tmp/pyls-log.txt']},
+    " \ 'whitelist': ['python'],
+    " \ })
 
 " let g:lsc_auto_map = v:true
 " Send async completion requests.
@@ -414,3 +414,6 @@ function! FF()
   endfor
 endfunction
 autocmd InsertLeave,CompleteDone * redraw!
+" set timeoutlen=0
+set ttimeoutlen=0
+

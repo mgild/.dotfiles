@@ -377,7 +377,7 @@ t() {
       return
     fi
     local session_name="${1:-0}"
-    tmux a -t $session_name > /dev/null || tmx2 new -s $session_name
+    tmux a -t $session_name > /dev/null || tmux new -s $session_name
 }
 
 bat() {
@@ -457,3 +457,9 @@ rgf() {
   vim +$line "$file"
 }
 
+age() {
+    vim +'/\v'"$1" +':silent tabdo :1 | normal! n' +':tabfirst' -p $(ag "$@" | cut -d: -f1 | sort -u)
+}
+grepe() {
+    vim +'/\v'"$1" +':silent tabdo :1 | normal! n' +':tabfirst' -p $(grep "$@" | cut -d: -f1 | sort -u)
+}

@@ -7,6 +7,7 @@ path=(
     /opt/X11/bin
     # user builds
     ${HOME}/{,.}local/bin
+    ${HOME}/local/solana-release/bin
     ${HOME}/.local/diff-so-fancy
     # gems
     ${HOME}/.ruby/bin
@@ -17,6 +18,9 @@ path=(
     # cargo bin
     ${HOME}/.cargo/bin
     ${HOME}/local/google-cloud-sdk/bin
+    /usr/local/opt/python@3.8/bin
+    $HOME/.nodebrew/current/bin
+    /Users/mgild/.local/share/solana/install/active_release/bin
 )
 # Join path and export
 export PATH=${(j/:/)path}
@@ -58,7 +62,7 @@ PROMPT='%F{209}%B%f%b${ret_status} %F{13}%B%C%b%f %F{$C}$%f '
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 umask 022
 alias vi=nvim
-alias vim=nvim
+# alias vim=nvim
 export EDITOR=vim
 export VISUAL=vim
 export DISPLAY=vim
@@ -66,6 +70,11 @@ export P4PORT=perforce:1666
 
 # zsh fix for tab completion lag in google3
 zstyle ':completion:*' users root $USER
+# zstyle ":completion:*:git-checkout:*" sort false
+# zstyle ':completion:*:descriptions' format '[%d]'
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 export GCLOUD_PROJ="mgild-test-proj-1"
 export PROJECT_ID="mgild-test-proj-1"
 
@@ -82,3 +91,15 @@ export GOOGLE_ORG_ID="433637338589"
 # if [ -f '/usr/local/google/home/mgild/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google/home/mgild/.local/google-cloud-sdk/completion.zsh.inc'; fi
 alias python=python3
 alias pip=pip3
+# alias node=/usr/local/opt/node@10/bin/node
+remix_dir() { remixd -s $PWD --remix-ide https://remix.ethereum.org }
+alias vim=nvim
+# alias npm=/usr/local/Cellar/node@10/10.23.0/bin/npm
+# alias node=/usr/local/Cellar/node@10/10.23.0/bin/node
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+alias '$'=''
+alias readlink=greadlink
+# export LIVE=1
+# export CLUSTER=devnet
