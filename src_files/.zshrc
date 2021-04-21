@@ -57,11 +57,11 @@ precmd() {
 }
 
 ret_status="%B%(?:%F{6}:%F{1})➜%f%b"
-PROMPT='$(is_javatest_dir && echo "(javatest) ")%F{209}%B%f%b${ret_status} %F{13}%B%C%b%f %F{$C}$%f '
+PROMPT='%F{209}%B%f%b${ret_status} %F{13}%B%C%b%f %F{$C}$%f '
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 umask 022
-alias vi=nvim
+# alias vi=nvim
 # alias vim=nvim
 export EDITOR=vim
 export VISUAL=vim
@@ -94,7 +94,7 @@ alias python=python3
 alias pip=pip3
 # alias node=/usr/local/opt/node@10/bin/node
 remix_dir() { remixd -s $PWD --remix-ide https://remix.ethereum.org }
-alias vim=nvim
+# alias vim=nvim
 # alias npm=/usr/local/Cellar/node@10/10.23.0/bin/npm
 # alias node=/usr/local/Cellar/node@10/10.23.0/bin/node
 export NVM_DIR="$HOME/.nvm"

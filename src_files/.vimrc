@@ -1,14 +1,4 @@
 set nocompatible
-source /usr/share/vim/google/google.vim
-filetype plugin indent on
-syntax on
-source /usr/share/vim/google/glug/bootstrap.vim
-Glug google-csimporter
-" Glug youcompleteme-google
-" Glug glug sources+=/google/src/files/head/depot/google3/experimental/users/rahm
-" Glug radiation-release
-
-set nocompatible              " be iMproved, required
 filetype off                  " required
 " set rtp+=~/.vim/bundle/Vundle.vim
 call plug#begin("~/.vim/plugged")
@@ -37,16 +27,16 @@ let g:asyncomplete_auto_popup = 1
       " \ 'cmd': {server_info->['/google/bin/releases/grok/tools/kythe_languageserver', '--google3']},
       " \ 'whitelist': ['python', 'go', 'java', 'cpp', 'proto'],
       " \})
-au User lsp_setup call lsp#register_server({
-      \ 'name': 'CiderLSP',
-      \ 'cmd': {server_info->[
-      \   '/google/bin/releases/editor-devtools/ciderlsp',
-      \   '--tooltag=vim-lsp',
-      \   '--noforward_sync_responses',
-      \   '-hub_addr=blade:languageservices-staging',
-      \ ]},
-      \ 'whitelist': ['c', 'cpp', 'java', 'proto', 'textproto', 'go'],
-      \})
+" au User lsp_setup call lsp#register_server({
+      " \ 'name': 'CiderLSP',
+      " \ 'cmd': {server_info->[
+      " \   '/google/bin/releases/editor-devtools/ciderlsp',
+      " \   '--tooltag=vim-lsp',
+      " \   '--noforward_sync_responses',
+      " \   '-hub_addr=blade:languageservices-staging',
+      " \ ]},
+      " \ 'whitelist': ['c', 'cpp', 'java', 'proto', 'textproto', 'go'],
+      " \})
 " set completeopt=noselect,menuone,preview
 " set completeopt+=longest
 nnoremap gd :<C-u>LspDefinition<CR>
@@ -154,7 +144,7 @@ set incsearch  " search as characters are entered
 set hlsearch   " highlight matches
 " ------------------------------
 " Custom Highlighting ----------
-so ~/.vimrc.java_highlights
+" so ~/.vimrc.java_highlights
 " let java_highlight_all=1
 " let java_highlight_functions="style"
 " let java_highlight_debug=1
@@ -207,7 +197,8 @@ function G4oOpen()
   " execute 'edit' . file
 endfunction
 noremap <C-p> :call fzf#run({'source': "p4 o \| awk -F'#' '{print $1}' \| sed 's;//depot/;;' \| sed \"s;^;$(p4 --format \'%clientRoot%\' info)/;\"", 'sink': 'e'})<CR>
-nmap <leader>co :w <bar> %bd <bar> e# <bar> bd# <CR>
+" nmap <leader>co :w <bar> %bd <bar> e# <bar> bd# <CR>
+nmap <leader>co :w <bar> e# <CR>
 autocmd VimEnter * noremap <leader>CC :!cider_url %:p":"<c-r>=line('.')<CR><CR>
 command! F NERDTreeFind
 command! Reveal NERDTreeFind
@@ -225,6 +216,6 @@ set ttimeoutlen=0
 
 autocmd CompleteDone * redraw!
 function! CO()
-  %bd|e#|bd#
+  %bd|e#
 endfunction
 command! CO :call CO()
