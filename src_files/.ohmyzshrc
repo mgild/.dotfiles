@@ -26,6 +26,7 @@ DISABLE_AUTO_TITLE="true"
 plugins=(
     autojump
     fast-syntax-highlighting
+    mercurial
     # git
     # git-extras
     zsh-autosuggestions

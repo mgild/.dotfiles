@@ -12,6 +12,8 @@ path=(
     # gems
     ${HOME}/.ruby/bin
     # default paths
+    ${HOME}/go/bin
+    /usr/local
     /{usr/,}{local/,}{s,}bin
     # games
     /usr/games
@@ -47,8 +49,6 @@ srcs=(
     ${HOME}/.zshrc.exports
 )
 
-export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
-
 for f in $srcs; test -e "$f" && . "$f"
 
 export C;
@@ -57,7 +57,7 @@ precmd() {
 }
 
 ret_status="%B%(?:%F{6}:%F{1})➜%f%b"
-PROMPT='%F{209}%B%f%b${ret_status} %F{13}%B%C%b%f %F{$C}$%f '
+PROMPT='$(is_javatest_dir && echo "(javatest) ")%F{209}%B%f%b${ret_status} %F{13}%B%C%b%f %F{$C}$%f '
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 umask 022
@@ -67,7 +67,8 @@ export EDITOR=vim
 export VISUAL=vim
 export DISPLAY=vim
 export P4PORT=perforce:1666
-
+export P4DIFF="/usr/bin/diff -u"
+# export P4MERGE=' vim -f $1 $3 $2 $4 -c "SpliceInit"'
 # zsh fix for tab completion lag in google3
 zstyle ':completion:*' users root $USER
 # zstyle ":completion:*:git-checkout:*" sort false
@@ -103,3 +104,4 @@ alias '$'=''
 alias readlink=greadlink
 # export LIVE=1
 # export CLUSTER=devnet
+alias '$'=';'

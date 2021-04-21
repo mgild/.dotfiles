@@ -1,0 +1,217 @@
+hi JavaSubclass ctermfg=5
+hi JavaInPackage ctermfg=Red
+hi JavaClassFun ctermfg=Green
+hi JavaClassVars ctermfg=Yellow
+hi JavaStatic ctermfg=Yellow
+hi JavaImport ctermfg=Red
+hi JavaExtras ctermfg=Cyan
+function! HighlightJavaSubclass()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/^ *\(@\?interface\|public\|private\)[^(]*\s\([A-Za-z0-9_]\+\)\s*{/\=add(matches, submatch(2))/gn
+  %s/^ .* class \([A-Za-z0-9_]\+\)/\=add(matches, submatch(1))/gn
+  syn clear JavaSubclass
+
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword JavaSubclass ' . match
+    exec 'syn keyword JavaSubclass ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+  endfor
+endfunction
+function! HighlightJavaInPackage()
+  syn clear JavaInPackage
+  for fpath in split(globpath(substitute(expand('%:p:h'), 'javatests', 'java', ''), '*'), '/')
+    if fpath =~ ".java"
+    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0]
+    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0] . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+    endif
+  endfor
+  for fpath in split(globpath(expand('%:p:h'), '*'), '/')
+    if fpath =~ ".java"
+    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0]
+    exec 'syn keyword JavaInPackage ' . split(fpath, '\.')[0] . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+    endif
+  endfor
+endfunction
+function! HighlightJavaClassFun()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/\(public\|private\|protected\).*\s\([A-Za-z0-9_]\+\)\s*(/\=add(matches, submatch(2))/gn
+  %s/^\s\+[A-Za-z<>\.]\+\s\+\([A-Za-z0-9_]\+\)\s*(.*\(;\|\(\|{\)$/\=add(matches, submatch(1))/gn
+  %s/^\s\+[A-Za-z<>\.]\+\s\+\([A-Za-z0-9_]\+\)\s*($/\=add(matches, submatch(1))/gn
+  %s/^\s\+[A-Za-z<>\.]\+\s\+\([A-Za-z0-9_]\+\)\s*(.*) {$/\=add(matches, submatch(1))/gn
+  %s/^  .\+\s\+\([A-Za-z0-9_]\+\)\s*($/\=add(matches, submatch(1))/gn
+  %s/^  [^ ]\+\s\+\([A-Za-z0-9_]\+\)\s*([^)]*)$/\=add(matches, submatch(1))/gn
+  syn clear JavaClassFun
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword JavaClassFun ' . match
+    exec 'syn keyword JavaClassFun ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+  endfor
+endfunction
+function! HighlightJavaClassVars()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/^  \([A-Za-z@]\)[^=]*\s\([A-Za-z0-9_]\+\);/\=add(matches, submatch(2))/gn
+  %s/^  \(public\|private\|static\).*\s\([A-Za-z0-9_]\+\)\s*=/\=add(matches, submatch(2))/gn
+  %s/static.*\s\([A-Za-z0-9_]\+\)\s*=/\=add(matches, submatch(1))/gn
+  %s/^  [^ ].*\s\([A-Za-z0-9_]\+\)\s*=/\=add(matches, submatch(1))/gn
+  %s/^\s\{6\}\([A-Z0-9_]\+\)\s\+=/\=add(matches, submatch(1))/gn " Special case that has low confidence
+  syn clear JavaClassVars
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword JavaClassVars ' . match
+    exec 'syn keyword JavaClassVars ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+  endfor
+endfunction
+function! HighlightJavaStatic()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/(^import) static.*\s\([A-Za-z0-9_]\+\)\s\=/\=add(matches, submatch(1))/gn
+  syn clear JavaStatic
+
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword JavaStatic ' . match
+    exec 'syn keyword JavaStatic ' . match . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+  endfor
+endfunction
+function! HighlightJavaImports()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/^import.*\.\([A-Za-z0-9_]*\);/\=add(matches, submatch(1))/gn
+  syn clear JavaImport
+  call setpos('.', save_pos)
+  for import in matches
+    exec 'syn keyword JavaImport ' . import
+    exec 'syn keyword JavaImport ' . import . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+  endfor
+endfunction
+function! HighlightJavaExtras()
+
+  " https://source.corp.google.com/piper///depot/google3/third_party/java_src/jdk/openjdk8/u60/trunk/jdk/src/share/classes/java/lang/
+  let keywords = [
+        \'AbstractMethodError',
+        \'AbstractStringBuilder',
+        \'Appendable',
+        \'ApplicationShutdownHooks',
+        \'ArithmeticException',
+        \'ArrayIndexOutOfBoundsException',
+        \'ArrayStoreException',
+        \'AssertionError',
+        \'AssertionStatusDirectives',
+        \'AutoCloseable',
+        \'Boolean',
+        \'BootstrapMethodError',
+        \'Byte',
+        \'CharSequence',
+        \'Character',
+        \'CharacterData',
+        \'CharacterName',
+        \'Class',
+        \'ClassCastException',
+        \'ClassCircularityError',
+        \'ClassFormatError',
+        \'ClassLoader',
+        \'ClassNotFoundException',
+        \'ClassValue',
+        \'CloneNotSupportedException',
+        \'Cloneable',
+        \'Comparable',
+        \'Compiler',
+        \'ConditionalSpecialCasing',
+        \'Deprecated',
+        \'Double',
+        \'Enum',
+        \'EnumConstantNotPresentException',
+        \'Error',
+        \'Exception',
+        \'ExceptionInInitializerError',
+        \'Float',
+        \'FunctionalInterface',
+        \'IllegalAccessError',
+        \'IllegalAccessException',
+        \'IllegalArgumentException',
+        \'IllegalMonitorStateException',
+        \'IllegalStateException',
+        \'IllegalThreadStateException',
+        \'IncompatibleClassChangeError',
+        \'IndexOutOfBoundsException',
+        \'InheritableThreadLocal',
+        \'InstantiationError',
+        \'InstantiationException',
+        \'Integer',
+        \'InternalError',
+        \'InterruptedException',
+        \'Iterable',
+        \'LinkageError',
+        \'Long',
+        \'Math',
+        \'NegativeArraySizeException',
+        \'NoClassDefFoundError',
+        \'NoSuchFieldError',
+        \'NoSuchFieldException',
+        \'NoSuchMethodError',
+        \'NoSuchMethodException',
+        \'NullPointerException',
+        \'Number',
+        \'NumberFormatException',
+        \'Object',
+        \'OutOfMemoryError',
+        \'Override',
+        \'Package',
+        \'Process',
+        \'ProcessBuilder',
+        \'Readable',
+        \'ReflectiveOperationException',
+        \'Runnable',
+        \'Runtime',
+        \'RuntimeException',
+        \'RuntimePermission',
+        \'SafeVarargs',
+        \'SecurityException',
+        \'SecurityManager',
+        \'Short',
+        \'Shutdown',
+        \'StackOverflowError',
+        \'StackTraceElement',
+        \'StrictMath',
+        \'String',
+        \'StringBuffer',
+        \'StringBuilder',
+        \'StringCoding',
+        \'StringIndexOutOfBoundsException',
+        \'SuppressWarnings',
+        \'System',
+        \'Thread',
+        \'ThreadDeath',
+        \'ThreadGroup',
+        \'ThreadLocal',
+        \'Throwable',
+        \'TypeNotPresentException',
+        \'UnknownError',
+        \'UnsatisfiedLinkError',
+        \'UnsupportedClassVersionError',
+        \'UnsupportedOperationException',
+        \'VerifyError',
+        \'VirtualMachineError',
+        \'Void',
+        \'null',
+        \]
+
+  syn clear JavaExtras
+  for keyword in keywords
+    exec 'syn keyword JavaExtras ' . keyword
+    exec 'syn keyword JavaExtras ' . keyword . ' contained containedin=javaAnnotation,javaFold,javaParenT,javaParent1'
+  endfor
+endfunction
+function! DoJavaHighlights()
+  call HighlightJavaSubclass()
+  call HighlightJavaClassVars()
+  call HighlightJavaStatic()
+  call HighlightJavaClassFun()
+  call HighlightJavaInPackage()
+  call HighlightJavaExtras()
+  call HighlightJavaImports()
+endfunction
+autocmd BufEnter,BufWritePost,FocusGained *.java silent! call DoJavaHighlights()

@@ -7,7 +7,7 @@ if [[ ! -a "${HOME}/.vim/plugged" ]]; then
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 # install vim pluigns
-vim -E -c "PlugInstall" -c "qa" || true
+vim -E -c "PluginInstall" -c "qa" || true
 # Remove old colors and symlink the theme bundle
 mv ~/.vim/colors  ~/.vim/colors.old || true
 ln -s ~/.vim/bundle/vim-colorschemes/colors ~/.vim/colors || true

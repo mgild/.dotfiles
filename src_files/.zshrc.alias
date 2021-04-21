@@ -83,4 +83,3 @@ alias openPorts='sudo lsof -i | grep LISTEN'
 
 alias g4o="g4 o"
 alias e='eval $(ssh-agent -s)'
-alias flex='/usr/bin/flex.par'
