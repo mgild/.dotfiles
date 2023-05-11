@@ -2,10 +2,24 @@ set nocompatible
 filetype off                  " required
 " set rtp+=~/.vim/bundle/Vundle.vim
 call plug#begin("~/.vim/plugged")
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'gennaro-tedesco/nvim-peekup'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'chentoast/marks.nvim'
+
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
+Plug 'kyazdani42/nvim-web-devicons' " optional, for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'miguelmota/cairo.vim'
+Plug 'akinsho/nvim-bufferline.lua'
+let g:bufferline_sort_by = 'u:sort:buffers=3'
+
+
+
 " let g:lsc_auto_map = v:true
 " Send async completion requests.
 " WARNING: Might interfere with other completion plugins.
@@ -45,6 +59,8 @@ nnoremap <leader>rr :LspReferences<CR>
 " NerdTree ---------------------
 Plug 'scrooloose/nerdtree'
 nnoremap <leader>ff :NERDTreeFocus<cr>
+let g:NERDTreeChangeRoot = 0
+let g:NERDTreeChDirMode=0
 let g:NERDTreeNodeDelimiter = "\u00a0"
 nnoremap <C-E> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
@@ -55,10 +71,14 @@ function! NerdOnRegDir()
     NERDTreeToggle
   endif
 endfunction
-autocmd VimEnter * call NerdOnRegDir() "Open nerdtree on start
+autocmd VimEnter * NERDTreeToggle "Open nerdtree on start
 autocmd vimenter * wincmd p " Cursor by default not in NerdTree
 let g:NERDTreeWinSize=32 " change nerdtree default size
 Plug 'scrooloose/nerdcommenter'
+au BufNewFile,BufRead *.cairo   setf cairo
+let g:NERDCustomDelimiters = {
+      \'cairo': { 'left': '//', 'right': '', 'leftAlt': '//' },
+      \}
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 " Allow commenting and inverting empty lines (useful when commenting a region)
@@ -79,6 +99,9 @@ autocmd VimEnter,BufNewFile,BufRead *.ts set syntax=typescript
 autocmd VimEnter,BufNewFile,BufRead *.tmux.conf set syntax=tmux
 autocmd VimEnter,BufNewFile,BufRead *.service set syntax=gcl
 autocmd VimEnter,BufNewFile,BufRead *.cfg set syntax=yaml
+autocmd BufEnter,VimEnter,BufNewFile,BufRead *.template set syntax=python
+
+" autocmd VimEnter,BufNewFile,BufRead *.move set syntax=rust
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'  " Airline line at the bottom of the screen
 set laststatus=2
@@ -86,6 +109,11 @@ let g:airline_powerline_fonts = 1
 let g:Powerline_symbols='unicode'
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#sort = 'lastused'
+" autocmd WinEnter * call airline#extensions#tabline#sort()
+" autocmd BufEnter * call airline#extensions#tabline#sort()
+" autocmd TabEnter * call airline#extensions#tabline#sort()
+
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
 Plug 'luochen1990/rainbow'
@@ -96,6 +124,7 @@ Plug 'mhinz/vim-signify' " VCS gutter (works with git and g4)
 " ------------------------------
 " Controls ----------------------
 Plug 'ervandew/supertab'
+Plug 'tpope/vim-abolish'
 
 " set completeopt=longest,menuone
 
@@ -103,13 +132,23 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 command! VS vs | FZF
-command! S  split | FZF
 Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
 " ------------------------------
-Plug 'christoomey/vim-tmux-navigator'
 " autodetect pasting
 Plug 'conradirwin/vim-bracketed-paste'
+Plug 'leafgarland/typescript-vim'
+Plug 'herringtondarkholme/yats.vim'
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+
+
+set re=0
+
+Plug 'rvmelkonian/move.vim'
+" Plug 'github/copilot.vim'
 call plug#end()            " required
 filetype plugin indent on    " required
 " General ----------------------
@@ -131,10 +170,6 @@ set mouse=a " allow point and click UI
 set splitbelow " Make new horizontal splits below
 set splitright " Make new vertical splits on right
 " Mouse fix for tmux
-if &term =~ '^screen'
-  " tmux knows the extended mouse mode
-  set ttymouse=xterm2
-endif
 " ------------------------------
 " Themes -----------------------
 colorscheme Monokai
@@ -144,7 +179,6 @@ set incsearch  " search as characters are entered
 set hlsearch   " highlight matches
 " ------------------------------
 " Custom Highlighting ----------
-" so ~/.vimrc.java_highlights
 " let java_highlight_all=1
 " let java_highlight_functions="style"
 " let java_highlight_debug=1
@@ -186,20 +220,9 @@ nmap <C-b> :bprevious<CR>
 command! BD sb # | bd #
 nmap <leader>ss :setlocal spell!<cr>
 nmap <leader>pp :setlocal paste!<cr>
-command FixImports !/google/src/head/depot/google3/tools/java/fix_imports.py %
-command! -nargs=1 Import execute "r!bash -c \"cs -h '^import\ .*\\.<args>;$' 2> /dev/null | head -1 | sed -s 's/^.*: //'\""
-nmap <leader>i :Import <cword><cr>
 nmap <leader>qq :BD<cr>
-autocmd VimEnter * noremap <leader>cs :!cs_url %:p";l="<c-r>=line('.')<CR><CR>
-function G4oOpen()
-  let file = system('g4o_file')
-  echo file
-  " execute 'edit' . file
-endfunction
-noremap <C-p> :call fzf#run({'source': "p4 o \| awk -F'#' '{print $1}' \| sed 's;//depot/;;' \| sed \"s;^;$(p4 --format \'%clientRoot%\' info)/;\"", 'sink': 'e'})<CR>
 " nmap <leader>co :w <bar> %bd <bar> e# <bar> bd# <CR>
 nmap <leader>co :w <bar> e# <CR>
-autocmd VimEnter * noremap <leader>CC :!cider_url %:p":"<c-r>=line('.')<CR><CR>
 command! F NERDTreeFind
 command! Reveal NERDTreeFind
 command! Critique !critique_url
@@ -219,3 +242,13 @@ function! CO()
   %bd|e#
 endfunction
 command! CO :call CO()
+autocmd BufWritePre *.ts PrettierAsync
+so ~/.dotfiles/src_files/.vimrc.move_highlights
+command! HIGHLIGHTS :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+augroup autosort
+  autocmd!
+  autocmd BufEnter * silent! execute 'buffers | sort -k 3 | s/\d*\s\+\([^ ]*\s\+\)\=\zs/\=printf('%010d ', line('.'))/ | sort -k 1 | %!uniq -w 10 | %b'
+augroup END

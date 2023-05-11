@@ -18,7 +18,7 @@ alias upper='declare -u'
 
 #   Refresh tmux config
 #   ------------------------------------------------------
-alias tsrc='tmux source-file ~/.tmux.conf'
+alias tsrc='rm -rf /tmp/tmux_schedule/; tmux source-file ~/.tmux.conf'
 
 #   Refresh zsh
 #   ------------------------------------------------------
@@ -83,3 +83,8 @@ alias openPorts='sudo lsof -i | grep LISTEN'
 
 alias g4o="g4 o"
 alias e='eval $(ssh-agent -s)'
+alias pastebin="nc termbin.com 9999"
+alias gitdiff="git diff -- . ':(exclude)package-lock.json'"
+alias htop='htop -s TIME -t -u mgild -p $(pgrep -vfd, "Google Chrome Framework|/System/Library/Frameworks/|PrivateFrameworks|libexec|CoreServices|/System/Applications|/usr/sbin|/System/Library|SafeEjectGPUAgent|/usr/bin/ssh-agent|cloudphotod|CacheDeleteExtension.appex/Contents/MacOS/CacheDeleteExtension|/Frameworks/.*Helper|zsh$|NewTerminalHere.app|Chrome Apps|iTerm|nvim$|tmux|zsh$|Spotify|Telegram|Amphetamine|WeatherBug|Messenger|Discord|Signal|Slack")'
+alias docker_clean='docker container kill $(docker ps -q)'
+alias ags='ag --width 400'

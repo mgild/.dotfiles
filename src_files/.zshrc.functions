@@ -25,6 +25,7 @@ up() {
     (($d < 0)) && (>&2 echo "up: Error: negative value provided") && return 1;
     # remove last d directories from pwd, append "/" in case result is empty
     cd "$(pwd | sed -E 's;(/[^/]*){0,'$d'}$;;')/";
+    ls;
 }
 
 # cd to selected directory
@@ -82,7 +83,7 @@ color_test () {
 
 unalias ls &> /dev/null
 function ls() {
-    command ls -Xp --group-directories-first --color=auto $@
+    gls --color=always -F --group-directories-first $@
 }
 
 function termcolors () {
@@ -275,7 +276,7 @@ function nav() {
     type highlight &> /dev/null || sudo apt-get install highlight
     type fzf &> /dev/null || sudo apt-get install fzf
     while true; do
-        local lsd=($(echo ".." && ls -Xp --group-directories-first))
+        local lsd=($(echo ".." && command ls -p))
         local sel="$(printf '%s\n' ${lsd[@]} |
             fzf --reverse --preview '
                 __nav_nxt="$(echo {})";
@@ -283,7 +284,7 @@ function nav() {
                 if [ -d "$__nav_nxt" ]; then
                     echo $__nav_path;
                     echo;
-                    ls -Xp --group-directories-first --color=always "${__nav_path}";
+                    command ls -p --color=always "${__nav_path}";
                 else
                     echo $__nav_path;
                     highlight "$__nav_nxt" --out-format xterm256 --line-numbers --force --style=solarized-dark
@@ -299,6 +300,7 @@ function nav() {
 }
 
 export BOOKMARKS=~/bookmarks
+export GCP_PROJECTS=~/gcp-projects.txt
 abm() {
     touch "$BOOKMARKS"
     pwd >> "$BOOKMARKS"
@@ -314,6 +316,16 @@ bm() {
     type fzf &> /dev/null || sudo apt-get install fzf
     touch "$BOOKMARKS"
     cd "$(cat "$BOOKMARKS" | fzf --height 40% --reverse --inline-info)"
+    ls
+}
+
+gswitch() {
+    type fzf &> /dev/null || sudo apt-get install fzf
+    touch "$GCP_PROJECTS"
+    local cmd="$(cat "$GCP_PROJECTS" | fzf --height 40% --reverse --inline-info)"
+    if [[ "${#cmd}" != "0" ]]; then
+        eval "${cmd}"
+    fi
 }
 
 export GBOOKMARKS=~/marks/gbookmarks
@@ -563,4 +575,36 @@ age() {
 }
 grepe() {
     vim +'/\v'"$1" +':silent tabdo :1 | normal! n' +':tabfirst' -p $(grep "$@" | cut -d: -f1 | sort -u)
+}
+azure_ssh() {
+    # et ssh mgild@138.91.105.132
+    mosh --ssh="ssh -i ~/azure_pems/sgx2_key4.pem"  mgild@138.91.105.132
+    # mosh --ssh='ssh -t  mgild@138.91.105.132 -i ~/azure_pems/sgx2_key4.pem'  mgild@138.91.105.132 "tmux send-keys -t session_name:window_name.0 WheelUp"
+
+}
+
+aptos_balance() {
+    lua -e "print ($(aptos account list --query balance --account $1 | jq '.Result[0].coin.value' | sed "s/\"//g")/100000000)"
+}
+
+grep_pod() {
+    kubectl get pods | awk '{print $1}' | grep --color=never -E "$1"
+}
+
+pod_log() {
+    local pod=$(grep_pod "$1" | head -1)
+    echo $pod
+    sleep 1
+    kubectl logs -f $pod ${@: 2}
+}
+pubip() {
+    dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | grep -o --color=never '[0-9.]*'
+}
+
+branches() {
+    git switch $(git branch -l | awk '{ print $NF }' | fzf  --reverse --height=20%)
+ }
+
+poddel() {
+    kubectl delete pod $1
 }

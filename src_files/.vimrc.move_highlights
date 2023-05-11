@@ -1,0 +1,88 @@
+hi MoveImports ctermfg=5
+hi MoveExtras ctermfg=196
+hi MoveConst ctermfg=3
+hi MoveStruct ctermfg=5
+hi MoveFun ctermfg=2
+hi moveGenericRegion ctermfg=196
+" hi moveStructDeclarationPrologue ctermfg=5
+function! HighlightMoveImports()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/^ .*use.*::\([A-Za-z0-9_]\+\)/\=add(matches, submatch(1))/gn
+  %s/^ .*use.*, \([A-Za-z0-9_]\+\)/\=add(matches, submatch(1))/gn
+  %s/^ .*use.*, \([A-Za-z0-9_]\+\),/\=add(matches, submatch(1))/gn
+  %s/^ .*use.*::{\([A-Za-z0-9_]\+\)/\=add(matches, submatch(1))/gn
+  syn clear MoveImports
+
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword MoveImports ' . match . ' containedin=moveStructFields,moveFunctionDeclaration'
+  endfor
+endfunction
+function! HighlightMoveConst()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/^ .*const \([A-Za-z0-9_]\+\): /\=add(matches, submatch(1))/gn
+  syn clear MoveConst
+
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword MoveConst ' . match
+  endfor
+endfunction
+function! HighlightMoveStruct()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/^ .*struct \([A-Za-z0-9_]\+\)/\=add(matches, submatch(1))/gn
+  syn clear MoveStruct
+
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword MoveStruct ' . match. ' containedin=moveStructDeclarationPrologue,moveFunctionDeclaration,moveSigil'
+  endfor
+endfunction
+function! HighlightMoveFun()
+  let save_pos = getpos(".")
+  let matches = []
+  %s/^ .*fun \([A-Za-z0-9_]\+\)/\=add(matches, submatch(1))/gn
+  syn clear MoveFun
+
+  call setpos('.', save_pos)
+  for match in matches
+    exec 'syn keyword MoveFun ' . match. ' containedin=moveStructDeclarationPrologue,moveFunctionDeclaration,MoveFun'
+  endfor
+endfunction
+function! HighlightMoveExtras()
+  let keywords = [
+        \'signer',
+        \'borrow_global',
+        \'borrow_global_mut',
+        \'move_from',
+        \'get_txn_sender',
+        \'exists',
+        \'public',
+        \'fun',
+        \'vector',
+        \'script',
+        \'address',
+        \'has',
+        \'key',
+        \'store',
+        \'copy',
+        \'drop',
+        \]
+
+  syn clear MoveExtras
+  for keyword in keywords
+    exec 'syn keyword MoveExtras ' . keyword . ' containedin=moveParameterRegion'
+  endfor
+endfunction
+function! DoMoveHighlights()
+  call HighlightMoveImports()
+  call HighlightMoveExtras()
+  call HighlightMoveConst()
+  call HighlightMoveStruct()
+  call HighlightMoveFun()
+
+endfunction
+autocmd BufEnter,BufWritePost,FocusGained *.move silent! call DoMoveHighlights()
