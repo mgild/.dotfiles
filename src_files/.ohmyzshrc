@@ -24,13 +24,14 @@ DISABLE_AUTO_TITLE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(
+    # zsh-autosuggestions
     # autojump
-    fast-syntax-highlighting
+#    fast-syntax-highlighting
     # mercurial
     # git
     # git-extras
-    zsh-autosuggestions
-    # git-prompt
+ #   zsh-autosuggestions
+  # git-prompt
     # history-substring-search
 )
 # load oh-my-zsh

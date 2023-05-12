@@ -182,7 +182,7 @@ per_min() {
 }
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 alias lg=lazygit
-source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 export HISTORY_SUBSTRING_SEARCH_PREFIXED=1
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
@@ -251,3 +251,7 @@ force_umount() {
         diskutil unmount force "$x";
     done
 }
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export DOCKER_BUILDKIT=1
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh

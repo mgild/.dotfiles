@@ -7,7 +7,7 @@ function mvFile() {
         then
             rm $1
         else
-            mv -bf $1 $2
+            mv -f $1 $2
         fi
     fi
 }

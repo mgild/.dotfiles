@@ -4,7 +4,7 @@ if [[ ! -d  $ZSH_CUSTOM/plugins/fast-syntax-highlighting ]]; then
 fi
 
 if [[ ! -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then
-    git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+#    git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 fi
 
 if [[ ! -d $ZSH_CUSTOM/plugins/zsh-git-prompt ]]; then
